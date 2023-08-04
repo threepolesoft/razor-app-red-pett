@@ -10,6 +10,23 @@ $(function () {
         }
     });
 
+    $(document).on("blur", ".mud-input-slot", function(e){
+
+        var t_v=e.target.value;
+        var t_d=$(this).attr("data");
+
+        //debugger;
+
+        if(t_v.trim().length>0)
+        {
+            $("."+t_d).addClass('mud-shrink')
+        }else{
+            $("."+t_d).removeClass('mud-shrink')
+        }
+       
+
+    });
+
     // Add button click
     $(document).on('click', '[data-role="appendRow"] > .form-row [data-role="add"]', function (e) {
         e.preventDefault();
@@ -18,6 +35,29 @@ $(function () {
         var new_field_group = lastFieldGroup.clone();
         //new_field_group.find('label').html('Upload Document');
         new_field_group.find('select').val(''); // Clear the value of the select element
+
+       // new_field_group[0].innerText="";
+        //debugger;
+
+        var dt=new Date().toISOString();
+
+        //2023-08-04T06:03:26.064Z
+
+        var y=dt.slice(0,4)
+        var m=dt.slice(5,7)
+        var d=dt.slice(8,10)
+        var t=dt.slice(11,19)
+
+        dt=d+"/"+m+"/"+y+" "+t;
+
+
+        var GeneralComments=$(".form-inline");
+
+        var cId="cId_"+GeneralComments.length+1;
+
+
+        new_field_group[0].innerHTML='<div class="aprow gcomments" style="width:100%"><!--!--><div class="d-flex gap-2 me-2"><button class="btn btn-sm btn-danger  mb-2" data-role="remove"><i class="fa fa-minus"></i></button>\n                                                <button class="btn btn-sm btn-primary  mb-2" data-role="add"><i class="fa fa-plus"></i></button></div>\n                                            <!--!--><!--!--><!--!--><div class="mud-input-control mud-input-input-control"><div class="mud-input-control-input-container"><!--!--><!--!--><div class="mud-input mud-input-outlined '+cId+'"><textarea class="mud-input-slot mud-input-root mud-input-root-outlined" rows="3" data='+cId+' id="'+cId+'" type="text" inputmode="text" maxlength="524288" aria-invalid="false" _bl_6=""></textarea><!--!--><div class="mud-input-outlined-border"></div></div><!--!--><label class="mud-input-label mud-input-label-animated mud-input-label-outlined mud-input-label-inputcontrol" for="'+cId+'">'+localStorage.getItem("Name").replace("\"", "").replace("\"", "")+' '+dt+'</label></div></div></div>';
+
         container.append(new_field_group);
     });
 
@@ -243,7 +283,31 @@ function valuechange() {
     var fetpspan = document.getElementById("fetpspan");
     fetpspan.innerText = "";
 }
-function nextPrev(n) {
+
+function pagePre(){
+
+    var sl=$(".pre_page").attr("data");
+
+    var n_sl=Number(sl)+1;
+
+    if(sl==1){
+
+         document.getElementById("nextBtn").style.display = "block";
+         document.getElementById("nextBtn1").style.display = "block";
+        document.getElementById("prevBtn").style.display = "none";
+        document.getElementById("prevBtn1").style.display = "none";
+    }
+
+    $(".next_page").attr("data", n_sl);
+    $(".pre_page").attr("data", sl-1);
+
+    indicator(sl);
+
+}
+
+function pageNext() {
+
+   
     // This function will figure out which tab to display
     var x = document.getElementsByClassName("step");
     var fetpspan = document.getElementById("fetpspan");
@@ -306,19 +370,28 @@ function nextPrev(n) {
     ptspan.innerText = "";
     daspan.innerText = "";
     pttspan.innerText = "";
-    if (n == 1 && !validateForm()) return false;
+    if (!validateForm()) return false;
     // Hide the current tab:
-    x[currentTab].style.display = "none";
-    // Increase or decrease the current tab by 1:
-    currentTab = currentTab + n;
-    // if you have reached the end of the form...
-    if (currentTab >= x.length) {
-        // ... the form gets submitted:
-        document.getElementById("signUpForm").submit();
-        return false;
+
+         document.getElementById("prevBtn").style.display = "block";
+     document.getElementById("prevBtn1").style.display = "block";
+
+     
+
+    var sl=$(".next_page").attr("data");
+
+    var n_sl=Number(sl)+1;
+
+    if(sl==4){
+
+        document.getElementById("nextBtn").style.display = "none";
+        document.getElementById("nextBtn1").style.display = "none";
     }
-    // Otherwise, display the correct tab:
-    showTab(currentTab);
+
+    
+        $(".next_page").attr("data", n_sl);
+        $(".pre_page").attr("data", sl-1);
+    indicator(sl);
 }
 
 function validateForm() {
@@ -419,26 +492,68 @@ function getAllComments() {
 }
 
 $('body').on('click', '.stepIndicator', function () {
-    var step_type = $(this).data("step_type");
-    $(this).addClass('active');
 
-    if (step_type == "2") {
+    var step_type = $(this).data("step_type");
+
+indicator(step_type);
+   
+});
+
+
+            function indicator(step_type){
+
+                 if (step_type == "1") {
+
+        $(".stepIndicator_2").removeClass('active');
+        $(".stepIndicator_3").removeClass('active');
+        $(".stepIndicator_4").removeClass('active');
+
+        $(".stepIndicator_1").addClass('active');
+
+
+        $(".step1").show();
+        $(".step2").hide();
+        $(".step3").hide();
+        $(".step4").hide();
+
+    }else if (step_type == "2") {
+
+        $(".stepIndicator_3").removeClass('active');
+        $(".stepIndicator_4").removeClass('active');
+
+        $(".stepIndicator_1").addClass('active');
+        $(".stepIndicator_2").addClass('active');
+
         $(".step1").hide();
         $(".step2").show();
         $(".step3").hide();
         $(".step4").hide();
 
     } else if (step_type == "3") {
+
+        $(".stepIndicator_4").removeClass('active');
+
+        $(".stepIndicator_1").addClass('active');
+        $(".stepIndicator_2").addClass('active');
+        $(".stepIndicator_3").addClass('active');
+
         $(".step1").hide();
         $(".step2").hide();
         $(".step3").show();
         $(".step4").hide();
 
     } else if (step_type == "4") {
+
+
+        $(".stepIndicator_1").addClass('active');
+        $(".stepIndicator_2").addClass('active');
+        $(".stepIndicator_3").addClass('active');
+        $(".stepIndicator_4").addClass('active');
+
         $(".step1").hide();
         $(".step2").hide();
         $(".step3").hide();
         $(".step4").show();
 
     }
-});
+            }
