@@ -14,11 +14,15 @@ namespace ReDpett_API.Controllers
     public class TraineesInfoController : ControllerBase
     {
         private readonly REcontext _context;
-        private readonly IMapper _mapper;       
-        public TraineesInfoController(REcontext context, IMapper _mapper)
+        private readonly IMapper _mapper;
+        private readonly IWebHostEnvironment env;
+
+        public TraineesInfoController(REcontext context, IMapper _mapper, IWebHostEnvironment env)
         {
             _context = context;
-            this._mapper = _mapper;          
+            this._mapper = _mapper;
+
+            this.env = env;
         }
 
         [HttpPost("AddTraineeInfo")]
@@ -63,8 +67,15 @@ namespace ReDpett_API.Controllers
         [HttpGet("GetAllTraineeInfo")]
         public List<TraineeInformation6> GetAllTraineeInfo()
         {
-            var info = _context.TraineeInformation6.ToList();
-            return info;
+            try
+            {
+                var info = _context.TraineeInformation6.ToList();
+                return info;
+            }
+            catch
+            {
+                return null;
+            }
         }
         
         [HttpGet("GetCodeCurrentProfession")]
@@ -152,9 +163,14 @@ namespace ReDpett_API.Controllers
             if (registerId!= null)
             {
                 var traineeInfo = _context.TraineeInformation6.FirstOrDefault(x => x.RegisterID == registerId.RegisterID);
-                if (traineeInfo != null && !string.IsNullOrEmpty(traineeInfo.ProfilePicture))
+
+
+                if (traineeInfo != null)
                 {
-                    return traineeInfo.ProfilePicture;
+
+                    string root = Path.Combine(env.ContentRootPath, traineeInfo.ProfilePicture);
+
+                    return "data:image/jpeg;base64,"+Convert.ToBase64String(System.IO.File.ReadAllBytes(root)); ;
                 }
             }
             return "" ;

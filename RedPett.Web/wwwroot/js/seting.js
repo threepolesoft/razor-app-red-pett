@@ -173,21 +173,21 @@ $(document).on("change", ".uploadProfileInput", function () {
                     else {
                         url = "https://v3-web-app-for-api.azurewebsites.net/api/TraineesInfo"
                     }
-                    $.ajax({
-                        url: url,
-                        headers: { "UserName": userName },
-                        type: 'POST',
-                        data: JSON.stringify({ ProfilePicture: this.result.split(',')[1] }),
-                        contentType: 'application/json',
-                        success: function (response) {
-                            // Handle the server response if needed
-                            console.log("Image src sent to controller successfully.");
-                        },
-                        error: function (error) {
-                            // Handle any errors that occurred during the AJAX request
-                            console.log("Error sending image src to controller:");
-                        }
-                    });
+                    //$.ajax({
+                    //    url: url,
+                    //    headers: { "UserName": userName },
+                    //    type: 'POST',
+                    //    data: JSON.stringify({ ProfilePicture: this.result.split(',')[1] }),
+                    //    contentType: 'application/json',
+                    //    success: function (response) {
+                    //        // Handle the server response if needed
+                    //        console.log("Image src sent to controller successfully.");
+                    //    },
+                    //    error: function (error) {
+                    //        // Handle any errors that occurred during the AJAX request
+                    //        console.log("Error sending image src to controller:");
+                    //    }
+                    //});
 
                     setTimeout(() => {
                         $(wrapper).find('[role="alert"]').remove();

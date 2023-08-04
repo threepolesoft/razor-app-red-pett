@@ -31,5 +31,9 @@
 		<PackageReference Include="Swashbuckle.AspNetCore.Newtonsoft" Version="6.5.0" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <ProjectReference Include="..\ReDpett.Common\ReDpett.Common.csproj" />
+	</ItemGroup>
+
 </Project>
 

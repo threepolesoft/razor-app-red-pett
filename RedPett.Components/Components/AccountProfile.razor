@@ -1,7 +1,11 @@
 ﻿@using Blazored.LocalStorage
+@using Microsoft.AspNetCore.Components.Forms;
 @using Radzen.Blazor
+@using ReDpett.Common.Modal;
 @using ReDpett.Common.Modal.Settings;
 @using ReDpett.Service;
+@using System.Net.Http.Json;
+@using System.Net.Http.Headers;
 @inject ILocalStorageService local;
 @inject HttpClient _httpClient;
 @inject IJSRuntime js
@@ -14,7 +18,10 @@
         <div class="photo-sky">
             <img id="profilePic" class="pic" src="@source" alt="#">
             <div class="pencsky text-center"><i class="fa fa-pencil"></i></div>
-            <input class="uploadProfileInput" type="file" name="profile_pic" id="newProfilePhoto" accept="image/*" style="visibility:hidden; position:absolute" />
+            <InputFile class="uploadProfileInput" type="file"
+                       OnChange="@InputHandle" multiple
+                name="profile_pic" id="newProfilePhoto" 
+                accept="image/*" style="visibility:hidden; position:absolute" />
         </div>
         <div class="profil-sky">
             <ul>
@@ -57,6 +64,39 @@
     int selectRole = 0;
     TraineeInformation6VM info = new();
     string source = "images/avter1.png";
+
+
+    private int maxAllowedFiles =1;
+    private long maxFileSize = 1024 * 15;
+
+
+    private async Task InputHandle(InputFileChangeEventArgs e)
+    {
+        using var content = new MultipartFormDataContent();
+
+        foreach (var item in e.GetMultipleFiles(maxAllowedFiles))
+        {
+            var fileContent = new StreamContent(item.OpenReadStream());
+
+            fileContent.Headers.ContentType = new MediaTypeHeaderValue(item.ContentType);
+
+            content.Add(
+                content: fileContent,
+                name: "\"files\"",
+                fileName: item.Name+"*"+email
+            );
+        }
+
+        var res = await _httpClient.PostAsync("https://localhost:7194/api/ProfilePicture", content);
+
+        var result = await res.Content.ReadFromJsonAsync<UploadResult>();
+
+        if (result != null)
+        {
+            source = result.StoredFileName;
+        }
+    }
+
 
     protected override async Task OnInitializedAsync()
     {

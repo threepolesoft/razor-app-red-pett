@@ -13,8 +13,8 @@ namespace ReDpett.Modal.AppConstants
     }
     public static class ReDpettConstants
     {
-        public static string BaseAddress = "https://v3-web-app-for-api.azurewebsites.net/";
-        //public static string BaseAddress = "https://localhost:7194/";
+        //public static string BaseAddress = "https://v3-web-app-for-api.azurewebsites.net/";
+        public static string BaseAddress = "https://localhost:7194/";
         public const string ContentType = "application/json";
         public const string LoginAddress = "Login";
         public const string RegisterAddress = "api/Registers";
