@@ -1,0 +1,281 @@
+﻿@page "/settings"
+@using AutoMapper;
+@using Radzen;
+@using ReDpett.Common.Modal.Settings;
+@using ReDpett.Service;
+@using RedPett.Components.Components
+@using RedPett.Web.Components
+@inject NotificationService notification
+@using Blazored.LocalStorage
+@inject ILocalStorageService local
+@inject IMapper mapper;
+@inject NavigationManager navigationManager
+
+<style>
+    .rz-tabview.rz-tabview-left > .rz-tabview-nav .rz-tabview-selected {
+        border-right: none;
+    }
+
+    .borderb {
+        border-bottom: 1px solid gray;
+    }
+
+    .width {
+        width: 24px;
+    }
+
+    .rz-tabview-nav {
+        min-height: 100vh;
+        background-color: rgb(248 246 245);
+    }
+
+        .rz-tabview-nav li a {
+            font-weight: bold;
+            font-size: 13px;
+            text-transform: none;
+        }
+
+    .btn-primary {
+        border-color: #009688;
+        --bs-btn-hover-bg: #009688;
+        --bs-btn-hover-border-color: #009688;
+        --bs-btn-active-bg: #009688;
+    }
+
+    .fixed-nav-bar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 9999;
+        width: 100%;
+        height: 50px;
+    }
+
+    .rz-tabview-nav {
+        position: fixed;
+    }
+
+    .rz-tabview-panel {
+        margin-left: 268px;
+    }
+
+    .chort-btn {
+        font-size: 20px;
+    }
+
+    .rz-notification {
+        position: fixed;
+        z-index: 1002;
+        top: 10px !important;
+        float: right;
+        right: 22px !important;
+    }
+</style>
+<div class="sidebar">
+    <RadzenTabs TabPosition="Radzen.TabPosition.Left">
+        <Tabs>
+            <div class="d-flex borderb px-3">
+                <div><i class="fa-regular fa-user mt-3 width" style="font-size:18px"></i></div>
+                <div>
+                    <RadzenTabsItem Text="Account & Profile">
+                        <AccountProfile></AccountProfile>
+                    </RadzenTabsItem>
+                </div>
+            </div>
+            <div class="d-flex borderb px-3">
+                <div><i class="fa fa-question-circle-o mt-3 width" style="font-size:22px"></i></div>
+                <div>
+                    <RadzenTabsItem Text="Demographic Information">
+                        <ContactInformation @ref="contactinfo"></ContactInformation>
+                    </RadzenTabsItem>
+                </div>
+            </div>
+            <div class="d-flex borderb px-3">
+                <div><i class="fa-regular fa-id-badge mt-3 width" style="font-size:22px"></i></div>
+                <div>
+                    <RadzenTabsItem Text="Program Information">
+                        <ProgramInformation @ref="programinfo"></ProgramInformation>
+                    </RadzenTabsItem>
+                </div>
+            </div>
+            <div class="d-flex borderb px-3">
+                <div><i class="fa-solid fa-house-signal mt-4 width" style="font-size:22px"></i></div>
+                <div>
+                    <RadzenTabsItem Text="Employment Information">
+                        <ResidentInformation @ref="residentinfo"></ResidentInformation>
+                    </RadzenTabsItem>
+                </div>
+            </div>
+            <div class="d-flex borderb px-3">
+                <div><i class="fa-solid fa-qrcode mt-3 width" style="font-size:22px"></i></div>
+                <div>
+                    <RadzenTabsItem Text="Consultant Information">
+                        <ConsultantInformation @ref="consultantinfo"></ConsultantInformation>
+                    </RadzenTabsItem>
+                </div>
+            </div>
+            <div>
+                <div class="d-flex px-3" style="margin-left:30px;position: absolute; margin-left: 24px;bottom:60px;">
+                    <div>
+                        <div class="text-center">
+                            <button type="button" class="btn btn-outline-primary chort-btn mx-3" @onclick="@OnClose">Close</button>
+                            <button type="button" class="btn btn-primary chort-btn" @onclick="@SaveClicked">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </Tabs>
+    </RadzenTabs>
+
+</div>
+
+
+@code {
+    ContactInformation contactinfo;
+    ProgramInformation programinfo;
+    ResidentInformation residentinfo;
+    ConsultantInformation consultantinfo;
+    RestService restService = new();
+    public string email = string.Empty;
+    public string surname = string.Empty;
+    public string givenName = string.Empty;
+    public int registerId;
+    public TraineeInformation6VM res = new();
+    public bool traineeInfoFound;
+    public List<TraineeInformation6VM> TraineeInfoList = new();
+    public string role { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        role = await local.GetItemAsync<string>("UserRole");
+        await GetData();
+    }
+
+    private async Task GetData()
+    {
+        email = await local.GetItemAsync<string>("UserName");
+        var result = await restService.GetRegisteredUser(email);
+        registerId = result.RegisterID;
+        TraineeInfoList = await restService.GetAllTraineeInfo();
+        if (TraineeInfoList.Count() > 0)
+        {
+            traineeInfoFound = TraineeInfoList.Any(x => x.RegisterID == registerId);
+        }
+        if (traineeInfoFound)
+        {
+            res = TraineeInfoList.FirstOrDefault(x => x.RegisterID == registerId)!;
+        }
+        else
+        {
+            res = new();
+        }
+        res.RegisterID = registerId;
+    }
+
+    private async void SaveClicked()
+    {
+        await GetData();
+        res.RegisterID = registerId;
+        if (contactinfo != null)
+        {
+            res.DateofBirth = contactinfo.res.DateofBirth;
+            res.Age = contactinfo.res.Age;
+            res.Gender = contactinfo.res.Gender;
+            res.HomePhoneNumber = contactinfo.res.HomePhoneNumber;
+            res.BusinessPhone = contactinfo.res.BusinessPhone;
+            res.Mobile_Phone = contactinfo.res.Mobile_Phone;
+            res.TraineeEmail = contactinfo.res.TraineeEmail;
+            res.MailingAddress = contactinfo.res.MailingAddress;
+            res.City = contactinfo.res.City;
+            res.State = contactinfo.res.State;
+            res.ZipCode = contactinfo.res.ZipCode;
+            res.Country = contactinfo.res.Country;
+            res.contactLatitude = contactinfo.res.contactLatitude;
+            res.contactLongitude = contactinfo.res.contactLongitude;
+        }
+
+        if (programinfo != null)
+        {
+            res.Country = programinfo.res.Country;
+            res.FETP = programinfo.res.FETP;
+            res.FETPLevel = programinfo.res.FETPLevel;
+            res.CohortNumber = programinfo.res.CohortNumber;
+            res.FETPTrack = programinfo.res.FETPTrack;
+            res.OtherTrack = programinfo.res.OtherTrack;
+            res.Monthbeginning = programinfo.res.Monthbeginning;
+            res.QualifyingDegree = programinfo.res.QualifyingDegree;
+            res.Monthbeginning = programinfo.res.Monthbeginning;
+            res.WHORegionTrainee = programinfo.unitraining;
+            res.Mentor2 = programinfo.res.Mentor2;
+        }
+
+        if (residentinfo != null)
+        {
+            res.CurrentProfession = residentinfo.res.CurrentProfession;
+            res.JobTitle = residentinfo.res.JobTitle;
+            res.StartDateCurrentJob1 = residentinfo.res.StartDateCurrentJob1;
+            res.DiseaseRole = residentinfo.res.DiseaseRole;
+            res.InstituteAff1 = residentinfo.res.InstituteAff1;
+            res.OrganizationType = residentinfo.res.OrganizationType;
+            res.completeFETP = residentinfo.res.completeFETP;
+            res.BusinessAddress = residentinfo.res.BusinessAddress;
+            res.Latitude = residentinfo.res.Latitude;
+            res.Longitude = residentinfo.res.Longitude;
+        }
+
+        if (consultantinfo != null)
+        {
+            res.Supervisor = consultantinfo.res.Supervisor;
+            res.Mentor = consultantinfo.res.Mentor;
+            res.FETPAlumni = consultantinfo.res.FETPAlumni;
+            res.LocalRA = consultantinfo.res.LocalRA;
+            res.ProfessionalAffiliation = consultantinfo.res.ProfessionalAffiliation;
+            res.PrimaryRole = consultantinfo.res.PrimaryRole;
+            res.GivenName = consultantinfo.res.GivenName;
+            res.FullName = consultantinfo.res.FullName;
+            res.Surname = consultantinfo.res.Surname;
+            if (res.Mentor == true && programinfo != null)
+            {
+                res.Mentor2 = programinfo.res.Mentor2;
+            }
+            else
+            {
+                res.Mentor2 = consultantinfo.res.Mentor2;
+            }
+            if (programinfo != null)
+            {
+                if (!string.IsNullOrEmpty(programinfo.res.Mentor2))
+                {
+                    if (consultantinfo.res.FullName != programinfo.res.Mentor2 && res.Mentor == false)
+                    {
+
+                        res.Mentor2 = programinfo.res.Mentor2;
+                    }
+                }
+            }
+
+        }
+        if (traineeInfoFound == false | TraineeInfoList.Count() == 0)
+        {
+            await restService.AddTraineeInfo(res);
+            notification.Notify(new NotificationMessage { Severity = NotificationSeverity.Success, Detail = "Information Added Successfully", Duration = 4000 });
+        }
+        else
+        {
+            await restService.UpdateTraineeInfo(registerId, res);
+            notification.Notify(new NotificationMessage { Severity = NotificationSeverity.Success, Detail = "Information Updated Successfully", Duration = 4000, Style = "" });
+        }
+    }
+    private void OnClose()
+    {
+        if (role == "Resident")
+        {
+            navigationManager.NavigateTo("/dashboard");
+        }
+        else if (role == "Non-Resident")
+        {
+            navigationManager.NavigateTo("/dash");
+        }
+
+    }
+}

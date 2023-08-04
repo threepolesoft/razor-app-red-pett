@@ -1,0 +1,193 @@
+﻿@using Radzen.Blazor
+@using Radzen;
+@using ReDpett.Common.Modal.Settings;
+@using ReDpett.Service;
+@using ReDpett_API.Modal;
+@inject HttpClient _httpClient;
+@inject NotificationService notification
+@using Blazored.LocalStorage;
+@inject ILocalStorageService local;
+<style>
+    .size {
+        font-size: 14px;
+    }
+
+    .color {
+        color: red;
+    }
+</style>
+<RadzenTemplateForm TItem="TraineeInformation6VM" Data="res">
+    <RadzenFieldset Text="Program Information" style="font-size:22px; font-weight:bold">
+        <div class="d-flex">
+            <div class="w-75">
+                <div class="row px-3">
+                    <div class="col-md-12 pt-3">
+                        <RadzenText class="size">Nationality <sup class="color">*</sup></RadzenText>
+                    </div>
+                    <div class="col-md-12">
+                        <RadzenDropDown TValue="string" class="w-75" Data=@CountryNameList @bind-Value=res.Country />
+                    </div>
+                </div>
+
+                <div class="row px-3">
+                    <div class="col-md-12 pt-3">
+                        <RadzenText class="size">FETP <sup class="color">*</sup></RadzenText>
+                    </div>
+                    <div class="col-md-12">
+                        <RadzenDropDown TValue="string" class="w-75" @bind-Value=res.FETP Data="FETPList" Change=@GetFetpLevel />
+                    </div>
+                </div>
+
+                <div class="row px-3">
+                    <div class="col-md-12 pt-3">
+                        <RadzenText class="size">FETP Level <sup class="color">*</sup></RadzenText>
+                    </div>
+                    <div class="col-md-12">
+                        <RadzenTextBox class="w-75" @bind-Value=res.FETPLevel></RadzenTextBox>
+                    </div>
+                </div>
+                <div class="row px-3">
+                    <div class="col-md-12 pt-3">
+                        <RadzenText class="size"></RadzenText>
+                    </div>
+                    <div class="col-md-12">
+                        <RadzenDropDown TValue="string" class="w-75" Data="@UniversityTrainingList" @bind-Value=@unitraining />
+                    </div>
+                </div>
+                <div class="row px-3">
+                    <div class="col-md-12 pt-3">
+                        <RadzenText class="size">Cohort Number <sup class="color">*</sup></RadzenText>
+                    </div>
+                    <div class="col-md-12">
+                        <RadzenNumeric TValue="int?" class="w-75" @bind-Value=res.CohortNumber />
+                    </div>
+                </div>
+
+                <div class="row px-3">
+                    <div class="col-md-12 pt-3">
+                        <RadzenText class="size">FETP Track <sup class="color">*</sup></RadzenText>
+                    </div>
+                    <div class="col-md-12">
+
+                        <RadzenDropDown TValue="string" class="w-75" @bind-Value=res.FETPTrack Data="@FETPTrackList" />
+                    </div>
+                </div>
+                @if (result)
+                {
+                        <div class="row px-3">
+                            <div class="col-md-12 pt-3">
+                                <RadzenText class="size">Other Track</RadzenText>
+                            </div>
+                            <div class="col-md-12">
+                                <RadzenTextBox class="w-75" @bind-Value=res.OtherTrack></RadzenTextBox>
+                            </div>
+                        </div>
+                }
+            </div>
+            <div class="w-75">
+                <div class="row px-3">
+                    <div class="col-md-12 pt-3">
+                        <RadzenText class="size">Date Cohort Training Began <sup class="color">*</sup></RadzenText>
+                    </div>
+                    <div class="col-md-12">
+                        <RadzenDatePicker TValue="DateTime?" class="w-75" DateFormat="dd/MM/yyyy" @bind-Value=res.Monthbeginning />
+                    </div>
+                </div>
+                <div class="row px-3">
+                    <div class="col-md-12 pt-3">
+                        <RadzenText class="size">Qualifying Degree <sup class="color">*</sup></RadzenText>
+                    </div>
+                    <div class="col-md-12">
+                        <RadzenDropDown TValue="string" class="w-75" @bind-Value=res.QualifyingDegree Data=@QualifyingDegree />
+                    </div>
+                </div>
+                <div class="row px-3">
+                    <div class="col-md-12 pt-3">
+                        <RadzenText class="size">Mentor(1)</RadzenText>
+                    </div>
+                    <div class="col-md-12">
+                        <RadzenDropDown TValue="string" class="w-75" Data=@MentorsList @bind-Value=res.Mentor2 />
+                    </div>
+                </div>
+                <div class="row px-3">
+                    <div class="col-md-12 pt-3">
+                        <RadzenText class="size">Mentor(2)</RadzenText>
+                    </div>
+                    <div class="col-md-12">
+                        <RadzenDropDown TValue="string" class="w-75" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </RadzenFieldset>
+</RadzenTemplateForm>
+
+@code {
+
+    bool result = true;
+    RestService restService = new();
+    List<Country> CountryList = new List<Country>();
+    List<string> CountryNameList = new List<string>();
+    List<TraineeInformation6VM> TraineeInfoList = new();
+    public TraineeInformation6VM res = new();
+    bool traineeInfoFound;
+    int registerId;
+    List<string> FETPList = new();
+    List<string> FETPTrackList = new();
+    List<string> UniversityTrainingList = new();
+    List<string> QualifyingDegree = new();
+    List<string> MentorsList = new();
+    public string email = string.Empty;
+    public string unitraining = string.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        CountryList = await restService.GetCountries();
+        foreach (var val in CountryList)
+        {
+            CountryNameList.Add(val.Name);
+        }
+        await GetData();
+    }
+
+    async Task GetData()
+    {
+        email = await local.GetItemAsync<string>("UserName");
+        var result = await restService.GetRegisteredUser(email);
+        registerId = result.RegisterID;
+        TraineeInfoList = await restService.GetAllTraineeInfo();
+        if (TraineeInfoList.Count() > 0)
+        {
+            traineeInfoFound = TraineeInfoList.Any(x => x.RegisterID == registerId);
+        }
+        if (traineeInfoFound)
+        {
+            res = TraineeInfoList.FirstOrDefault(x => x.RegisterID == registerId)!;
+        }
+        else
+        {
+            res = new();
+        }
+        res.RegisterID = registerId;
+        FETPList = await restService.GetFETP();
+        FETPTrackList = await restService.GetFETPTrack();
+        QualifyingDegree = await restService.GetQualifyingDegree();
+        MentorsList = await restService.GetMentors();
+    }
+
+    private async void GetFetpLevel()
+    {
+        unitraining = string.Empty;
+        var level = await restService.GetFETPLevel(res.FETP!);
+        res.FETPLevel = level;
+        var universitytrainig = await restService.GetUniversityTraining(res.FETP!);
+        UniversityTrainingList.Clear();
+        UniversityTrainingList = new();
+        foreach (var uni in universitytrainig)
+        {
+            UniversityTrainingList.Add(uni);
+
+        }
+        StateHasChanged();
+    }
+}

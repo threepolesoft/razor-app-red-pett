@@ -1,0 +1,159 @@
+﻿@page "/manage"
+@using Radzen.Blazor
+@using ReDpett.Modal.RegisterModal;
+@using ReDpett.Modal.AppConstants;
+@using ReDpett.Service;
+
+@inject NavigationManager NavigationManager;
+
+
+<MudDataGrid Items="@residents" Filterable="true"  SortMode="@SortMode.None" Groupable="false">
+    <Columns>
+         <TemplateColumn CellClass="d-flex justify-start">
+        <CellTemplate>
+        <MudStack Row>
+        <MudImage Src="http://xamaringuyshow.com/wp-content/uploads/2020/10/UserImage2.jpeg" Height="80"  Width="80"/>
+       
+        </MudStack>
+        </CellTemplate>
+        </TemplateColumn>
+        <PropertyColumn Property="x => x.Name" />
+        <PropertyColumn Property="x => x.ProjectTitle" />
+        <PropertyColumn Property="x => x.ProjectAttachment" Title="Project Attachment" />
+        <PropertyColumn Property="x => x.ProjectType" Title="Project Type" />
+        <PropertyColumn Property="x => x.ProjectClassification" Title="Project Classification" />
+        <PropertyColumn Property="x => x.Score " Title="Score"  />
+    
+    </Columns>
+</MudDataGrid>
+@code {
+    public record Residents(string Image,string Name, string ProjectTitle, string ProjectAttachment, string ProjectType, string ProjectClassification, string Score);
+    public IEnumerable<Residents> residents;
+
+    protected override void OnInitialized()
+    {
+        residents = new List<Residents>
+        {
+               new Residents("http://xamaringuyshow.com/wp-content/uploads/2020/10/UserImage2.jpeg","Sam", "CPA", "CBN", "87_000", "4","Test"),
+               new Residents("http://xamaringuyshow.com/wp-content/uploads/2020/10/UserImage2.jpeg","Sam", "CPA", "CBN", "87_000", "4","Test"),
+   
+        };
+    }
+}
+
+
+
+@code {
+    RadzenDataGrid<RegisterDetails> ordersGrid;
+    IEnumerable<RegisterDetails> orders;
+    //IEnumerable<Customer> customers;
+
+    string Username = Preferences.Default.Get("UserName", "");
+    string Passcode = Preferences.Default.Get("Passcode", "");
+    RestService restService;
+    //ReDpettConstants.UserName=Username.ToString();
+    //countryId,programId
+    RegisterDetails orderToInsert;
+    RegisterDetails orderToUpdate;
+
+    void Reset()
+    {
+        orderToInsert = null;
+        orderToUpdate = null;
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        restService = new RestService();
+        await base.OnInitializedAsync();
+
+        //customers = dbContext.Customers;
+     //   employees = await restService.Get<List<RegisterDetails>>(ReDpettConstants.GetResidents + Passcode);
+       
+        //orders = dbContext.Orders.Include("Customer").Include("Employee");
+    }
+
+    async Task EditRow(RegisterDetails order)
+    {
+        orderToUpdate = order;
+        await ordersGrid.EditRow(order);
+    }
+
+    void OnUpdateRow(RegisterDetails order)
+    {
+        if (order == orderToInsert)
+        {
+            orderToInsert = null;
+        }
+
+        orderToUpdate = null;
+
+        //dbContext.Update(order);
+        //dbContext.SaveChanges();
+    }
+
+    async Task SaveRow(RegisterDetails order)
+    {
+        await ordersGrid.UpdateRow(order);
+    }
+
+    void CancelEdit(RegisterDetails order)
+    {
+        if (order == orderToInsert)
+        {
+            orderToInsert = null;
+        }
+
+        orderToUpdate = null;
+
+        ordersGrid.CancelEditRow(order);
+
+        /*var orderEntry = dbContext.Entry(order);
+        if (orderEntry.State == EntityState.Modified)
+        {
+            orderEntry.CurrentValues.SetValues(orderEntry.OriginalValues);
+            orderEntry.State = EntityState.Unchanged;
+        }*/
+    }
+
+    async Task DeleteRow(RegisterDetails order)
+    {
+        if (order == orderToInsert)
+        {
+            orderToInsert = null;
+        }
+
+        if (order == orderToUpdate)
+        {
+            orderToUpdate = null;
+        }
+
+        if (orders.Contains(order))
+        {
+            //dbContext.Remove<RegisterDetails>(order);
+
+            //dbContext.SaveChanges();
+
+            await ordersGrid.Reload();
+        }
+        else
+        {
+            ordersGrid.CancelEditRow(order);
+            await ordersGrid.Reload();
+        }
+    }
+
+    async Task InsertRow()
+    {
+        orderToInsert = new RegisterDetails();
+        await ordersGrid.InsertRow(orderToInsert);
+    }
+
+    void OnCreateRow(RegisterDetails order)
+    {
+        //dbContext.Add(order);
+        //dbContext.SaveChanges();
+
+        orderToInsert = null;
+    }
+}

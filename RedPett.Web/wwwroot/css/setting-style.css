@@ -1,0 +1,561 @@
+/*.chort-btn button {
+    padding: 9px 36px;
+    font-size: 16px;
+    margin: 0 5px;
+}
+
+.chort-btn{
+    margin:0px;
+}*/
+.sky-rt {
+    background-color: rgb(240, 244, 248);
+    height: 100vh;
+    position: fixed;
+    min-width: 250px;
+    border-right: 1px solid #dfdfdf;
+}
+
+.chort-sky:last-child {
+    border-bottom: 0;
+}
+
+.sky-nav button {
+    border-radius: 0 !important;
+    font-size: 16px;
+    font-weight: 600;
+    text-align: left;
+    border-bottom: 1px solid #dfdfdf !important;
+    color: #000;
+    padding: 15px 22px;
+}
+
+.sky-nav .active {
+    background: #fff !important;
+    color: #000 !IMPORTANT;
+}
+
+.sky-nav button i {
+    font-size: 19px;
+    margin: 0 6px 0 0;
+    line-height: 0;
+}
+
+#target {
+    width: 100%;
+    padding: 0 15px;
+    display: none;
+    border-bottom: 1px solid #dfdfdf;
+}
+
+.prfo-bks {
+    display: none;
+}
+
+.sky-content {
+    width: 100%;
+    padding-left: 250px;
+}
+
+.prfo-sky {
+    cursor: pointer;
+}
+
+.chort-sky {
+    border-bottom: 1px solid #dfdfdf;
+    padding: 13.3px 10px;
+}
+
+    .chort-sky .row {
+        margin: 0;
+    }
+
+.sky-tl {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.sky-sbtl {
+    font-size: 17px;
+    font-weight: 400;
+    color: rgb(138, 141, 145);
+}
+
+.lt-rdf {
+    padding: 16px 0;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.prfo-bks {
+    border: none;
+    background: transparent;
+    padding: 0 40px 0 0;
+}
+
+.iend {
+    font-size: 13px;
+    color: rgb(138, 141, 145);
+    font-weight: 600;
+    margin: 0 0 12px;
+}
+
+.visvl {
+    font-size: 15px;
+    border-bottom: 1px solid #dfdfdf;
+    padding: 0 0 4px;
+    color: rgb(138, 141, 145);
+}
+
+.veryo .form-check-input[type=radio] {
+    width: 18px;
+    height: 18px;
+}
+
+.veryo .form-check-label {
+    display: inherit;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.veryo small {
+    font-size: 12px;
+}
+
+.veryo .form-check {
+    margin: 0 0 10px;
+}
+
+.iend.bey-profl {
+    margin: 15px 0 20px;
+}
+
+.sky-fils small {
+    font-size: 12px;
+    color: #7c7c7c;
+}
+
+.sky-fils input {
+    font-size: 13px;
+    border: 1px solid #878B8F;
+}
+
+.sky-fils select {
+    font-size: 13px;
+    border: 1px solid #878B8F;
+}
+
+.padf {
+    padding: 0 15px;
+}
+
+.chort-sky .row {
+    align-items: center;
+}
+
+.ultan .form-check-input[type=checkbox] {
+    width: 17px;
+    height: 17px;
+    margin: 5px 8px 0 0;
+}
+
+.ijnfo {
+    padding: 10px 15px 30px;
+}
+
+.ultanrd .form-check-input[type=radio] {
+    width: 17px;
+    height: 17px;
+    margin: 4px 6px 0 -1.5em;
+}
+
+.ultanrd .form-check {
+    margin-bottom: 8px;
+}
+
+.ict-tlt {
+    font-size: 19px;
+    font-weight: 600;
+    border-bottom: 1px solid #dfdfdf;
+    padding: 0 15px 15px;
+    margin: 0 -15px 15px;
+}
+
+.intl-tel-input.allow-dropdown {
+    width: 100%;
+}
+
+.aky-sps {
+    margin-bottom: 21px;
+}
+
+.ui-datepicker-calendar thead th {
+    padding: 0.25rem 0;
+    text-align: center;
+    font-size: 0.75rem;
+    font-weight: 400;
+    color: #78909C;
+}
+
+.ui-datepicker-calendar tbody td {
+    width: 2.5rem;
+    text-align: center;
+    padding: 0;
+}
+
+    .ui-datepicker-calendar tbody td a {
+        display: block;
+        border-radius: 0.25rem;
+        line-height: 2rem;
+        transition: 0.3s all;
+        color: #546E7A;
+        font-size: 0.875rem;
+        text-decoration: none;
+    }
+
+        .ui-datepicker-calendar tbody td a:hover {
+            background-color: #E0F2F1;
+        }
+
+        .ui-datepicker-calendar tbody td a.ui-state-active {
+            background-color: #009688;
+            color: white;
+        }
+
+.ui-datepicker-header a.ui-corner-all {
+    cursor: pointer;
+    position: absolute;
+    top: 0;
+    width: 2rem;
+    height: 2rem;
+    margin: 0.5rem;
+    border-radius: 0.25rem;
+    transition: 0.3s all;
+}
+
+    .ui-datepicker-header a.ui-corner-all:hover {
+        background-color: #ECEFF1;
+    }
+
+.ui-datepicker-header a.ui-datepicker-prev {
+    left: 0;
+    background: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMyIgaGVpZ2h0PSIxMyIgdmlld0JveD0iMCAwIDEzIDEzIj48cGF0aCBmaWxsPSIjNDI0NzcwIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik03LjI4OCA2LjI5NkwzLjIwMiAyLjIxYS43MS43MSAwIDAgMSAuMDA3LS45OTljLjI4LS4yOC43MjUtLjI4Ljk5OS0uMDA3TDguODAzIDUuOGEuNjk1LjY5NSAwIDAgMSAuMjAyLjQ5Ni42OTUuNjk1IDAgMCAxLS4yMDIuNDk3bC00LjU5NSA0LjU5NWEuNzA0LjcwNCAwIDAgMS0xLS4wMDcuNzEuNzEgMCAwIDEtLjAwNi0uOTk5bDQuMDg2LTQuMDg2eiIvPjwvc3ZnPg==");
+    background-repeat: no-repeat;
+    background-size: 0.5rem;
+    background-position: 50%;
+    transform: rotate(180deg);
+}
+
+.ui-datepicker-header a.ui-datepicker-next {
+    right: 0;
+    background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMyIgaGVpZ2h0PSIxMyIgdmlld0JveD0iMCAwIDEzIDEzIj48cGF0aCBmaWxsPSIjNDI0NzcwIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik03LjI4OCA2LjI5NkwzLjIwMiAyLjIxYS43MS43MSAwIDAgMSAuMDA3LS45OTljLjI4LS4yOC43MjUtLjI4Ljk5OS0uMDA3TDguODAzIDUuOGEuNjk1LjY5NSAwIDAgMSAuMjAyLjQ5Ni42OTUuNjk1IDAgMCAxLS4yMDIuNDk3bC00LjU5NSA0LjU5NWEuNzA0LjcwNCAwIDAgMS0xLS4wMDcuNzEuNzEgMCAwIDEtLjAwNi0uOTk5bDQuMDg2LTQuMDg2eiIvPjwvc3ZnPg==');
+    background-repeat: no-repeat;
+    background-size: 10px;
+    background-position: 50%;
+}
+
+.ui-datepicker-header a > span {
+    display: none;
+}
+
+.ui-datepicker-title {
+    text-align: center;
+    line-height: 2rem;
+    margin-bottom: 0.25rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    padding-bottom: 0.25rem;
+}
+
+.ui-datepicker-week-col {
+    color: #78909C;
+    font-weight: 400;
+    font-size: 0.75rem;
+}
+
+.ui-datepicker {
+    background: #fff;
+}
+
+    .ui-datepicker table td, .ui-datepicker table th {
+        border: solid 1px #dfdfdf;
+    }
+
+.lendaln {
+    display: flex;
+}
+
+    .lendaln input {
+        border: none;
+    }
+
+.lendaln {
+    font-size: 13px;
+    border: 1px solid #878B8F;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.sky-fils .form-label {
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.lendaln i {
+    padding: 8px 7px;
+    color: #878B8F;
+}
+
+.helth-chek label {
+    font-size: 14px;
+}
+
+.sky-fils .mb-3 {
+    margin: 0 0 7px !important;
+}
+
+.profile-pic-wrapper {
+    width: 100%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.photo-sky {
+    position: relative;
+    border-radius: 50%;
+    width: 150px;
+    height: 150px;
+    overflow: hidden;
+    display: flex;
+    /*justify-content: center;*/
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.pic-holder .pic {
+    height: 100%;
+    width: 100%;
+    -o-object-fit: cover;
+    object-fit: cover;
+    -o-object-position: center;
+    object-position: center;
+}
+
+.profil-sky ul {
+    padding: 0;
+}
+
+.profil-sky li {
+    list-style: none;
+    text-align: center;
+    margin: 0 0 5px;
+}
+
+.profil-sky {
+    /* background: #fff; */
+    /* box-shadow: 0 0 10px #dfdfdf; */
+    /* padding: 12px 0 3px; */
+}
+
+    .profil-sky button {
+        border: none;
+        background: transparent;
+        padding: 0;
+    }
+
+.pic-holder .upload-file-block, .pic-holder .upload-loader {
+    top: 0;
+    cursor: pointer;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.pic-holder .upload-file-block {
+    cursor: pointer;
+}
+
+.pic-holder:hover .upload-file-block, .uploadProfileInput:focus ~ .upload-file-block {
+    opacity: 1;
+}
+
+.pic-holder.uploadInProgress .upload-file-block {
+    display: none;
+}
+
+.pic-holder.uploadInProgress .upload-loader {
+    opacity: 1;
+}
+/* Snackbar css */
+.snackbar {
+    visibility: hidden;
+    min-width: 250px;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    border-radius: 2px;
+    padding: 16px;
+    position: fixed;
+    z-index: 1;
+    left: 50%;
+    bottom: 30px;
+    font-size: 14px;
+    transform: translateX(-50%);
+}
+
+    .snackbar.show {
+        visibility: visible;
+        -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+        animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    }
+
+.pic-holder:hover .profil-sky {
+    opacity: 1;
+}
+
+.pencsky {
+    position: absolute;
+    background: rgb(0 0 0 / 78%);
+    width: 100%;
+    height: 100%;
+    color: #fff;
+    font-size: 34px;
+    line-height: 130px;
+    cursor: pointer;
+}
+
+.pic-holder {
+    position: relative;
+    margin: 0 auto;
+    max-width: 150px;
+}
+
+    .pic-holder .photo-sky .pencsky {
+        opacity: 0;
+    }
+
+    .pic-holder .photo-sky:hover .pencsky {
+        opacity: 1;
+    }
+
+    .pic-holder .profil-sky ul {
+        opacity: 0;
+        background: #fff;
+        box-shadow: 0 0 10px #dfdfdf;
+        padding: 12px 0 3px;
+    }
+
+    .pic-holder:hover .profil-sky ul {
+        opacity: 1;
+    }
+
+.profil-sky ul {
+    position: absolute;
+    padding: 0;
+    background: #fff;
+    box-shadow: 0 0 10px #000;
+    opacity: 0;
+    margin: 0 auto;
+    left: 0;
+    right: 0;
+    width: 150px;
+}
+
+@-webkit-keyframes fadein {
+    from {
+        bottom: 0;
+        opacity: 0;
+    }
+
+    to {
+        bottom: 30px;
+        opacity: 1;
+    }
+}
+
+@keyframes fadein {
+    from {
+        bottom: 0;
+        opacity: 0;
+    }
+
+    to {
+        bottom: 30px;
+        opacity: 1;
+    }
+}
+
+@-webkit-keyframes fadeout {
+    from {
+        bottom: 30px;
+        opacity: 1;
+    }
+
+    to {
+        bottom: 0;
+        opacity: 0;
+    }
+}
+
+@keyframes fadeout {
+    from {
+        bottom: 30px;
+        opacity: 1;
+    }
+
+    to {
+        bottom: 0;
+        opacity: 0;
+    }
+}
+
+
+
+
+@media (max-width: 767px) {
+    body .piits-setting {
+        display: initial !important;
+    }
+
+    .sky-rt {
+        position: inherit;
+        height: auto;
+        min-width: auto;
+    }
+
+    .sky-content {
+        padding: 0;
+    }
+
+    .sky-nav button i {
+        display: inline-block;
+        width: 100%;
+        margin: 0 0 16px;
+    }
+
+    body .sky-nav {
+        display: flex;
+        flex-direction: inherit !important;
+    }
+
+    .sky-tl {
+        font-size: 13px;
+    }
+
+    .sky-fils small {
+        font-size: 8px;
+    }
+
+    .sky-nav button {
+        width: 20%;
+        font-size: 12px;
+        text-align: center;
+        padding: 9px 6px;
+        line-height: 14px;
+    }
+}

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+	<title>ReDpett</title>
+	<base href="/" />
+	<link rel="stylesheet" href="css/bootstrap/bootstrap.min.css" />
+	<link href="css/app.css" rel="stylesheet" />
+	<!--<link href="css/owl.carousel.min.css" rel="stylesheet">-->
+	<link href="css/style.css" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
+	<link href="_content/MudBlazor/MudBlazor.min.css" rel="stylesheet" />
+	<script src="_content/MudBlazor/MudBlazor.min.js"></script>
+	<link href="_content/ReDpett.Components/style.css" rel="stylesheet" />
+	<link rel="stylesheet" href="_content/Radzen.Blazor/css/material-base.css">
+
+	<script>
+		// Put this script in header or above select element
+		function check(elem) {
+			// use one of possible conditions
+			// if (elem.value == 'Other')
+			if (elem.selectedIndex == 4) {
+				document.getElementById("other-div").style.display = 'block';
+			} else {
+				document.getElementById("other-div").style.display = 'none';
+			}
+		}
+	</script>
+</head>
+
+<body>
+
+	<div class="status-bar-safe-area"></div>
+
+	<div id="app">Loading...</div>
+
+	<div id="blazor-error-ui">
+		An unhandled error has occurred.
+		<a href="" class="reload">Reload</a>
+		<a class="dismiss">🗙</a>
+	</div>
+	<script src="_content/Radzen.Blazor/Radzen.Blazor.js"></script>
+
+	<script src="_framework/blazor.webview.js" autostart="false"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script src="IntermediateResidents/js/bootstrap.min.js"></script>
+	<script src="IntermediateResidents/js/custom-all.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+	<script>
+		// Initialize Tooltip
+
+		$('body').tooltip({
+			selector: '[data-toggle="tooltip"]',
+			container: 'body',
+			html: true
+		});
+
+		// Toggle class to `.btn-group-toggle`, used to transition the tab left/right
+
+		$(document).on('click', '.btn-group-toggle .btn-switch', function (e) {
+			var btn_switch = $(this).data('switch');
+
+			$(this).parent().removeClass("switch-on switch-off").toggleClass('switch-' + btn_switch);
+		});
+	</script>
+	<!--DuyVT <script>$(".hasDatepicker").after("add your smiley here");</script>-->
+</body>
+
+</html>

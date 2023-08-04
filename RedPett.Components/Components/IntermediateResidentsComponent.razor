@@ -1,0 +1,766 @@
+﻿@using Microsoft.JSInterop.Implementation;
+@using Newtonsoft.Json
+@using PdfSharpCore.Utils;
+@using ReDpett.Service
+@using Microsoft.AspNetCore.Components
+@using System.Net.Http.Headers
+@using ReDpett.Common.Modal;
+@using ReDpett.Common.ViewModel;
+@using ReDpett_API.Modal;
+@using System.Text
+@using Radzen.Blazor;
+@using Radzen;
+@using System.Reflection;
+@using ReDpett.Modal.AppConstants;
+@using NPOI.SS.UserModel;
+@using NPOI.XSSF.UserModel;
+@using System.IO;
+@inject ILocalStorageService local;
+@using Blazored.LocalStorage
+@inject NavigationManager NavigationManager;
+@inject HttpClient Http;
+@inject ListIntermediateResidentData _listData;
+@inject ListIntermediateResidentData _listData2;
+@inject IntermediateResidentDataService _OfflineDataService;
+@using MudBlazor;
+@using iTextSharp.text;
+@using iTextSharp.text.pdf;
+@inject IJSRuntime JS;
+@inject NotificationService NotificationService;
+@*<style>
+    .no-tooltip:hover {
+        pointer-events: none;
+        cursor: default;
+    }
+</style>*@
+@if (!dataLoaded)
+{
+    <MudSkeleton SkeletonType="SkeletonType.Rectangle" Height="240px" />
+    <MudCardContent>
+        <MudSkeleton Width="30%" Height="42px;" />
+        <MudSkeleton Width="80%" />
+        <MudSkeleton Width="100%" />
+    </MudCardContent>
+    <MudCardActions>
+        <MudSkeleton Width="64px" Height="60px" Class="ml-2" />
+        <MudSkeleton Width="64px" Height="60px" Class="ml-2" />
+        <MudSkeleton Width="105px" Height="60px" Class="ml-3" />
+    </MudCardActions>
+    <MudOverlay Visible="isVisible" LightBackground="true" Absolute="true">
+        <MudProgressCircular Color="MudBlazor.Color.Info" Indeterminate="true" />
+    </MudOverlay>
+}
+else
+{
+    <div class="inner-page-wrapper">
+        <div class="page-heading-wrap">
+            <h2>Project Activity</h2>
+            <img src="images/border-svg.svg" alt="img" />
+        </div>
+        <div class="add-project-btn-wrap mt-4" style="margin-bottom:-48px">
+            <a href="/AddIntermediateResident/dummy_guid" class="add-btn"><span>Add Project</span> <img src="images/add-white.svg" alt="img" /></a>
+        </div>
+
+        @if (role == "Resident")
+        {
+            <div class="project-listing-wrap">
+                <p class="projects-listing-subhead">Project Records</p>
+
+                @if (_listData != null)
+                {
+                    @if (_listData.intermediateResidents != null)
+                    {
+                        @if (_listData.intermediateResidents.Count > 0)
+                        {
+                            @foreach (IntermediateResidentData d in _listData.intermediateResidents)
+                            {
+                                <div class="project-list-repeat">
+                                    <div class="project-list-data">
+                                        <h3>@d.projecttitle</h3>
+                                        <p class="project-created-by">@d.LeadResident</p>
+                                        <p>@d.DateAssigned</p>
+                                    </div>
+                                    <div class="project-list-action">
+                                        <span class="priject-list-action-btn" style="cursor:pointer;" @onclick=@(()=>OnEdit(d))><img src="images/edit.svg" alt="img" /></span>
+                                        @if (d.Status == 1)
+                                        {
+                                            <span class="priject-list-action-btn" style="cursor:pointer;"><img src="images/cloud.svg" alt="img" /></span>
+                                        }
+                                        else
+                                        {
+                                            <span class="priject-list-action-btn" style="cursor:pointer;"><img src="images/cloud_nonsync.svg" alt="img" /></span>
+                                        }
+
+                                        <span class="priject-list-action-btn" style="cursor:pointer;" @onclick=@(()=>DeleteRow1(d))><img src="images/close.svg" alt="img" /></span>
+                                    </div>
+                                </div>
+                            }
+                        }
+                    }
+                }
+
+            </div>
+        }
+        else if (role == "Non-Resident")
+        {
+
+            <div class="row justify-content-end">
+                <div class="col-1">   <RadzenButton Text="Filter" Icon="wrap_text" Click="@(args => allowFiltering("allow"))" class="mb-4 me-2" /> </div>
+                <div class="col-2">
+                    <RadzenSplitButton Click=@(args => OnClick(args, "SplitButton with text")) Text="Export">
+                        <ChildContent>
+                            <RadzenSplitButtonItem Text="Export XLS" Value="2" />
+                            <RadzenSplitButtonItem Text="Export PDF" Value="1" />
+
+                        </ChildContent>
+                    </RadzenSplitButton>
+                </div>
+            </div>
+            <RadzenDataGrid AllowFiltering="@allowFilter" id="222" @ref="personsGrid" AllowColumnResize="true" AllowAlternatingRows="false" FilterMode="FilterMode.SimpleWithMenu" AllowSorting="true" PageSize="5" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true" AllowColumnPicking=true
+                            Data="@persons.intermediateResidents" TItem="IntermediateResidentData" ColumnWidth="250px" LogicalFilterOperator="LogicalFilterOperator.Or">
+                <Columns>
+                    <RadzenDataGridColumn Title="Action" Frozen="true" TItem="IntermediateResidentData" Context="person" Filterable="false" Sortable="false" Width="@(IsEditMode ? "210px" :"80px")">
+                        <Template Context="order">
+                            <div style="position: relative;">
+                                <RadzenButton Icon="edit_square" class="@(hideButton == "HideButton" ? "d-none" : "")" ButtonStyle="ButtonStyle.Light" Variant="Radzen.Variant.Flat" Size="ButtonSize.Medium" @onclick:stopPropagation="true" Click="@(args => ToggleButtons(order))">
+                                </RadzenButton>
+                                <div style="top: 100%; left: 0; z-index: 1000; display: @(IsButtonsVisible(order) ? "block" : "none");" class="btn-group-vertical">
+                                    <RadzenButton Icon="edit" ButtonStyle="ButtonStyle.Light" Variant="Radzen.Variant.Flat" Size="ButtonSize.Medium" Click="@(args => EditRow(order))" @onclick:stopPropagation="true">
+                                    </RadzenButton>
+                                    <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="delete" Variant="Radzen.Variant.Flat" Shade="Shade.Lighter" Size="ButtonSize.Medium" class="my-1 ms-1" Click="@(args => DeleteRow(order))" @onclick:stopPropagation="true">
+                                    </RadzenButton>
+                                    <RadzenButton ButtonStyle="ButtonStyle.Light" Icon="visibility" Variant="Radzen.Variant.Flat" Shade="Shade.Lighter" Size="ButtonSize.Medium" class="my-1 ms-1" Click="@(args => OnEdit1(order))">
+                                    </RadzenButton>
+                                </div>
+                            </div>
+                        </Template>
+                        <EditTemplate Context="order">
+                            <RadzenButton Icon="check" ButtonStyle="ButtonStyle.Success" Variant="Radzen.Variant.Flat" Size="ButtonSize.Medium" Click="@((args) => SaveRow(order))">
+                            </RadzenButton>
+                            <RadzenButton Icon="close" ButtonStyle="ButtonStyle.Light" Variant="Radzen.Variant.Flat" Size="ButtonSize.Medium" class="my-1 ms-1" Click="@((args) => CancelEdit(order))">
+                            </RadzenButton>
+                            <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="delete" Variant="Radzen.Variant.Flat" Shade="Shade.Lighter" Size="ButtonSize.Medium" class="my-1 ms-1" Click="@(args => DeleteRow(order))">
+                            </RadzenButton>
+                        </EditTemplate>
+                    </RadzenDataGridColumn>
+
+                    <RadzenDataGridColumn Context="person" CssClass="no-tooltip" TItem="IntermediateResidentData" Property="Reviewed" Title="Status" Width="@(IsEditMode ? "240px" :"130px")" Frozen="true">
+                    </RadzenDataGridColumn>
+                    <RadzenDataGridColumn CssClass="no-tooltip" TItem="IntermediateResidentData" Property="projecttitle" Title="Project Title" Frozen="true">
+                        <EditTemplate Context="person">
+                            <RadzenTextBox CssClass="yes-tooltip" @bind-Value="person.projecttitle" Style="width:100%; display: block;" Name="projecttitle" />
+                            <RadzenRequiredValidator Text="Project Title is required" Component="projecttitle" Popup="true" />
+                        </EditTemplate>
+                    </RadzenDataGridColumn>
+                    <RadzenDataGridColumn TItem="IntermediateResidentData" CssClass="no-tooltip" Property="LeadResident" Title="Lead Resident">
+                        <EditTemplate Context="person">
+                            <RadzenTextBox @bind-Value="person.LeadResident" Style="width:100%; display: block" Name="LeadResident" />
+                            <RadzenRequiredValidator Text="Lead Resident is required" Component="LeadResident" Popup="true" />
+                        </EditTemplate>
+                    </RadzenDataGridColumn>
+                    <RadzenDataGridColumn TItem="IntermediateResidentData" CssClass="no-tooltip" Property="DateAssigned" Title="Date Assigned">
+                        <EditTemplate Context="person">
+                            <RadzenTextBox @bind-Value="person.DateAssigned" Style="width:100%; display: block" Name="DateAssigned" Placeholder="mm-dd-yyyy" />
+                            <RadzenRequiredValidator Text="Date Assigned is required" Component="DateAssigned" Popup="true" />
+                        </EditTemplate>
+                    </RadzenDataGridColumn>
+                    <RadzenDataGridColumn TItem="IntermediateResidentData" CssClass="no-tooltip" Context="person" Property="UpdateDateTime" Title="Updated">
+
+                    </RadzenDataGridColumn>
+                    <RadzenDataGridColumn TItem="IntermediateResidentData" CssClass="no-tooltip" Context="person" Property="MentorFullName" Title="Mentor FullName">
+                    </RadzenDataGridColumn>
+                    <RadzenDataGridColumn TItem="IntermediateResidentData" CssClass="no-tooltip" Context="person" Property="ProjectClassification" Title="Project Classification" />  @*Readonly*@
+                    <RadzenDataGridColumn TItem="IntermediateResidentData" Context="person" Property="FETP" Title="FETP">
+                        <EditTemplate Context="person">
+                            <RadzenDropDown @bind-Value=@person.FETP Data=@_projectStatus Style="width: 100%; max-width: 400px;" TValue="string" TextProperty="projectstatus" ValueProperty="projectstatus" Name="FETP" />
+                            <RadzenRequiredValidator Text="FETP is required" Component="FETP" Popup="true" />
+                        </EditTemplate>
+                    </RadzenDataGridColumn>
+                    <RadzenDataGridColumn TItem="IntermediateResidentData" Context="person" Property="Type" Title="Type">
+                        <EditTemplate Context="person">
+                            <RadzenDropDown @bind-Value=@person.Type Data=@_codeTypeClasses Style="width: 100%; max-width: 400px;" Name="Type" TextProperty="Type" ValueProperty="Type" @onchange="@((args) => onChangeProjectType(person, args))" />
+                            <RadzenRequiredValidator Text="Type is required" Component="Type" Popup="true" />
+                        </EditTemplate>
+                    </RadzenDataGridColumn>
+                    @*hidden Columns*@
+                    <RadzenDataGridColumn Visible=false TItem="IntermediateResidentData" Context="person" Property="GlobalRecordId" Title="Global RecordId" />
+                    <RadzenDataGridColumn Visible=false TItem="IntermediateResidentData" Context="person" Property="Outbreakstart" Title="Outbreak start" />
+                    <RadzenDataGridColumn Visible=false TItem="IntermediateResidentData" Context="person" Property="DateOutbreakEnd" Title="DateOutbreak End" />
+                    <RadzenDataGridColumn Visible=false TItem="IntermediateResidentData" Context="person" Property="TraineeAssigned" Title="TraineeAssigned" />
+                    <RadzenDataGridColumn Visible=false TItem="IntermediateResidentData" Context="person" Property="Setting" Title="UpdateDateTime" />
+                    <RadzenDataGridColumn Visible=false TItem="IntermediateResidentData" Context="person" Property="SettingOther" Title="SettingOther" />
+                    <RadzenDataGridColumn Visible=false TItem="IntermediateResidentData" Context="person" Property="DiseaseSuspected" Title="DiseaseSuspected" />
+                    <RadzenDataGridColumn Visible=false TItem="IntermediateResidentData" Context="person" Property="InitialCases" Title="InitialCases" />
+                    <RadzenDataGridColumn Visible=false TItem="IntermediateResidentData" Context="person" Property="Country" Title="Country" />
+                    <RadzenDataGridColumn Visible=false TItem="IntermediateResidentData" Context="person" Property="City" Title="City" />
+                    <RadzenDataGridColumn Visible=false TItem="IntermediateResidentData" Context="person" Property="deployment" Title="deployment" />
+                    <RadzenDataGridColumn Visible=false TItem="IntermediateResidentData" Context="person" Property="ObjectiveDeployment" Title="UpdateDateTime" />
+                    <RadzenDataGridColumn Visible=false TItem="IntermediateResidentData" Context="person" Property="ResidentsDeployed" Title="ResidentsDeployed" />
+                    <RadzenDataGridColumn Visible=false TItem="IntermediateResidentData" Context="person" Property="NumberofGraduatesDeployed" Title="NumberofGraduatesDeployed" />
+                    <RadzenDataGridColumn Visible=false TItem="IntermediateResidentData" Context="person" Property="ProblemDescription" Title="ProblemDescription" />
+                    <RadzenDataGridColumn Visible=false TItem="IntermediateResidentData" Context="person" Property="TeamComposition" Title="TeamComposition" />
+                    <RadzenDataGridColumn Visible=false TItem="IntermediateResidentData" Context="person" Property="InvestivationObjective" Title="InvestivationObjective" />
+                    <RadzenDataGridColumn Visible=false TItem="IntermediateResidentData" Context="person" Property="ProjectSupporting" Title="ProjectSupporting" />
+                    <RadzenDataGridColumn Visible=false TItem="IntermediateResidentData" Context="person" Property="DataForCollection" Title="DataForCollection" />
+                    <RadzenDataGridColumn Visible=false TItem="IntermediateResidentData" Context="person" Property="CurrentORpostGraduate" Title="Current VS Post-Graduate" />
+                    @*delete Edit button*@
+                </Columns>
+            </RadzenDataGrid>
+        }
+
+        <a href="javascript:void()" class="support-button"><img src="images/headset-help.svg" alt="img" /></a>
+        <footer class="footer-wrap">
+            <div class="footer-inner">
+                <a @onclick=GoPrevPage class="footer-link active">
+                    <svg width="26" height="25" viewBox="0 0 26 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M10.9525 20.5769V17.7619C10.9525 17.0433 11.5393 16.4608 12.2631 16.4608H14.9092C15.2568 16.4608 15.5901 16.5979 15.8359 16.8419C16.0817 17.0859 16.2198 17.4168 16.2198 17.7619V20.5769C16.2176 20.8757 16.3356 21.1629 16.5476 21.375C16.7597 21.587 17.0482 21.7062 17.3491 21.7062H19.1543C19.9974 21.7084 20.8068 21.3774 21.4037 20.7863C22.0007 20.1953 22.3362 19.3927 22.3362 18.5557V10.5362C22.3362 9.86009 22.0343 9.21877 21.5119 8.78499L15.3708 3.91601C14.3025 3.06231 12.7719 3.08988 11.7356 3.98148L5.73461 8.78499C5.18751 9.20598 4.86052 9.8492 4.84436 10.5362V18.5475C4.84436 20.292 6.26891 21.7062 8.02619 21.7062H9.7902C10.4152 21.7062 10.9232 21.2056 10.9277 20.5851L10.9525 20.5769Z" fill="#D0D0D0" />
+                    </svg>
+                    <p>Home</p>
+                </a>
+
+                @if (ProgramId == "1")
+                {
+                    <a href="/add_project_step_1" class="footer-link">
+                        <svg width="26" height="25" viewBox="0 0 26 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M14.4189 3.47566C14.4189 3.23918 14.2316 3.04053 13.988 3.04053H8.98668C6.65458 3.04053 4.76268 4.96081 4.76268 7.30677V17.5041C4.76268 19.9636 6.74824 21.9596 9.18336 21.9596H16.6386C18.9613 21.9596 20.8439 20.0582 20.8439 17.7122V10.1068C20.8439 9.8703 20.6565 9.68111 20.4224 9.68111C20.2046 9.68111 19.9649 9.68387 19.7447 9.68641C19.6257 9.68779 19.5123 9.6891 19.4112 9.68986L19.2517 9.69057C19.0631 9.69057 18.8495 9.68875 18.6092 9.68672C18.3004 9.6841 17.9474 9.68111 17.5471 9.68111C15.8331 9.67165 14.4189 8.25272 14.4189 6.52163V3.47566ZM16.5535 3.58161C16.2735 3.28742 15.7837 3.48985 15.7837 3.89756V6.39109C15.7837 7.43731 16.6369 8.29907 17.6728 8.29907C18.3256 8.30569 19.2331 8.30853 20.003 8.30569C20.3973 8.30475 20.5977 7.82893 20.3242 7.54231C19.8309 7.02425 19.1435 6.30216 18.4527 5.57651C17.7586 4.84732 17.061 4.11453 16.5535 3.58161Z" fill="#D0D0D0" />
+                            <path d="M12.8033 17.3393V10.7802" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M9.52373 14.0597H16.0828" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                        <p>Add Project</p>
+                    </a>
+                    <a href="/Projects" class="footer-link">
+                        <svg width="26" height="25" viewBox="0 0 26 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M13.9881 3.04053C14.2316 3.04053 14.4189 3.23918 14.4189 3.47566V6.52163C14.4189 8.25272 15.8331 9.67165 17.5471 9.68111C18.2589 9.68111 18.8208 9.69057 19.2517 9.69057L19.4112 9.68986C19.6992 9.68767 20.0868 9.68111 20.4224 9.68111C20.6566 9.68111 20.8439 9.8703 20.8439 10.1068V17.7122C20.8439 20.0582 18.9613 21.9596 16.6386 21.9596H9.18338C6.74826 21.9596 4.7627 19.9636 4.7627 17.5041V7.30677C4.7627 4.96081 6.6546 3.04053 8.9867 3.04053H13.9881ZM14.9902 15.2433H9.89518C9.51118 15.2433 9.19275 15.5555 9.19275 15.9433C9.19275 16.3311 9.51118 16.6528 9.89518 16.6528H14.9902C15.3742 16.6528 15.6926 16.3311 15.6926 15.9433C15.6926 15.5555 15.3742 15.2433 14.9902 15.2433ZM13.0608 10.5135H9.89518C9.51118 10.5135 9.19275 10.8352 9.19275 11.223C9.19275 11.6108 9.51118 11.923 9.89518 11.923H13.0608C13.4448 11.923 13.7633 11.6108 13.7633 11.223C13.7633 10.8352 13.4448 10.5135 13.0608 10.5135ZM15.7837 3.89756C15.7837 3.48985 16.2735 3.28742 16.5536 3.58161C17.566 4.64486 19.3352 6.50365 20.3243 7.54231C20.5977 7.82893 20.3973 8.30475 20.003 8.30569C19.2331 8.30853 18.3256 8.30569 17.6728 8.29907C16.6369 8.29907 15.7837 7.43731 15.7837 6.39109V3.89756Z" fill="#D0D0D0" />
+                        </svg>
+                        <p>Manage Projects</p>
+                    </a>
+                }
+                else
+                {
+                    <a href="/AddIntermediateResident/dummy_guid" class="footer-link">
+                        <svg width="26" height="25" viewBox="0 0 26 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M14.4189 3.47566C14.4189 3.23918 14.2316 3.04053 13.988 3.04053H8.98668C6.65458 3.04053 4.76268 4.96081 4.76268 7.30677V17.5041C4.76268 19.9636 6.74824 21.9596 9.18336 21.9596H16.6386C18.9613 21.9596 20.8439 20.0582 20.8439 17.7122V10.1068C20.8439 9.8703 20.6565 9.68111 20.4224 9.68111C20.2046 9.68111 19.9649 9.68387 19.7447 9.68641C19.6257 9.68779 19.5123 9.6891 19.4112 9.68986L19.2517 9.69057C19.0631 9.69057 18.8495 9.68875 18.6092 9.68672C18.3004 9.6841 17.9474 9.68111 17.5471 9.68111C15.8331 9.67165 14.4189 8.25272 14.4189 6.52163V3.47566ZM16.5535 3.58161C16.2735 3.28742 15.7837 3.48985 15.7837 3.89756V6.39109C15.7837 7.43731 16.6369 8.29907 17.6728 8.29907C18.3256 8.30569 19.2331 8.30853 20.003 8.30569C20.3973 8.30475 20.5977 7.82893 20.3242 7.54231C19.8309 7.02425 19.1435 6.30216 18.4527 5.57651C17.7586 4.84732 17.061 4.11453 16.5535 3.58161Z" fill="#D0D0D0" />
+                            <path d="M12.8033 17.3393V10.7802" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M9.52373 14.0597H16.0828" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                        <p>Add Project</p>
+                    </a>
+                    <a href="/IntermediateResidents" class="footer-link">
+                        <svg width="26" height="25" viewBox="0 0 26 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M13.9881 3.04053C14.2316 3.04053 14.4189 3.23918 14.4189 3.47566V6.52163C14.4189 8.25272 15.8331 9.67165 17.5471 9.68111C18.2589 9.68111 18.8208 9.69057 19.2517 9.69057L19.4112 9.68986C19.6992 9.68767 20.0868 9.68111 20.4224 9.68111C20.6566 9.68111 20.8439 9.8703 20.8439 10.1068V17.7122C20.8439 20.0582 18.9613 21.9596 16.6386 21.9596H9.18338C6.74826 21.9596 4.7627 19.9636 4.7627 17.5041V7.30677C4.7627 4.96081 6.6546 3.04053 8.9867 3.04053H13.9881ZM14.9902 15.2433H9.89518C9.51118 15.2433 9.19275 15.5555 9.19275 15.9433C9.19275 16.3311 9.51118 16.6528 9.89518 16.6528H14.9902C15.3742 16.6528 15.6926 16.3311 15.6926 15.9433C15.6926 15.5555 15.3742 15.2433 14.9902 15.2433ZM13.0608 10.5135H9.89518C9.51118 10.5135 9.19275 10.8352 9.19275 11.223C9.19275 11.6108 9.51118 11.923 9.89518 11.923H13.0608C13.4448 11.923 13.7633 11.6108 13.7633 11.223C13.7633 10.8352 13.4448 10.5135 13.0608 10.5135ZM15.7837 3.89756C15.7837 3.48985 16.2735 3.28742 16.5536 3.58161C17.566 4.64486 19.3352 6.50365 20.3243 7.54231C20.5977 7.82893 20.3973 8.30475 20.003 8.30569C19.2331 8.30853 18.3256 8.30569 17.6728 8.29907C16.6369 8.29907 15.7837 7.43731 15.7837 6.39109V3.89756Z" fill="#D0D0D0" />
+                        </svg>
+                        <p>Manage Projects</p>
+                    </a>
+
+                }
+
+                <a href="/settings" class="footer-link">
+                    <svg width="26" height="25" viewBox="0 0 26 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M13.6747 3.09274C14.3861 3.09274 15.0303 3.48785 15.386 4.07109C15.559 4.35331 15.6744 4.70138 15.6455 5.06826C15.6263 5.35048 15.7128 5.63269 15.8667 5.89609C16.357 6.69571 17.4433 6.99674 18.2893 6.54519C19.2411 5.99957 20.4428 6.32883 20.9908 7.26014L21.6349 8.37019C22.1925 9.30151 21.8849 10.4962 20.9235 11.0324C20.1063 11.5122 19.8179 12.5752 20.3082 13.3842C20.462 13.6382 20.6351 13.8546 20.9043 13.9863C21.2408 14.165 21.5003 14.4473 21.683 14.7295C22.0387 15.3127 22.0099 16.0277 21.6638 16.658L20.9908 17.7868C20.6351 18.3889 19.9717 18.7652 19.2892 18.7652C18.9527 18.7652 18.5777 18.6711 18.2701 18.483C18.0201 18.323 17.7317 18.2666 17.4241 18.2666C16.4723 18.2666 15.6744 19.0474 15.6455 19.9787C15.6455 21.0605 14.7611 21.9072 13.6555 21.9072H12.348C11.2328 21.9072 10.3483 21.0605 10.3483 19.9787C10.3291 19.0474 9.53117 18.2666 8.57941 18.2666C8.26215 18.2666 7.97374 18.323 7.7334 18.483C7.42575 18.6711 7.0412 18.7652 6.71434 18.7652C6.02214 18.7652 5.35879 18.3889 5.00308 17.7868L4.33973 16.658C3.98402 16.0465 3.96479 15.3127 4.3205 14.7295C4.47432 14.4473 4.76274 14.165 5.08961 13.9863C5.35879 13.8546 5.53184 13.6382 5.69527 13.3842C6.17596 12.5752 5.88755 11.5122 5.07038 11.0324C4.11861 10.4962 3.81097 9.30151 4.35896 8.37019L5.00308 7.26014C5.56068 6.32883 6.75279 5.99957 7.71417 6.54519C8.55057 6.99674 9.63692 6.69571 10.1272 5.89609C10.281 5.63269 10.3676 5.35048 10.3483 5.06826C10.3291 4.70138 10.4349 4.35331 10.6175 4.07109C10.9732 3.48785 11.6174 3.11156 12.3192 3.09274H13.6747ZM13.0114 9.84713C11.502 9.84713 10.281 11.0324 10.281 12.5094C10.281 13.9863 11.502 15.1622 13.0114 15.1622C14.5207 15.1622 15.7128 13.9863 15.7128 12.5094C15.7128 11.0324 14.5207 9.84713 13.0114 9.84713Z" fill="#D0D0D0" />
+                    </svg>
+                    <p>Settings</p>
+                </a>
+            </div>
+        </footer>
+    </div>
+
+}
+
+@code {
+    public string role { get; set; }
+    private List<codetypeclass> _codeTypeClasses = new();
+    List<codeprojectstatus1> _projectStatus = new List<codeprojectstatus1>();
+    RestService serv = new RestService();
+    Mentor _mentorData = new();
+    private bool isVisible = false;
+    private bool dataLoaded;
+    private bool allowFilter = false;
+    public string token { get; set; }
+    public string country { get; set; }
+    public class Person
+    {
+        public string Name { get; set; }
+        public string Email { get; set; }
+        public string Phone { get; set; }
+        public int Age { get; set; }
+    }
+    public async Task Export(string type)
+    {
+        try
+        {
+            IWorkbook workbook = new XSSFWorkbook();
+
+            // Create a new worksheet
+            ISheet sheet = workbook.CreateSheet("Sheet1");
+
+            // Add headers to the worksheet
+            IRow headerRow = sheet.CreateRow(0);
+            headerRow.CreateCell(0).SetCellValue("Project Title");
+            headerRow.CreateCell(1).SetCellValue("LeadResident");
+            headerRow.CreateCell(2).SetCellValue("Date Assigned");
+            headerRow.CreateCell(3).SetCellValue("Mentor Fullname");
+            headerRow.CreateCell(4).SetCellValue("FETP");
+            headerRow.CreateCell(5).SetCellValue("Type");
+            int i = 0;
+            // Add data rows to the worksheet
+            foreach (var a in persons.intermediateResidents)
+            {
+                IRow dataRow = sheet.CreateRow(i + 1);
+                dataRow.CreateCell(0).SetCellValue(a.projecttitle);
+                dataRow.CreateCell(1).SetCellValue(a.LeadResident);
+                dataRow.CreateCell(2).SetCellValue(a.DateAssigned);
+                dataRow.CreateCell(3).SetCellValue(a.MentorFullName);
+                dataRow.CreateCell(4).SetCellValue(a.FETP);
+                dataRow.CreateCell(5).SetCellValue(a.Type);
+                i++;
+            }
+
+            // Save the workbook to a MemoryStream
+            using (MemoryStream stream = new MemoryStream())
+            {
+                workbook.Write(stream, true);
+
+                // Reset the position of the MemoryStream
+                stream.Position = 0;
+                byte[] bytes = stream.ToArray();
+
+                // Provide the download link to the user
+                await JS.InvokeVoidAsync("saveAsFile", "data.xlsx", bytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+            }
+        }
+        catch (Exception ex)
+        {
+            throw;
+        }
+    }
+
+
+
+    public void allowFiltering(string type)
+    {
+        if (allowFilter)
+        {
+            allowFilter = false;
+            this.StateHasChanged();
+        }
+        else
+        {
+            allowFilter = true;
+            this.StateHasChanged();
+        }
+
+
+    }
+    public static IEnumerable<KeyValuePair<string, Type>> GetProperties(Type type)
+    {
+        return type.GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                .Where(p => p.CanRead && IsSimpleType(p.PropertyType)).Select(p => new KeyValuePair<string, Type>(p.Name, p.PropertyType));
+    }
+    public static bool IsSimpleType(Type type)
+    {
+        var underlyingType = type.IsGenericType &&
+            type.GetGenericTypeDefinition() == typeof(Nullable<>) ?
+            Nullable.GetUnderlyingType(type) : type;
+
+        if (underlyingType == typeof(System.Guid))
+            return true;
+
+        var typeCode = Type.GetTypeCode(underlyingType);
+
+        switch (typeCode)
+        {
+            case TypeCode.Boolean:
+            case TypeCode.Byte:
+            case TypeCode.Char:
+            case TypeCode.DateTime:
+            case TypeCode.Decimal:
+            case TypeCode.Double:
+            case TypeCode.Int16:
+            case TypeCode.Int32:
+            case TypeCode.Int64:
+            case TypeCode.SByte:
+            case TypeCode.Single:
+            case TypeCode.String:
+            case TypeCode.UInt16:
+            case TypeCode.UInt32:
+            case TypeCode.UInt64:
+                return true;
+            default:
+                return false;
+        }
+    }
+    public static object GetValue(object target, string name)
+    {
+        return target.GetType().GetProperty(name).GetValue(target);
+    }
+    public void Export(string table, string type, Query query = null)
+    {
+        IQueryable<IntermediateResidentData> myQueryable = persons.intermediateResidents.AsQueryable();
+
+        ToCSV(myQueryable, "Projects");
+    }
+    public FileStream ToCSV(IQueryable query, string fileName)
+    {
+        var columns = GetProperties(query.ElementType);
+
+        var sb = new StringBuilder();
+
+        foreach (var item in query)
+        {
+            var row = new List<string>();
+
+            foreach (var column in columns)
+            {
+                row.Add($"{GetValue(item, column.Key)}".Trim());
+            }
+
+            sb.AppendLine(string.Join(",", row.ToArray()));
+        }
+
+
+        var result = new FileStream(fileName, FileMode.Create, FileAccess.Write);
+        var data = UTF8Encoding.Default.GetBytes($"{string.Join(",", columns.Select(c => c.Key))}{System.Environment.NewLine}{sb.ToString()}");
+        result.Write(data, 0, data.Length);
+        result.Close();
+        return result;
+
+
+    }
+    RadzenDataGrid<IntermediateResidentData>? personsGrid;
+    ListIntermediateResidentData persons = new ListIntermediateResidentData();
+
+    IntermediateResidentData personToInsert;
+    IntermediateResidentData personToUpdate;
+    List<Mentor> _mentors = new();
+
+    void Reset()
+    {
+        personToInsert = null;
+        personToUpdate = null;
+    }
+    private bool IsEditMode = false;
+
+    async Task EditRow(IntermediateResidentData person)
+    {
+        IsEditMode = !IsEditMode;
+        personToUpdate = person;
+        await personsGrid.EditRow(person);
+    }
+
+    void OnUpdateRow(IntermediateResidentData person)
+    {
+        if (person == personToInsert)
+        {
+            personToInsert = null;
+        }
+
+        personToUpdate = null;
+
+        // TODO: Update the person object in your data source.
+    }
+
+    async Task SaveRow(IntermediateResidentData person)
+    {
+        try
+        {
+            var classification = _codeTypeClasses.FirstOrDefault(x => x.ID == person.Type);
+            person.ProjectClassification = classification == null ? string.Empty : classification.Classification;
+            person.UpdateDateTime = DateTime.UtcNow;
+            await personsGrid.UpdateRow(person);
+            await serv.UpdateIntermediateResidents(person);
+
+        }
+        catch (Exception ex)
+        {
+
+            throw;
+        }
+    }
+
+    void CancelEdit(IntermediateResidentData person)
+    {
+        if (person == personToInsert)
+        {
+            personToInsert = null;
+        }
+
+        personToUpdate = null;
+
+        personsGrid.CancelEditRow(person);
+
+        // TODO: Revert any changes made to the person object in your data source.
+    }
+
+    async Task DeleteRow(IntermediateResidentData person)
+    {
+        if (person == personToInsert)
+        {
+            personToInsert = null;
+        }
+
+        if (person == personToUpdate)
+        {
+            personToUpdate = null;
+        }
+
+        if (persons.intermediateResidents.Contains(person))
+        {
+            // TODO: Remove the person object from your data source.
+            await serv.DeleteIntermediateResidents(person);
+            _listData = await serv.GetIntermediateResidents(country,UserName);
+            persons = await serv.GetIntermediateResidents(country, UserName);
+            if (persons.intermediateResidents == null)
+            {
+                persons.intermediateResidents = new List<IntermediateResidentData>();
+            }
+            this.StateHasChanged();
+            await personsGrid.Reload();
+            this.StateHasChanged();
+        }
+        else
+        {
+            personsGrid.CancelEditRow(person);
+            await personsGrid.Reload();
+        }
+    }
+    async Task DeleteRow1(IntermediateResidentData person)
+    {
+        // TODO: Remove the person object from your data source.
+        await serv.DeleteIntermediateResidents(person);
+        _listData = await serv.GetIntermediateResidents(country,UserName);
+        persons = await serv.GetIntermediateResidents(country, UserName);
+        if (persons.intermediateResidents == null)
+        {
+            persons.intermediateResidents = new List<IntermediateResidentData>();
+        }
+        this.StateHasChanged();
+    }
+
+    async Task InsertRow()
+    {
+        personToInsert = new IntermediateResidentData();
+        await personsGrid.InsertRow(personToInsert);
+    }
+
+    void OnCreateRow(IntermediateResidentData person)
+    {
+        // TODO: Add the new person object to your data source.
+
+        personToInsert = null;
+    }
+
+    public string ProgramId { get; set; }
+    List<WrittenCommunication> files = new List<WrittenCommunication>();
+    List<CommentsTab> comments = new List<CommentsTab>();
+    public string UserName { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        isVisible = true;
+        role = await local.GetItemAsync<string>("UserRole");
+        if (role == "Resident")
+        {
+            country = null;
+        }
+        else if (role == "Non-Resident")
+        {
+            country = await local.GetItemAsync<string>("country");
+        }
+
+        UserName = await local.GetItemAsync<string>("Name");
+
+        token = await local.GetItemAsync<string>("oauth_token");
+        if (token != null)
+        {
+            try
+            {
+                _mentors = new()
+        {
+            new Mentor()
+            {
+                id = "1",
+                name = "Mentors"
+            },
+            new Mentor()
+            {
+                id = "2",
+                name = "Mentor Full Name"
+            },
+            new Mentor()
+            {
+                id = "3",
+                name = "Supervisor Full Name"
+            }
+             };
+                ProgramId = await local.GetItemAsync<string>("FETPProgramId");
+                role = await local.GetItemAsync<string>("UserRole");
+                _listData = await serv.GetIntermediateResidents(country,UserName);
+                _listData2 = await serv.GetIntermediateResidents2();
+                files = await serv.GetIntermediateAttachments();
+                comments = await serv.GetComments();
+                persons = await serv.GetIntermediateResidents(country, UserName);
+                foreach (var item in persons.intermediateResidents)
+                {
+                    item.DateAssigned = item.DateAssigned.Split()[0];
+                }
+                if (persons.intermediateResidents == null)
+                {
+                    persons.intermediateResidents = new List<IntermediateResidentData>();
+                }
+
+                var codeTypedata = await Http.GetStringAsync(RedPett.Components.Components.ProjectsComponentr.API_URL + "Projects/GetCodeType");
+                if (!string.IsNullOrEmpty(codeTypedata))
+                {
+                    _codeTypeClasses = JsonConvert.DeserializeObject<List<codetypeclass>>(codeTypedata) ?? new();
+                    _codeTypeClasses = _codeTypeClasses?.Count > 0 ? _codeTypeClasses.OrderBy(x => x.ID).ToList() : new();
+                }
+                await local.SetItemAsync<ListIntermediateResidentData>("list", _listData);
+                await local.SetItemAsync<ListIntermediateResidentData>("list2", _listData2);
+                await local.SetItemAsync<List<WrittenCommunication>>("files", files);
+                await local.SetItemAsync<List<CommentsTab>>("comments", comments);
+                _projectStatus = await serv.GetProjectStatus();
+                dataLoaded = true;
+                isVisible = false;
+                this.StateHasChanged();
+
+                ////_listData = await _OfflineDataService.GetDataFromOfflineDB();
+                //var json = await Http.GetStringAsync(RedPett.Components.Components.ProjectsComponentr.API_URL + "IntermediateResident/Get");
+                //if (!string.IsNullOrEmpty(json))
+                //{
+                //    _listData.intermediateResidents = JsonConvert.DeserializeObject<List<IntermediateResidentData>>(json);
+                //    StateHasChanged();
+                //}
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+        else
+        {
+            NavigationManager.NavigateTo("/");
+        }
+
+    }
+
+    public void OnEdit(IntermediateResidentData Edit_data)
+    {
+        StateHasChanged();
+        Edit_data.GUID = Edit_data.GlobalRecordId;
+        NavigationManager.NavigateTo("/AddIntermediateResident/" + Edit_data.GUID + "/");
+    }
+    public void OnEdit1(IntermediateResidentData Edit_data)
+    {
+        StateHasChanged();
+        Edit_data.GUID = Edit_data.GlobalRecordId;
+        NavigationManager.NavigateTo("/AddIntermediateResident/" + Edit_data.GUID + "/");
+    }
+
+    private void onChangeProjectType(IntermediateResidentData projectTypem, ChangeEventArgs selected)
+    {
+        var classification = _codeTypeClasses.FirstOrDefault(x => x.ID == projectTypem.Type);
+        projectTypem.ProjectClassification = classification == null ? string.Empty : classification.Classification;
+    }
+
+    void OnClick(RadzenSplitButtonItem item, string buttonName)
+    {
+        if (item != null)
+        {
+            if (item.Text == "Export PDF")
+            {
+                //Export to pdf logic
+                //Exportpdf("pdf");
+                ExportAsPDF();
+            }
+            else if (item.Text == "Export XLS")
+            {
+                //Export to Excel logic
+                Export("CSv");
+            }
+        }
+
+    }
+    private bool showButtons = false;
+    private string hideButton;
+
+    private void ToggleButtons(IntermediateResidentData order)
+    {
+        showButtons = !showButtons;
+        this.StateHasChanged();
+        hideButton = "HideButton";
+    }
+
+    private bool IsButtonsVisible(IntermediateResidentData order)
+    {
+        return showButtons;
+    }
+    private void GoPrevPage()
+    {
+        if (role == "Non-Resident")
+        {
+            NavigationManager.NavigateTo("/dash");
+        }
+        else
+        {
+            NavigationManager.NavigateTo("/dashboard");
+        }
+    }
+    public async Task ExportAsPDF()
+    {
+        try
+        {
+            // Create a new MemoryStream to store the PDF content
+            using (MemoryStream stream = new MemoryStream())
+            {
+                // Create a new PDF document
+                Document document = new Document(PageSize.A4, 20f, 20f, 20f, 20f);
+
+                // Create a custom PdfWriter to avoid closing the MemoryStream
+                PdfWriter writer = PdfWriter.GetInstance(document, stream);
+                writer.CloseStream = false;
+
+                // Open the document
+                document.Open();
+
+                // Add a new table to the document
+                PdfPTable table = new PdfPTable(6);
+
+                // Add headers to the table
+                table.AddCell("Project Title");
+                table.AddCell("Lead Resident");
+                table.AddCell("Date Assigned");
+                table.AddCell("Mentor Fullname");
+                table.AddCell("FETP");
+                table.AddCell("Type");
+
+                // Add data rows to the table
+                foreach (var a in persons.intermediateResidents)
+                {
+                    table.AddCell(a.projecttitle);
+                    table.AddCell(a.LeadResident);
+                    table.AddCell(a.DateAssigned);
+                    table.AddCell(a.MentorFullName);
+                    table.AddCell(a.FETP);
+                    table.AddCell(a.Type);
+                }
+
+                // Close the table
+                document.Add(table);
+
+                // Close the document without closing the stream
+                document.Close();
+
+                // Reset the position of the MemoryStream
+                stream.Position = 0;
+                byte[] bytes = stream.ToArray();
+
+                // Provide the download link to the user
+                await JS.InvokeVoidAsync("saveAsFile", "data.pdf", bytes, "application/pdf");
+            }
+        }
+        catch (Exception ex)
+        {
+            throw;
+        }
+    }
+}

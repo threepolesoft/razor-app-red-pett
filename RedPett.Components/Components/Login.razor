@@ -1,0 +1,161 @@
+﻿@using ReDpett.Modal.AppConstants;
+@using ReDpett.Modal.Login;
+@using ReDpett.Service;
+@using Microsoft.AspNetCore.Components.Forms
+@using ReDpett_API.Modal;
+@using System.Text.RegularExpressions;
+@using Xamarin.Essentials;
+@using Blazored.LocalStorage
+@inject ILocalStorageService local;
+@inject NavigationManager NavigationManager;
+@using MudBlazor
+@inject ISnackbar Snackbar
+
+<EditForm Model=@lgn OnValidSubmit=@ValidFormSubmitted OnInvalidSubmit=@InvalidFormSubmitted>
+    <DataAnnotationsValidator />
+    <div class="log-body auth-page-wrapper">
+        <div class="sign-bg">
+            <section class="section-head">
+                <div class="container">
+                    <div class="logo text-center"><a href="/"><img src="images/logo.png" alt="#"></a></div>
+                </div>
+            </section>
+            <div class="sign-form">
+                <div class="container">
+                    <div class="sign-tlt">Sign In</div>
+                    <div class="input-field">
+                        <label>Email</label>
+                        <InputText type="Email" @bind-Value=lgn.Email class="form-control" id="Email" placeholder="Email" />
+                        <ValidationMessage For="@(() => lgn.Email)" style="color: #4d4d4d" />
+                    </div>
+                    <div class="input-field">
+                        <label>Password</label>
+                        <InputText @oninput="ValidatePassword" type="password" onfocusout="@(!context.Validate())" @bind-Value=lgn.Password class="form-control" id="Password" placeholder="Password" />
+                        <ValidationMessage For="@(() => lgn.Password)" style="color: #4d4d4d" />
+                    </div>
+                    <br />
+                    <div class="input-field form-set-repeat">
+                        <MudButton Variant="Variant.Filled" ButtonType="MudBlazor.ButtonType.Submit" Class="w-100 pa-3" style="background-color:#2a73a3;color:white;" Size="Size.Small">
+                            @if (_processing)
+                            {
+                                <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
+                                <MudText Class="ms-2">Logging In</MudText>
+                            }
+                            else
+                            {
+                                <MudText>Submit</MudText>
+                            }
+                        </MudButton>
+                    </div>
+                    <div class="form-group text-center  rest"> <a href="/forgot">Forgot Password</a> </div>
+                    <div class="form-group text-center  rest1"> <a href="/register">Register</a> </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</EditForm>
+
+@code {
+    LoginRequesModel lgn = new LoginRequesModel();
+    string LastSubmitResult;
+    RestService restService;
+    private bool _processing = false;
+
+    void RefreshUI()
+    {
+        LastSubmitResult = "Please fill email field.";
+        StateHasChanged();
+    }
+    string passwordError;
+
+    void ValidatePassword()
+    {
+        if (!string.IsNullOrEmpty(lgn.Password))
+        {
+            var passwordPattern = @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$";
+            var regex = new Regex(passwordPattern);
+
+            if (!regex.IsMatch(lgn.Password))
+            {
+                passwordError = "Password must be at least 8 characters long and contain at least one lowercase letter, one uppercase letter, and one digit.";
+                return;
+            }
+        }
+        StateHasChanged();
+        passwordError = null;
+    }
+
+
+    async Task ValidFormSubmitted()
+    {
+        if (string.IsNullOrEmpty(lgn.Email))
+        {
+            LastSubmitResult = "Please fill email field.";
+
+            return;
+        }
+        if (string.IsNullOrEmpty(lgn.Password))
+        {
+            LastSubmitResult = "Please fill password field.";
+            return;
+        }
+        _processing = true;
+        restService = new RestService();
+        var rslt = await restService.Login(lgn);
+        if (rslt != null)
+        {
+            if (rslt.status == true)
+            {
+                await local.SetItemAsync<string>("oauth_token", rslt.Data.userAccessToken);
+
+                // Save tokens
+                //  await SecureStorage.SetAsync("oauth_token", rslt.Data.userAccessToken);
+                LastSubmitResult = rslt.message;
+                //Add into Preferences
+                //Preferences.Set("UserName", lgn.Email);
+                await local.SetItemAsync<string>("UserName", lgn.Email);
+                await local.SetItemAsync<string>("Name", rslt.Data.username);
+                //Preferences.Set("Passcode", rslt.Data?.residentPasscode);
+                await local.SetItemAsync<string>("Passcode", rslt.Data?.residentPasscode);
+                //Preferences.Set("UserRole", rslt.Data.role);
+                await local.SetItemAsync<string>("UserRole", rslt.Data.role);
+
+                await local.SetItemAsync<string>("country", rslt.Data.CountryId);
+                await local.SetItemAsync<string>("FETPProgramId", rslt.Data.fetpProgramId.ToString());
+                await local.SetItemAsync<string>("FETPCountry", rslt.Data.Country.ToString());
+                await local.SetItemAsync<string>("FETPRegion", rslt.Data.Region.ToString());
+                await local.SetItemAsync<string>("FETP", rslt.Data.FETP.ToString());
+                //await local.SetItemAsync<string>("UserProfileImageLink", rslt.Data.fetpProgramId.ToString());
+                //
+                _processing = false;
+                if (rslt.Data.role == "Non-Resident")
+                {
+                    NavigationManager.NavigateTo("/dash");
+
+                }
+                else if (rslt.Data.role == "Resident")
+                {
+                    NavigationManager.NavigateTo("/dashboard");
+                }
+
+
+                //NavigationManager.NavigateTo("/screen_2");
+            }
+            else
+            {
+                Snackbar.Add("Incorrect username or password", Severity.Error, (options) =>
+               {
+                   options.CloseAfterNavigation = true;
+               });
+                _processing = false;
+                LastSubmitResult = rslt.message;
+            }
+        }
+    }
+
+    void InvalidFormSubmitted()
+    {
+        LastSubmitResult = "Invalid email or password field.";
+    }
+}

@@ -1,0 +1,704 @@
+﻿<div class="d-flex piits-setting align-items-start">
+    <div class="sky-rt">
+        <div class="nav sky-nav flex-column nav-pills   " id="v-pills-tab" role="tablist" aria-orientation="vertical">
+            <button class="nav-link active" id="profile" data-bs-toggle="pill" data-bs-target="#v-pills-home" type="button" role="tab" aria-controls="v-pills-home" aria-selected="true"><i class="fa-regular fa-user"></i> Account & Profile</button>
+            <button class="nav-link" id="v-pills-profile-tab" data-bs-toggle="pill" data-bs-target="#contact-information" type="button" role="tab" aria-controls="v-pills-profile" aria-selected="false"><i class="fa-regular fa-circle-question"></i> Contact Information </button>
+            <button class="nav-link" id="v-pills-messages-tab" data-bs-toggle="pill" data-bs-target="#cohort-details" type="button" role="tab" aria-controls="v-pills-messages" aria-selected="false"><i class="fa-regular fa-id-badge"></i> Cohort Details</button>
+            <button class="nav-link" id="v-pills-settings-tab" data-bs-toggle="pill" data-bs-target="#resident-details" type="button" role="tab" aria-controls="v-pills-settings" aria-selected="false"><i class="fa-solid fa-house-signal"></i> Resident Details</button>
+            <button class="nav-link" id="v-pills-mentor-tab" data-bs-toggle="pill" data-bs-target="#mentor-details" type="button" role="tab" aria-controls="v-pills-settings" aria-selected="false"> <i class="fa-solid fa-qrcode"></i> Mentor Information</button>
+        </div>
+    </div>
+</div>
+<div class="tab-content sky-content" id="v-pills-tabContent">
+    <div class="tab-pane show active fade  " id="v-pills-home" role="tabpanel" aria-labelledby="profile">
+        <div class="prfpt-cld">
+            <div class="chort-sky ">
+
+                <div class="iend text-center">Keep your photo up to date so your friends can find you easily on redpett</div>
+                <div class="pic-holder">
+
+                    <div class="photo-sky">
+
+                        <img id="profilePic" class="pic" src="images/avter1.png" alt="#">
+                        <div class="pencsky"><i class="fa-solid fa-pencil"></i></div>
+                        <Input class="uploadProfileInput" type="file" name="profile_pic" id="newProfilePhoto" accept="image/*" style="opacity: 0;" />
+                    </div>
+
+                    <div class="profil-sky">
+                        <ul>
+                            <li>
+                                <label for="newProfilePhoto" class="upload-file-block">
+                                    <div class="text-center sky-upde">
+                                        Upload Photo
+                                    </div>
+                                </label>
+                            </li>
+                            <li><button type="button">View Photo</button> </li>
+                            <li><button type="button">Remove Photo</button> </li>
+                        </ul>
+                    </div>
+
+                </div>
+
+                <div class="chort-sky">
+                    <div class="row ">
+                        <div class="col-4 sky-tl"><i class="fa-solid fa-pen-ruler"></i> FETP Role</div>
+                        <div class="col-8 sky-sbtl text-end">
+                            <div class="sky-fils">
+                                <div class="mb-3 padf">
+                                    <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="e.g. Mentor/Consultant" disabled>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="chort-sky">
+                    <div class="row">
+                        <div class="col-4 sky-tl"><i class="fa-regular fa-address-card"></i> User Name</div>
+                        <div class="col-8 sky-sbtl text-end">
+                            <div class="sky-fils">
+                                <div class="row">
+                                    <div class="col">
+                                        <input type="text" class="form-control" placeholder=" " aria-label="First name">
+                                        <small>Given/First Name</small>
+                                    </div>
+                                    <div class="col">
+                                        <input type="text" class="form-control" placeholder=" " aria-label="Last name">
+                                        <small>Surname /Last Name</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="chort-sky">
+                    <div class="row ">
+                        <div class="col-4 sky-tl"><i class="fa-regular fa-envelope"></i> Email</div>
+                        <div class="col-8 sky-sbtl text-end">
+                            <div class="sky-fils">
+                                <div class="mb-3 padf">
+                                    <input type="text" class="form-control" id="formGroupExampleInput1" placeholder="Email">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chort-btn text-center">
+                    <button type="button" class="btn btn-outline-primary svs">Close</button>  <button type="button" class="btn btn-primary clos">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="tab-pane  fade" id="contact-information" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+        <div class="ijnfo">
+            <div class="ict-tlt">Contact Details</div>
+            <form>
+                <div class="sky-fils">
+                    <div class="mb-3">
+                        <label class="form-label">Phone 1</label>
+                        <input type="text" id="mobile_code" class="form-control" placeholder="Phone Number" name="name">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Phone 2</label>
+                        <input type="text" id="mobile_code1" class="form-control" placeholder="Phone Number" name="name">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Site Address</label>
+                        <input type="text" class="form-control" placeholder="Example input placeholder">
+                        <small>Street Address</small>
+                    </div>
+                    <div class="mb-3">
+                        <input type="text" class="form-control" placeholder="Example input placeholder">
+                        <small>Address Line 2</small>
+                    </div>
+                    <div class="row aky-sps">
+                        <div class="col">
+                            <input type="text" class="form-control" placeholder="First name" aria-label="First name">
+                            <small>City</small>
+                        </div>
+                        <div class="col">
+                            <input type="text" class="form-control" placeholder="Last name" aria-label="Last name">
+                            <small>State/Region/Province</small>
+                        </div>
+                    </div>
+                    <div class="row aky-sps">
+                        <div class="col">
+                            <input type="text" class="form-control" placeholder="First name" aria-label="First name">
+                            <small>Postal / Zip Code</small>
+                        </div>
+                        <div class="col">
+                            <select class="form-select" aria-label="Default select example">
+                                <option value="-Select-">-Select-</option>
+                                <option value="Åland Islands" lwrvalue="åland islands">Åland Islands</option>
+                                <option value="Afghanistan" lwrvalue="afghanistan">Afghanistan</option>
+                                <option value="Akrotiri" lwrvalue="akrotiri">Akrotiri</option>
+                                <option value="Albania" lwrvalue="albania">Albania</option>
+                                <option value="Algeria" lwrvalue="algeria">Algeria</option>
+                                <option value="American Samoa" lwrvalue="american samoa">American Samoa</option>
+                                <option value="Andorra" lwrvalue="andorra">Andorra</option>
+                                <option value="Angola" lwrvalue="angola">Angola</option>
+                                <option value="Anguilla" lwrvalue="anguilla">Anguilla</option>
+                                <option value="Antarctica" lwrvalue="antarctica">Antarctica</option>
+                                <option value="Antigua and Barbuda" lwrvalue="antigua and barbuda">Antigua and Barbuda</option>
+                                <option value="Argentina" lwrvalue="argentina">Argentina</option>
+                                <option value="Armenia" lwrvalue="armenia">Armenia</option>
+                                <option value="Aruba" lwrvalue="aruba">Aruba</option>
+                                <option value="Ashmore and Cartier Islands" lwrvalue="ashmore and cartier islands">Ashmore and Cartier Islands</option>
+                                <option value="Australia" lwrvalue="australia">Australia</option>
+                                <option value="Austria" lwrvalue="austria">Austria</option>
+                                <option value="Azerbaijan" lwrvalue="azerbaijan">Azerbaijan</option>
+                                <option value="Bahrain" lwrvalue="bahrain">Bahrain</option>
+                                <option value="Bangladesh" lwrvalue="bangladesh">Bangladesh</option>
+                                <option value="Barbados" lwrvalue="barbados">Barbados</option>
+                                <option value="Bassas Da India" lwrvalue="bassas da india">Bassas Da India</option>
+                                <option value="Belarus" lwrvalue="belarus">Belarus</option>
+                                <option value="Belgium" lwrvalue="belgium">Belgium</option>
+                                <option value="Belize" lwrvalue="belize">Belize</option>
+                                <option value="Benin" lwrvalue="benin">Benin</option>
+                                <option value="Bermuda" lwrvalue="bermuda">Bermuda</option>
+                                <option value="Bhutan" lwrvalue="bhutan">Bhutan</option>
+                                <option value="Bolivia" lwrvalue="bolivia">Bolivia</option>
+                                <option value="Bosnia and Herzegovina" lwrvalue="bosnia and herzegovina">Bosnia and Herzegovina</option>
+                                <option value="Botswana" lwrvalue="botswana">Botswana</option>
+                                <option value="Bouvet Island" lwrvalue="bouvet island">Bouvet Island</option>
+                                <option value="Brazil" lwrvalue="brazil">Brazil</option>
+                                <option value="British Indian Ocean Territory" lwrvalue="british indian ocean territory">British Indian Ocean Territory</option>
+                                <option value="British Virgin Islands" lwrvalue="british virgin islands">British Virgin Islands</option>
+                                <option value="Brunei" lwrvalue="brunei">Brunei</option>
+                                <option value="Bulgaria" lwrvalue="bulgaria">Bulgaria</option>
+                                <option value="Burkina Faso" lwrvalue="burkina faso">Burkina Faso</option>
+                                <option value="Burma" lwrvalue="burma">Burma</option>
+                                <option value="Burundi" lwrvalue="burundi">Burundi</option>
+                                <option value="Cambodia" lwrvalue="cambodia">Cambodia</option>
+                                <option value="Cameroon" lwrvalue="cameroon">Cameroon</option>
+                                <option value="Canada" lwrvalue="canada">Canada</option>
+                                <option value="Cape Verde" lwrvalue="cape verde">Cape Verde</option>
+                                <option value="Caribbean Netherlands" lwrvalue="caribbean netherlands">Caribbean Netherlands</option>
+                                <option value="Cayman Islands" lwrvalue="cayman islands">Cayman Islands</option>
+                                <option value="Central African Republic" lwrvalue="central african republic">Central African Republic</option>
+                                <option value="Chad" lwrvalue="chad">Chad</option>
+                                <option value="Chile" lwrvalue="chile">Chile</option>
+                                <option value="China" lwrvalue="china">China</option>
+                                <option value="Christmas Island" lwrvalue="christmas island">Christmas Island</option>
+                                <option value="Clipperton Island" lwrvalue="clipperton island">Clipperton Island</option>
+                                <option value="Cocos (Keeling) Islands" lwrvalue="cocos (keeling) islands">Cocos (Keeling) Islands</option>
+                                <option value="Colombia" lwrvalue="colombia">Colombia</option>
+                                <option value="Comoros" lwrvalue="comoros">Comoros</option>
+                                <option value="Cook Islands" lwrvalue="cook islands">Cook Islands</option>
+                                <option value="Coral Sea Islands" lwrvalue="coral sea islands">Coral Sea Islands</option>
+                                <option value="Costa Rica" lwrvalue="costa rica">Costa Rica</option>
+                                <option value="Cote D'Ivoire" lwrvalue="cote d'ivoire">Cote D'Ivoire</option>
+                                <option value="Croatia" lwrvalue="croatia">Croatia</option>
+                                <option value="Cuba" lwrvalue="cuba">Cuba</option>
+                                <option value="Curaçao" lwrvalue="curaçao">Curaçao</option>
+                                <option value="Cyprus" lwrvalue="cyprus">Cyprus</option>
+                                <option value="Czech Republic" lwrvalue="czech republic">Czech Republic</option>
+                                <option value="Democratic Republic of the Congo" lwrvalue="democratic republic of the congo">Democratic Republic of the Congo</option>
+                                <option value="Denmark" lwrvalue="denmark">Denmark</option>
+                                <option value="Dhekelia" lwrvalue="dhekelia">Dhekelia</option>
+                                <option value="Djibouti" lwrvalue="djibouti">Djibouti</option>
+                                <option value="Dominica" lwrvalue="dominica">Dominica</option>
+                                <option value="Dominican Republic" lwrvalue="dominican republic">Dominican Republic</option>
+                                <option value="Ecuador" lwrvalue="ecuador">Ecuador</option>
+                                <option value="Egypt" lwrvalue="egypt">Egypt</option>
+                                <option value="El Salvador" lwrvalue="el salvador">El Salvador</option>
+                                <option value="Equatorial Guinea" lwrvalue="equatorial guinea">Equatorial Guinea</option>
+                                <option value="Eritrea" lwrvalue="eritrea">Eritrea</option>
+                                <option value="Estonia" lwrvalue="estonia">Estonia</option>
+                                <option value="Ethiopia" lwrvalue="ethiopia">Ethiopia</option>
+                                <option value="Europa Island" lwrvalue="europa island">Europa Island</option>
+                                <option value="Falkland Islands (Islas Malvinas)" lwrvalue="falkland islands (islas malvinas)">Falkland Islands (Islas Malvinas)</option>
+                                <option value="Faroe Islands" lwrvalue="faroe islands">Faroe Islands</option>
+                                <option value="Federated States of Micronesia" lwrvalue="federated states of micronesia">Federated States of Micronesia</option>
+                                <option value="Fiji" lwrvalue="fiji">Fiji</option>
+                                <option value="Finland" lwrvalue="finland">Finland</option>
+                                <option value="France" lwrvalue="france">France</option>
+                                <option value="French Guiana" lwrvalue="french guiana">French Guiana</option>
+                                <option value="French Polynesia" lwrvalue="french polynesia">French Polynesia</option>
+                                <option value="French Southern and Antarctic Lands" lwrvalue="french southern and antarctic lands">French Southern and Antarctic Lands</option>
+                                <option value="Gabon" lwrvalue="gabon">Gabon</option>
+                                <option value="Gaza Strip" lwrvalue="gaza strip">Gaza Strip</option>
+                                <option value="Georgia" lwrvalue="georgia">Georgia</option>
+                                <option value="Germany" lwrvalue="germany">Germany</option>
+                                <option value="Ghana" lwrvalue="ghana">Ghana</option>
+                                <option value="Gibraltar" lwrvalue="gibraltar">Gibraltar</option>
+                                <option value="Glorioso Islands" lwrvalue="glorioso islands">Glorioso Islands</option>
+                                <option value="Greece" lwrvalue="greece">Greece</option>
+                                <option value="Greenland" lwrvalue="greenland">Greenland</option>
+                                <option value="Grenada" lwrvalue="grenada">Grenada</option>
+                                <option value="Guadeloupe" lwrvalue="guadeloupe">Guadeloupe</option>
+                                <option value="Guam" lwrvalue="guam">Guam</option>
+                                <option value="Guatemala" lwrvalue="guatemala">Guatemala</option>
+                                <option value="Guernsey" lwrvalue="guernsey">Guernsey</option>
+                                <option value="Guinea" lwrvalue="guinea">Guinea</option>
+                                <option value="Guinea-bissau" lwrvalue="guinea-bissau">Guinea-bissau</option>
+                                <option value="Guyana" lwrvalue="guyana">Guyana</option>
+                                <option value="Haiti" lwrvalue="haiti">Haiti</option>
+                                <option value="Heard Island and Mcdonald Islands" lwrvalue="heard island and mcdonald islands">Heard Island and Mcdonald Islands</option>
+                                <option value="Holy See (Vatican City)" lwrvalue="holy see (vatican city)">Holy See (Vatican City)</option>
+                                <option value="Honduras" lwrvalue="honduras">Honduras</option>
+                                <option value="Hong Kong" lwrvalue="hong kong">Hong Kong</option>
+                                <option value="Hungary" lwrvalue="hungary">Hungary</option>
+                                <option value="Iceland" lwrvalue="iceland">Iceland</option>
+                                <option value="India" lwrvalue="india" selected="true">India</option>
+                                <option value="Indonesia" lwrvalue="indonesia">Indonesia</option>
+                                <option value="Iran" lwrvalue="iran">Iran</option>
+                                <option value="Iraq" lwrvalue="iraq">Iraq</option>
+                                <option value="Ireland" lwrvalue="ireland">Ireland</option>
+                                <option value="Isle of Man" lwrvalue="isle of man">Isle of Man</option>
+                                <option value="Israel" lwrvalue="israel">Israel</option>
+                                <option value="Italy" lwrvalue="italy">Italy</option>
+                                <option value="Jamaica" lwrvalue="jamaica">Jamaica</option>
+                                <option value="Jan Mayen" lwrvalue="jan mayen">Jan Mayen</option>
+                                <option value="Japan" lwrvalue="japan">Japan</option>
+                                <option value="Jersey" lwrvalue="jersey">Jersey</option>
+                                <option value="Jordan" lwrvalue="jordan">Jordan</option>
+                                <option value="Juan De Nova Island" lwrvalue="juan de nova island">Juan De Nova Island</option>
+                                <option value="Kazakhstan" lwrvalue="kazakhstan">Kazakhstan</option>
+                                <option value="Kenya" lwrvalue="kenya">Kenya</option>
+                                <option value="Kiribati" lwrvalue="kiribati">Kiribati</option>
+                                <option value="Kosovo" lwrvalue="kosovo">Kosovo</option>
+                                <option value="Kuwait" lwrvalue="kuwait">Kuwait</option>
+                                <option value="Kyrgyzstan" lwrvalue="kyrgyzstan">Kyrgyzstan</option>
+                                <option value="Laos" lwrvalue="laos">Laos</option>
+                                <option value="Latvia" lwrvalue="latvia">Latvia</option>
+                                <option value="Lebanon" lwrvalue="lebanon">Lebanon</option>
+                                <option value="Lesotho" lwrvalue="lesotho">Lesotho</option>
+                                <option value="Liberia" lwrvalue="liberia">Liberia</option>
+                                <option value="Libya" lwrvalue="libya">Libya</option>
+                                <option value="Liechtenstein" lwrvalue="liechtenstein">Liechtenstein</option>
+                                <option value="Lithuania" lwrvalue="lithuania">Lithuania</option>
+                                <option value="Luxembourg" lwrvalue="luxembourg">Luxembourg</option>
+                                <option value="Macau" lwrvalue="macau">Macau</option>
+                                <option value="Macedonia" lwrvalue="macedonia">Macedonia</option>
+                                <option value="Madagascar" lwrvalue="madagascar">Madagascar</option>
+                                <option value="Malawi" lwrvalue="malawi">Malawi</option>
+                                <option value="Malaysia" lwrvalue="malaysia">Malaysia</option>
+                                <option value="Maldives" lwrvalue="maldives">Maldives</option>
+                                <option value="Mali" lwrvalue="mali">Mali</option>
+                                <option value="Malta" lwrvalue="malta">Malta</option>
+                                <option value="Marshall Islands" lwrvalue="marshall islands">Marshall Islands</option>
+                                <option value="Martinique" lwrvalue="martinique">Martinique</option>
+                                <option value="Mauritania" lwrvalue="mauritania">Mauritania</option>
+                                <option value="Mauritius" lwrvalue="mauritius">Mauritius</option>
+                                <option value="Mayotte" lwrvalue="mayotte">Mayotte</option>
+                                <option value="Mexico" lwrvalue="mexico">Mexico</option>
+                                <option value="Moldova" lwrvalue="moldova">Moldova</option>
+                                <option value="Monaco" lwrvalue="monaco">Monaco</option>
+                                <option value="Mongolia" lwrvalue="mongolia">Mongolia</option>
+                                <option value="Montenegro" lwrvalue="montenegro">Montenegro</option>
+                                <option value="Montserrat" lwrvalue="montserrat">Montserrat</option>
+                                <option value="Morocco" lwrvalue="morocco">Morocco</option>
+                                <option value="Mozambique" lwrvalue="mozambique">Mozambique</option>
+                                <option value="Myanmar" lwrvalue="myanmar">Myanmar</option>
+                                <option value="Namibia" lwrvalue="namibia">Namibia</option>
+                                <option value="Nauru" lwrvalue="nauru">Nauru</option>
+                                <option value="Navassa Island" lwrvalue="navassa island">Navassa Island</option>
+                                <option value="Nepal" lwrvalue="nepal">Nepal</option>
+                                <option value="Netherlands" lwrvalue="netherlands">Netherlands</option>
+                                <option value="Netherlands Antilles" lwrvalue="netherlands antilles">Netherlands Antilles</option>
+                                <option value="New Caledonia" lwrvalue="new caledonia">New Caledonia</option>
+                                <option value="New Zealand" lwrvalue="new zealand">New Zealand</option>
+                                <option value="Nicaragua" lwrvalue="nicaragua">Nicaragua</option>
+                                <option value="Niger" lwrvalue="niger">Niger</option>
+                                <option value="Nigeria" lwrvalue="nigeria">Nigeria</option>
+                                <option value="Niue" lwrvalue="niue">Niue</option>
+                                <option value="Norfolk Island" lwrvalue="norfolk island">Norfolk Island</option>
+                                <option value="North Korea" lwrvalue="north korea">North Korea</option>
+                                <option value="Northern Mariana Islands" lwrvalue="northern mariana islands">Northern Mariana Islands</option>
+                                <option value="Norway" lwrvalue="norway">Norway</option>
+                                <option value="Oman" lwrvalue="oman">Oman</option>
+                                <option value="Pakistan" lwrvalue="pakistan">Pakistan</option>
+                                <option value="Palau" lwrvalue="palau">Palau</option>
+                                <option value="Palestine" lwrvalue="palestine">Palestine</option>
+                                <option value="Panama" lwrvalue="panama">Panama</option>
+                                <option value="Papua New Guinea" lwrvalue="papua new guinea">Papua New Guinea</option>
+                                <option value="Paracel Islands" lwrvalue="paracel islands">Paracel Islands</option>
+                                <option value="Paraguay" lwrvalue="paraguay">Paraguay</option>
+                                <option value="Peru" lwrvalue="peru">Peru</option>
+                                <option value="Philippines" lwrvalue="philippines">Philippines</option>
+                                <option value="Pitcairn Islands" lwrvalue="pitcairn islands">Pitcairn Islands</option>
+                                <option value="Poland" lwrvalue="poland">Poland</option>
+                                <option value="Portugal" lwrvalue="portugal">Portugal</option>
+                                <option value="Puerto Rico" lwrvalue="puerto rico">Puerto Rico</option>
+                                <option value="Qatar" lwrvalue="qatar">Qatar</option>
+                                <option value="Republic of the Congo" lwrvalue="republic of the congo">Republic of the Congo</option>
+                                <option value="Reunion" lwrvalue="reunion">Reunion</option>
+                                <option value="Romania" lwrvalue="romania">Romania</option>
+                                <option value="Russia" lwrvalue="russia">Russia</option>
+                                <option value="Rwanda" lwrvalue="rwanda">Rwanda</option>
+                                <option value="Saint BarthÃ©lemy" lwrvalue="saint barthã©lemy">Saint BarthÃ©lemy</option>
+                                <option value="Saint Helena" lwrvalue="saint helena">Saint Helena</option>
+                                <option value="Saint Kitts and Nevis" lwrvalue="saint kitts and nevis">Saint Kitts and Nevis</option>
+                                <option value="Saint Lucia" lwrvalue="saint lucia">Saint Lucia</option>
+                                <option value="Saint Martin" lwrvalue="saint martin">Saint Martin</option>
+                                <option value="Saint Pierre and Miquelon" lwrvalue="saint pierre and miquelon">Saint Pierre and Miquelon</option>
+                                <option value="Saint Vincent and the Grenadines" lwrvalue="saint vincent and the grenadines">Saint Vincent and the Grenadines</option>
+                                <option value="Samoa" lwrvalue="samoa">Samoa</option>
+                                <option value="San Marino" lwrvalue="san marino">San Marino</option>
+                                <option value="Sao Tome and Principe" lwrvalue="sao tome and principe">Sao Tome and Principe</option>
+                                <option value="Saudi Arabia" lwrvalue="saudi arabia">Saudi Arabia</option>
+                                <option value="Senegal" lwrvalue="senegal">Senegal</option>
+                                <option value="Serbia" lwrvalue="serbia">Serbia</option>
+                                <option value="Seychelles" lwrvalue="seychelles">Seychelles</option>
+                                <option value="Sierra Leone" lwrvalue="sierra leone">Sierra Leone</option>
+                                <option value="Singapore" lwrvalue="singapore">Singapore</option>
+                                <option value="Sint Maarten" lwrvalue="sint maarten">Sint Maarten</option>
+                                <option value="Slovakia" lwrvalue="slovakia">Slovakia</option>
+                                <option value="Slovenia" lwrvalue="slovenia">Slovenia</option>
+                                <option value="Solomon Islands" lwrvalue="solomon islands">Solomon Islands</option>
+                                <option value="Somalia" lwrvalue="somalia">Somalia</option>
+                                <option value="South Africa" lwrvalue="south africa">South Africa</option>
+                                <option value="South Georgia and the South Sandwich Islands" lwrvalue="south georgia and the south sandwich islands">South Georgia and the South Sandwich Islands</option>
+                                <option value="South Korea" lwrvalue="south korea">South Korea</option>
+                                <option value="South Sudan" lwrvalue="south sudan">South Sudan</option>
+                                <option value="Spain" lwrvalue="spain">Spain</option>
+                                <option value="Spratly Islands" lwrvalue="spratly islands">Spratly Islands</option>
+                                <option value="Sri Lanka" lwrvalue="sri lanka">Sri Lanka</option>
+                                <option value="Sudan" lwrvalue="sudan">Sudan</option>
+                                <option value="Suriname" lwrvalue="suriname">Suriname</option>
+                                <option value="Svalbard" lwrvalue="svalbard">Svalbard</option>
+                                <option value="Swaziland" lwrvalue="swaziland">Swaziland</option>
+                                <option value="Sweden" lwrvalue="sweden">Sweden</option>
+                                <option value="Switzerland" lwrvalue="switzerland">Switzerland</option>
+                                <option value="Syria" lwrvalue="syria">Syria</option>
+                                <option value="Taiwan" lwrvalue="taiwan">Taiwan</option>
+                                <option value="Tajikistan" lwrvalue="tajikistan">Tajikistan</option>
+                                <option value="Tanzania" lwrvalue="tanzania">Tanzania</option>
+                                <option value="Thailand" lwrvalue="thailand">Thailand</option>
+                                <option value="The Bahamas" lwrvalue="the bahamas">The Bahamas</option>
+                                <option value="The Gambia" lwrvalue="the gambia">The Gambia</option>
+                                <option value="Timor-leste" lwrvalue="timor-leste">Timor-leste</option>
+                                <option value="Togo" lwrvalue="togo">Togo</option>
+                                <option value="Tokelau" lwrvalue="tokelau">Tokelau</option>
+                                <option value="Tonga" lwrvalue="tonga">Tonga</option>
+                                <option value="Trinidad and Tobago" lwrvalue="trinidad and tobago">Trinidad and Tobago</option>
+                                <option value="Tromelin Island" lwrvalue="tromelin island">Tromelin Island</option>
+                                <option value="Tunisia" lwrvalue="tunisia">Tunisia</option>
+                                <option value="Turkey" lwrvalue="turkey">Turkey</option>
+                                <option value="Turkmenistan" lwrvalue="turkmenistan">Turkmenistan</option>
+                                <option value="Turks and Caicos Islands" lwrvalue="turks and caicos islands">Turks and Caicos Islands</option>
+                                <option value="Tuvalu" lwrvalue="tuvalu">Tuvalu</option>
+                                <option value="Uganda" lwrvalue="uganda">Uganda</option>
+                                <option value="Ukraine" lwrvalue="ukraine">Ukraine</option>
+                                <option value="United Arab Emirates" lwrvalue="united arab emirates">United Arab Emirates</option>
+                                <option value="United Kingdom" lwrvalue="united kingdom">United Kingdom</option>
+                                <option value="United States" lwrvalue="united states">United States</option>
+                                <option value="Uruguay" lwrvalue="uruguay">Uruguay</option>
+                                <option value="Uzbekistan" lwrvalue="uzbekistan">Uzbekistan</option>
+                                <option value="Vanuatu" lwrvalue="vanuatu">Vanuatu</option>
+                                <option value="Venezuela" lwrvalue="venezuela">Venezuela</option>
+                                <option value="Vietnam" lwrvalue="vietnam">Vietnam</option>
+                                <option value="Virgin Islands" lwrvalue="virgin islands">Virgin Islands</option>
+                                <option value="Wake Island" lwrvalue="wake island">Wake Island</option>
+                                <option value="Wallis and Futuna" lwrvalue="wallis and futuna">Wallis and Futuna</option>
+                                <option value="West Bank" lwrvalue="west bank">West Bank</option>
+                                <option value="Western Sahara" lwrvalue="western sahara">Western Sahara</option>
+                                <option value="Yemen" lwrvalue="yemen">Yemen</option>
+                                <option value="Zambia" lwrvalue="zambia">Zambia</option>
+                                <option value="Zimbabwe" lwrvalue="zimbabwe">Zimbabwe</option>
+                            </select>
+                            <small>Country</small>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="tab-pane  fade" id="cohort-details" role="tabpanel" aria-labelledby="v-pills-messages-tab">
+        <div class="ijnfo">
+            <div class="ict-tlt">Cohort Details</div>
+            <form>
+                <div class="sky-fils">
+                    <div class="mb-3">
+                        <label class="form-label">FETP</label>
+                        <select class="form-select" aria-label="Default select example">
+                            <option selected="true" value="-Select-" isplaceholder="true">Select FETP</option>
+                            <option value="1-Angola FELTP-Advanced" formula_val="" textassign_val="">1-Angola FELTP-Advanced</option>
+                            <option value="2-Argentina FETP-Advanced" formula_val="" textassign_val="">2-Argentina FETP-Advanced</option>
+                            <option value="3-Australia Master's of Philosophy (Applied Epidemiology)" formula_val="" textassign_val="">3-Australia Master's of Philosophy (Applied Epidemiology)</option>
+                            <option value="4-Bangladesh FETP-Advanced" formula_val="" textassign_val="">4-Bangladesh FETP-Advanced</option>
+                            <option value="5-Bangladesh FETP-Frontline" formula_val="" textassign_val="">5-Bangladesh FETP-Frontline</option>
+                            <option value="6-Belize FETP-Non-Standard Frontline" formula_val="" textassign_val="">6-Belize FETP-Non-Standard Frontline</option>
+                            <option value="7-Belize FETP-Non-Standard Intermediate" formula_val="" textassign_val="">7-Belize FETP-Non-Standard Intermediate</option>
+                            <option value="8-Benin FETP-Frontline" formula_val="" textassign_val="">8-Benin FETP-Frontline</option>
+                            <option value="9-Brazil FETP-Advanced-EPISUS" formula_val="" textassign_val="">9-Brazil FETP-Advanced-EPISUS</option>
+                            <option value="10-Brazil FETP-Frontline" formula_val="" textassign_val="">10-Brazil FETP-Frontline</option>
+                            <option value="11-Burkina Faso FETP-Frontline" formula_val="" textassign_val="">11-Burkina Faso FETP-Frontline</option>
+                            <option value="12-Cameroon FETP-Advanced" formula_val="" textassign_val="">12-Cameroon FETP-Advanced</option>
+                            <option value="13-Cameroon FETP-Frontline" formula_val="" textassign_val="">13-Cameroon FETP-Frontline</option>
+                            <option value="14-Central Africa Regional FETP-Advanced" formula_val="" textassign_val="">14-Central Africa Regional FETP-Advanced</option>
+                            <option value="15-Central America FETP-Advanced" formula_val="" textassign_val="">15-Central America FETP-Advanced</option>
+                            <option value="16-Central Asia Regional FETP-Advanced" formula_val="" textassign_val="">16-Central Asia Regional FETP-Advanced</option>
+                            <option value="17-China FETP-Advanced" formula_val="" textassign_val="">17-China FETP-Advanced</option>
+                            <option value="18-China FETP-Non-Standard Intermediate" formula_val="" textassign_val="">18-China FETP-Non-Standard Intermediate</option>
+                            <option value="19-China FETP-Frontline" formula_val="" textassign_val="">19-China FETP-Frontline</option>
+                            <option value="20-Colombia FETP (Program de Epidemilogia Aplicada)-Advanced" formula_val="" textassign_val="">20-Colombia FETP (Program de Epidemilogia Aplicada)-Advanced</option>
+                            <option value="21-Colombia FETP (Program de Epidemilogia Aplicada)-Frontline" formula_val="" textassign_val="">21-Colombia FETP (Program de Epidemilogia Aplicada)-Frontline</option>
+                            <option value="22-Costa Rica FETP-Advanced" formula_val="" textassign_val="">22-Costa Rica FETP-Advanced</option>
+                            <option value="23-Costa Rica FETP-Non-Standard Intermediate" formula_val="" textassign_val="">23-Costa Rica FETP-Non-Standard Intermediate</option>
+                            <option value="24-Costa Rica FETP-Non-Standard Frontline" formula_val="" textassign_val="">24-Costa Rica FETP-Non-Standard Frontline</option>
+                            <option value="25-Cote d'Ivoire FETP-Frontline" formula_val="" textassign_val="">25-Cote d'Ivoire FETP-Frontline</option>
+                            <option value="26-Democratic Republic of the Congo FETP-Advanced" formula_val="" textassign_val="">26-Democratic Republic of the Congo FETP-Advanced</option>
+                            <option value="27-Democratic Republic of the Congo FETP-Frontline" formula_val="" textassign_val="">27-Democratic Republic of the Congo FETP-Frontline</option>
+                            <option value="28-Egypt FETP-Advanced" formula_val="" textassign_val="">28-Egypt FETP-Advanced</option>
+                            <option value="29-El Salvador FETP-Advanced" formula_val="" textassign_val="">29-El Salvador FETP-Advanced</option>
+                            <option value="30-El Salvador FETP-Non-Standard Intermediate" formula_val="" textassign_val="">30-El Salvador FETP-Non-Standard Intermediate</option>
+                            <option value="31-El Salvador FETP-Non-Standard Frontline" formula_val="" textassign_val="">31-El Salvador FETP-Non-Standard Frontline</option>
+                            <option value="32-Ethiopia FELTP-Advanced" formula_val="" textassign_val="">32-Ethiopia FELTP-Advanced</option>
+                            <option value="33-Ethiopia FETP-Frontline" formula_val="" textassign_val="">33-Ethiopia FETP-Frontline</option>
+                            <option value="34-The Gambia FETP-Frontline" formula_val="" textassign_val="">34-The Gambia FETP-Frontline</option>
+                            <option value="35-Germany FETP-Advanced" formula_val="" textassign_val="">35-Germany FETP-Advanced</option>
+                            <option value="36-Ghana Public Health School Without Walls" formula_val="" textassign_val="">36-Ghana Public Health School Without Walls</option>
+                            <option value="37-Ghana FELTP-Advanced" formula_val="" textassign_val="">37-Ghana FELTP-Advanced</option>
+                            <option value="38-Ghana FETP-Frontline" formula_val="" textassign_val="">38-Ghana FETP-Frontline</option>
+                            <option value="39-Grenada Field Epidemiology Training Program-Frontline" formula_val="" textassign_val="">39-Grenada Field Epidemiology Training Program-Frontline</option>
+                            <option value="40-Guatemala FETP-Non-Standard Intermediate" formula_val="" textassign_val="">40-Guatemala FETP-Non-Standard Intermediate</option>
+                            <option value="41-Guatemala FETP-Non-Standard Frontline" formula_val="" textassign_val="">41-Guatemala FETP-Non-Standard Frontline</option>
+                            <option value="42-Guinea FETP-Frontline" formula_val="" textassign_val="">42-Guinea FETP-Frontline</option>
+                            <option value="43-Guinea-Bissau FETP-Frontline" formula_val="" textassign_val="">43-Guinea-Bissau FETP-Frontline</option>
+                            <option value="44-Haiti FETP-Non-Standard Intermediate" formula_val="" textassign_val="">44-Haiti FETP-Non-Standard Intermediate</option>
+                            <option value="45-Haiti FETP-Non-Standard Frontline" formula_val="" textassign_val="">45-Haiti FETP-Non-Standard Frontline</option>
+                            <option value="46-Honduras FETP-Non-Standard Intermediate" formula_val="" textassign_val="">46-Honduras FETP-Non-Standard Intermediate</option>
+                            <option value="47-Honduras FETP-Non-Standard Frontline" formula_val="" textassign_val="">47-Honduras FETP-Non-Standard Frontline</option>
+                            <option value="48-Hungary FETP-Advanced" formula_val="" textassign_val="">48-Hungary FETP-Advanced</option>
+                            <option value="49-India FETP-Advanced-Delhi" formula_val="" textassign_val="">49-India FETP-Advanced-Delhi</option>
+                            <option value="50-India FETP-Advanced-Chennai (formerly Madras)" formula_val="" textassign_val="">50-India FETP-Advanced-Chennai (formerly Madras)</option>
+                            <option value="51-India Epidemic Intelligence Service" formula_val="" textassign_val="">51-India Epidemic Intelligence Service</option>
+                            <option value="52-Indonesia FETP-Advanced" formula_val="" textassign_val="">52-Indonesia FETP-Advanced</option>
+                            <option value="53-Iraq FETP-Advanced" formula_val="" textassign_val="">53-Iraq FETP-Advanced</option>
+                            <option value="54-Italy FETP-Advanced" formula_val="" textassign_val="">54-Italy FETP-Advanced</option>
+                            <option value="55-Japan FETP-Advanced" formula_val="" textassign_val="">55-Japan FETP-Advanced</option>
+                            <option value="56-Jordan FETP-Advanced" formula_val="" textassign_val="">56-Jordan FETP-Advanced</option>
+                            <option value="57-Kenya FELTP-Advanced" formula_val="" textassign_val="">57-Kenya FELTP-Advanced</option>
+                            <option value="58-Kenya FETP-Non-Standard Intermediate" formula_val="" textassign_val="">58-Kenya FETP-Non-Standard Intermediate</option>
+                            <option value="59-Kenya FETP-Non-Standard Frontline" formula_val="" textassign_val="">59-Kenya FETP-Non-Standard Frontline</option>
+                            <option value="60-Laos FETP-Advanced" formula_val="" textassign_val="">60-Laos FETP-Advanced</option>
+                            <option value="61-Liberia FETP-Intermediate" formula_val="" textassign_val="">61-Liberia FETP-Intermediate</option>
+                            <option value="62-Liberia FETP-Frontline" formula_val="" textassign_val="">62-Liberia FETP-Frontline</option>
+                            <option value="63-Malawi FETP-Frontline" formula_val="" textassign_val="">63-Malawi FETP-Frontline</option>
+                            <option value="64-Mali FETP-Frontline" formula_val="" textassign_val="">64-Mali FETP-Frontline</option>
+                            <option value="65-Mauritania FETP-Frontline" formula_val="" textassign_val="">65-Mauritania FETP-Frontline</option>
+                            <option value="66-Mexico FETP-Advanced" formula_val="" textassign_val="">66-Mexico FETP-Advanced</option>
+                            <option value="67-Mongolia FETP-Non-Standard Intermediate" formula_val="" textassign_val="">67-Mongolia FETP-Non-Standard Intermediate</option>
+                            <option value="68-Morocco FETP-Advanced" formula_val="" textassign_val="">68-Morocco FETP-Advanced</option>
+                            <option value="69-Mozambique FELTP-Advanced" formula_val="" textassign_val="">69-Mozambique FELTP-Advanced</option>
+                            <option value="70-Myanmar" formula_val="" textassign_val="">70-Myanmar</option>
+                            <option value="71-Namibia FELTP-Advanced" formula_val="" textassign_val="">71-Namibia FELTP-Advanced</option>
+                            <option value="72-Nigeria FELTP-Advanced" formula_val="" textassign_val="">72-Nigeria FELTP-Advanced</option>
+                            <option value="73-Nigeria FETP-Frontline" formula_val="" textassign_val="">73-Nigeria FETP-Frontline</option>
+                            <option value="74-Pakistan FELTP-Advanced" formula_val="" textassign_val="">74-Pakistan FELTP-Advanced</option>
+                            <option value="75-Pakistan FETP-Frontline" formula_val="" textassign_val="">75-Pakistan FETP-Frontline</option>
+                            <option value="76-Papua New Guinea FETP-Advanced" formula_val="" textassign_val="">76-Papua New Guinea FETP-Advanced</option>
+                            <option value="77-Paraguay FETP-Advanced" formula_val="" textassign_val="">77-Paraguay FETP-Advanced</option>
+                            <option value="78-Paraguay FETP-Frontline" formula_val="" textassign_val="">78-Paraguay FETP-Frontline</option>
+                            <option value="79-Peru FETP-Advanced" formula_val="" textassign_val="">79-Peru FETP-Advanced</option>
+                            <option value="80-Peru FETP-Non-Standard Intermediate" formula_val="" textassign_val="">80-Peru FETP-Non-Standard Intermediate</option>
+                            <option value="81-Peru FETP-Frontline" formula_val="" textassign_val="">81-Peru FETP-Frontline</option>
+                            <option value="82-Philippines FETP-Advanced" formula_val="" textassign_val="">82-Philippines FETP-Advanced</option>
+                            <option value="83-Rwanda FELTP-Advanced" formula_val="" textassign_val="">83-Rwanda FELTP-Advanced</option>
+                            <option value="84-Saudi Arabia FETP-Advanced" formula_val="" textassign_val="">84-Saudi Arabia FETP-Advanced</option>
+                            <option value="85-Senegal FETP-Frontline" formula_val="" textassign_val="">85-Senegal FETP-Frontline</option>
+                            <option value="86-Sierra Leone FETP-Intermediate" formula_val="" textassign_val="">86-Sierra Leone FETP-Intermediate</option>
+                            <option value="87-Sierra Leone FETP-Frontline" formula_val="" textassign_val="">87-Sierra Leone FETP-Frontline</option>
+                            <option value="88-South Africa FETP-Advanced" formula_val="" textassign_val="">88-South Africa FETP-Advanced</option>
+                            <option value="89-South Africa FETP-Frontline" formula_val="" textassign_val="">89-South Africa FETP-Frontline</option>
+                            <option value="90-South Caucasus FELTP-Advanced" formula_val="" textassign_val="">90-South Caucasus FELTP-Advanced</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Cohort Number</label>
+                        <input type="text" class="form-control" placeholder=" ">
+                    </div>
+                    <div class="mb-3">
+                        <div class="form-label">Cohort Start Date</div>
+                        <label class="lendaln" for="datepicker">
+                            <input type="text" class="form-control" id="datepicker" autocomplete="on">
+                            <i class="fa-solid fa-calendar-days"></i>
+                        </label>
+                        <small>dd-MMM-yyyy</small>
+                    </div>
+                    <div class="mb-3">
+                        <div class="form-label">Cohort End Date</div>
+                        <label class="lendaln" for="datepicker">
+                            <input type="text" class="form-control" id="datepicker1" autocomplete="on">
+                            <i class="fa-solid fa-calendar-days"></i>
+                        </label>
+                        <small>dd-MMM-yyyy</small>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="tab-panel fade" id="resident-details" role="tabpanel" aria-labelledby="v-pills-settings-tab">
+
+
+        <div class="ijnfo">
+            <div class="ict-tlt">Resident Information</div>
+            <form>
+                <div class="sky-fils ultanrd">
+
+                    <div class="mb-3">
+                        <div class="form-label">Date of Birth<sup> *</sup></div>
+                        <label class="lendaln" for="datepicker">
+                            <input type="text" class="form-control" id="datepickereff" autocomplete="on">
+                            <i class="fa-solid fa-calendar-days"></i>
+                        </label>
+                        <small>dd-MMM-yyyy</small>
+                    </div>
+
+
+
+                    <div class="mb-3">
+                        <label class="form-label">Age</label>
+                        <input type="text" class="form-control" placeholder="0" disabled>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Sex<sup> *</sup></label>
+                        <select class="form-select" multiple aria-label="multiple select example">
+
+                            <option value="1">Female</option>
+                            <option value="2">Male</option>
+                            <option value="3">Unspecified</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Employer</label>
+                        <input type="text" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Job Title</label>
+                        <input type="text" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Years on Job</label>
+                        <input type="text" class="form-control">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Supervisor Name</label>
+                        <input type="text" class="form-control">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Secondary Subnational Unit</label>
+                        <input type="text" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Tertiary Subnational Unit</label>
+                        <input type="text" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Facility Name</label>
+                        <input type="text" class="form-control">
+                    </div>
+
+
+
+
+                    <div class="mb-3  helth-chek">
+                        <div class="form-label">Facility Level</div>
+                        <div class="form-check">
+
+
+
+                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+                            <label class="form-check-label" for="flexRadioDefault1">
+                                1-National/Central
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
+                            <label class="form-check-label" for="flexRadioDefault2">
+                                2-Regional
+                            </label>
+                        </div>
+
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault3" checked>
+                            <label class="form-check-label" for="flexRadioDefault3">
+                                3-District
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault4" checked>
+                            <label class="form-check-label" for="flexRadioDefault4">
+                                4-Health Facility
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault5" checked>
+                            <label class="form-check-label" for="flexRadioDefault5">
+                                5-Other
+                            </label>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Enable if Other is Facility Level</label>
+                        <input type="text" class="form-control" placeholder="Other Facility " disabled>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+
+
+
+    </div>
+    <div class="tab-pane fade" id="mentor-details" role="tabpanel" aria-labelledby="v-pills-mentor-tab">
+        <div class="ijnfo">
+            <div class="ict-tlt">Consultant/Mentor Information</div>
+            <form>
+                <div class="sky-fils ultan">
+                    <div class="mb-3  helth-chek">
+                        <div class="form-label">For Consultants, please check all that apply</div>
+
+
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                            <label class="form-check-label" for="flexCheckDefault">
+                                FETP Alumni
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+                            <label class="form-check-label" for="flexCheckChecked">
+                                Mentor
+                            </label>
+                        </div>
+
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked1" checked>
+                            <label class="form-check-label" for="flexCheckChecked1">
+                                Field Supervisor
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked12" checked>
+                            <label class="form-check-label" for="flexCheckChecked12">
+                                Local-Level RA/Program Manager
+                            </label>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Primary Professional Affiliation</label>
+                        <select class="form-select" aria-label="Default select example">
+                            <option selected>-Select-</option>
+                            <option value="1">First Choice</option>
+                            <option value="2">Second Choice</option>
+                            <option value="3">Third Choice</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Primary Role/Title</label>
+                        <input type="text" class="form-control" placeholder="  ">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

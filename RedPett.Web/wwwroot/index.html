@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>RedPett</title>
+    <base href="/" />
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/app.css" rel="stylesheet" />
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/all.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
+    <link href="_content/MudBlazor/MudBlazor.min.css" rel="stylesheet" />
+    <script src="_content/MudBlazor/MudBlazor.min.js"></script>
+    <link href="_content/ReDpett.Components/style.css" rel="stylesheet" />
+    <link rel="stylesheet" href="_content/Radzen.Blazor/css/material-base.css">
+    <link href="css/frontstyle.css" rel="stylesheet" type="text/css">
+    <link href="css/header-foot.css" rel="stylesheet" type="text/css">
+    <link href="css/mobile-style.css" rel="stylesheet" type="text/css">
+    <link href="css/form.css" rel="stylesheet" type="text/css">
+    <link href="css/setting-style.css" rel="stylesheet" type="text/css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/8.4.6/css/intlTelInput.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/regular.min.css" integrity="sha512-WidMaWaNmZqjk3gDE6KBFCoDpBz9stTsTZZTeocfq/eDNkLfpakEd7qR0bPejvy/x0iT0dvzIq4IirnBtVer5A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="mainstyle.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/intl-tel-input@17.0.13/build/css/intlTelInput.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+    <script>
+        function check(elem) {
+            if (elem.selectedIndex == 4) {
+                document.getElementById("other-div").style.display = 'block';
+            } else {
+                document.getElementById("other-div").style.display = 'none';
+            }
+        }
+    </script>
+</head>
+<body>
+    <div id="app">
+        <div class="redp-body">
+            <section class="section-head">
+                <div class="container">
+                    <div class="logo text-center"><a href="#"><img src="images/logo.png" alt="#"></a></div>
+                    <div class="redp text-center">
+                        ReDPeTT<br>
+                        <!--Frontline-->
+                    </div>
+                </div>
+            </section>
+            <section class="bora">
+                <div class="container">
+                    <div class="llabora text-center">
+                        <h2>Resident - Driven Project Tool App.</h2>
+                        <p>An application collaboratively  developed by the US CDC’s Center for Global Health’s Division Health Production and EPi Info™</p>
+                    </div>
+                    <div class="fetp-clt text-center">
+                        <span><img src="images/fetp.png" alt="#"></span>  <span><img src="images/epii.png" alt="#"></span>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+    <div id="blazor-error-ui">
+        An unhandled error has occurred.
+        <a href="" class="reload">Reload</a>
+        <a class="dismiss">🗙</a>
+    </div>
+    <!--[jquery]-->
+    <script src="_framework/blazor.webassembly.js"></script>
+    <script src="_content/Radzen.Blazor/Radzen.Blazor.js"></script>
+    <script src="_framework/blazor.webview.js" autostart="false"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="IntermediateResidents/js/bootstrap.min.js"></script>
+    <script src="IntermediateResidents/js/custom-all.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="validation.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/custom-all.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/8.4.7/js/intlTelInput.js"></script>
+    <script src="js/menu.js"></script>
+    <script src="js/slick.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/8.4.7/js/intlTelInput.js"></script>
+    <script src="js/seting.js"></script>
+    <script src="js/phoneNumberInputInterop.js"></script>
+
+    <script>
+        function check(elem) {
+            if (elem.selectedIndex == 4) {
+                document.getElementById("other-div").style.display = 'block';
+            } else {
+                document.getElementById("other-div").style.display = 'none';
+            }
+        }</script>
+    <script>
+        // Initialize Tooltip
+        $('body').tooltip({
+            selector: '[data-toggle="tooltip"]',
+            container: 'body',
+            html: true
+        });
+        // Toggle class to `.btn-group-toggle`, used to transition the tab left/right
+
+        $(document).on('click', '.btn-group-toggle .btn-switch', function (e) {
+            var btn_switch = $(this).data('switch');
+
+            $(this).parent().removeClass("switch-on switch-off").toggleClass('switch-' + btn_switch);
+        });
+    </script>
+    <script>
+        window.downloadFile = function (fileBytes, fileName) {
+            var blob = new Blob([fileBytes], { type: "application/octet-stream" });
+            var url = window.URL.createObjectURL(blob);
+            var link = document.createElement("a");
+            link.href = url;
+            link.download = fileName || "file";
+            document.body.appendChild(link);
+            link.click();
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(link);
+        };
+        window.saveAsFile = function (fileName, fileContent, contentType) {
+            const blob = new Blob([fileContent], { type: contentType });
+            const link = document.createElement('a');
+            link.href = window.URL.createObjectURL(blob);
+            link.download = fileName;
+            link.click();
+        }
+
+
+    </script>
+</body>
+
+</html>

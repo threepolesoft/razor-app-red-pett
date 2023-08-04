@@ -1,0 +1,404 @@
+﻿@using GoogleMaps.LocationServices;
+@using Newtonsoft.Json;
+@using Radzen.Blazor
+@using Blazored.LocalStorage
+@using ReDpett.Common.Modal.Settings;
+@using ReDpett.Common.Modal;
+@using ReDpett.Service;
+@using System.Net;
+@inject ILocalStorageService local
+@inject HttpClient httpClient
+<style>
+    .size {
+        font-size: 14px;
+    }
+
+    .rz-button-md {
+        text-transform: none;
+    }
+</style>
+
+<RadzenFieldset Text="" style="font-size:22px; font-weight:bold" class="mt-3">
+    <div class="d-flex">
+        <div class="w-50">
+            <div class="row px-3">
+                <div class="col-md-12 pt-3">
+                    <RadzenText class="size">Profession</RadzenText>
+                </div>
+                <div class="col-md-12">
+                    <RadzenDropDown class="w-75" TValue="string" @bind-Value=res.CurrentProfession Data="CurrentProfessionList" />
+                </div>
+            </div>
+            <div class="row px-3">
+                <div class="col-md-12 pt-3">
+                    <RadzenText class="size">Job Title</RadzenText>
+                </div>
+                <div class="col-md-12">
+                    <RadzenTextBox class="w-75" @bind-Value=res.JobTitle />
+                </div>
+            </div>
+            <div class="row px-3">
+                <div class="col-md-12 pt-3">
+                    <RadzenText class="size">Start Date</RadzenText>
+                </div>
+                <div class="col-md-12">
+                    <RadzenDatePicker TValue="DateTime?" class="w-75" DateFormat="dd/MM/yyyy" @bind-Value=res.StartDateCurrentJob1 />
+                </div>
+            </div>
+            <div class="row px-3">
+                <div class="col-md-12 pt-3">
+                    <RadzenText class="size">What disease is your job addressing</RadzenText>
+                </div>
+                <div class="col-md-12">
+                    <RadzenDropDown TValue="string" class="w-75" @bind-Value=res.DiseaseRole Data="CodeDiseaseEnglishList" Change="OnDiseaseChanged" />
+                </div>
+                @if (isDisease)
+                {
+                    <div class="col-md-12 pt-3">
+                        <RadzenText class="size">Other Specify</RadzenText>
+                    </div>
+                    <div class="col-md-12">
+                        <RadzenTextBox class="w-75" @bind-Value=disease />
+                    </div>
+                }
+            </div>
+            <div class="row px-3">
+                <div class="col-md-12 pt-3">
+                    <RadzenText class="size">Date Cohort Training Began </RadzenText>
+                </div>
+                <div class="col-md-12">
+                    <RadzenTextBox class="w-75" />
+                </div>
+            </div>
+
+        </div>
+        <div class="w-50">
+            <div class="row px-3">
+                <div class="col-md-12 pt-3">
+                    <RadzenText class="size">Institutional Level of Job</RadzenText>
+                </div>
+                <div class="col-md-12">
+                    <RadzenDropDown TValue="string" class="w-75" @bind-Value=res.InstituteAff1 Data="Codeinstituteaff" Change="OnInstitutionalLevelChange" />
+                </div>
+                @if (isAffiliation)
+                {
+                    <div class="col-md-12 pt-3">
+                        <RadzenText class="size">Other Specify</RadzenText>
+                    </div>
+                    <div class="col-md-12">
+                        <RadzenTextBox class="w-75" @bind-Value="instituteAff" />
+                    </div>
+                }
+            </div>
+
+            <div class="row px-3">
+                <div class="col-md-12 pt-3">
+                    <RadzenText class="size">Institution Type</RadzenText>
+                </div>
+                <div class="col-md-12">
+                    <RadzenDropDown TValue="string" class="w-75" @bind-Value=res.OrganizationType Data="OrganizationType" />
+                </div>
+                @if (IsInstitutionType)
+                {
+                    <div class="col-md-12 pt-3">
+                        <RadzenText class="size">Other Specify</RadzenText>
+                    </div>
+                    <div class="col-md-12">
+                        <RadzenTextBox class="w-75" />
+                    </div>
+                }
+            </div>
+            <div class="row px-3">
+                <div class="col-md-12 pt-3">
+                    <RadzenText class="size">Geographic Location of Job</RadzenText>
+                </div>
+                <div class="col-md-12">
+                    <RadzenTextBox class="w-75" />
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="row px-3">
+        <div class="col-md-12 pt-3">
+            <RadzenText class="size">Business Address</RadzenText>
+        </div>
+        <div class="col-md-11" Style="padding-right:54px">
+            <RadzenTextArea class="w-100" @bind-Value=res.BusinessAddress @onfocusout=GetLatLongFromAddress />
+        </div>
+    </div>
+    <div class="d-flex">
+        <div class="w-50">
+            <div class="row px-3">
+                <div class="col-md-12 pt-3">
+                    <RadzenText class="size">Longitude</RadzenText>
+                </div>
+                <div class="col-md-12">
+                    <RadzenNumeric TValue="double?" class="w-75" @bind-Value=res.Longitude />
+                </div>
+            </div>
+        </div>
+        <div class="w-50">
+            <div class="row px-3">
+                <div class="col-md-12 pt-3">
+                    <RadzenText class="size">Latitude</RadzenText>
+                </div>
+                <div class="col-md-12">
+                    <RadzenNumeric TValue="double?" class="w-75" @bind-Value=res.Latitude />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row px-3 py-5">
+        <div class="col-md-6 pt-3">
+            <RadzenText class="size">If your previous role was with this employer/company/organization is this a promotion</RadzenText>
+        </div>
+        <div class="col-md-6">
+            <RadzenDropDown TValue="string" Data=options class="w-75" />
+        </div>
+    </div>
+
+
+</RadzenFieldset>
+
+<RadzenFieldset Text="Upon Graduation Employment" style="font-size:22px; font-weight:bold" class="mt-3">
+    <div class="rz-text-align-right px-4" style="font-size:12px; font-weight:normal">
+        <RadzenCheckBox @bind-Value=@checkBoxValue TValue="bool" TriState="false" Change=@OnChange />
+        <RadzenLabel Text="Same As Above" />
+    </div>
+    <div class="d-flex">
+        <div>
+            <div class="row px-3">
+                <div class="col-md-12 pt-3">
+                    <RadzenText class="size">Profession</RadzenText>
+                </div>
+                <div class="col-md-12">
+                    <RadzenDropDown class="w-75" TValue="string" @bind-Value=@profession Data="CurrentProfessionList" />
+                </div>
+            </div>
+            <div class="row px-3">
+                <div class="col-md-12 pt-3">
+                    <RadzenText class="size">Job Title</RadzenText>
+                </div>
+                <div class="col-md-12">
+                    <RadzenTextBox class="w-75" @bind-Value=@jobTitle />
+                    <RadzenRequiredValidator Text="Required" />
+                </div>
+            </div>
+            <div class="row px-3">
+                <div class="col-md-12 pt-3">
+                    <RadzenText class="size">Start Date Of Current Job</RadzenText>
+                </div>
+                <div class="col-md-12">
+                    <RadzenDatePicker TValue="DateTime?" class="w-75" DateFormat="dd/MM/yyyy" @bind-Value=@startDate />
+                </div>
+            </div>
+            <div class="row px-3">
+                <div class="col-md-12 pt-3">
+                    <RadzenText class="size">What disease is your job addressing</RadzenText>
+                </div>
+                <div class="col-md-12">
+                    <RadzenDropDown TValue="string" class="w-75" Data="CodeDiseaseEnglishList" @bind-Value=@diseaseRole />
+                </div>
+                @if (isDisease)
+                {
+                    <div class="col-md-12 pt-3">
+                        <RadzenText class="size">Other Specify</RadzenText>
+                    </div>
+                    <div class="col-md-12">
+                        <RadzenTextBox class="w-75" />
+                    </div>
+                }
+            </div>
+        </div>
+        <div>
+            <div class="row px-3">
+                <div class="col-md-12 pt-3">
+                    <RadzenText class="size">Institutional Affiliation</RadzenText>
+                </div>
+                <div class="col-md-12">
+                    <RadzenDropDown TValue="string" class="w-75" @bind-Value=instituteAff1 Data="Codeinstituteaff" />
+                </div>
+                @if (isAffiliation)
+                {
+                    <div class="col-md-12 pt-3">
+                        <RadzenText class="size">Other Specify</RadzenText>
+                    </div>
+                    <div class="col-md-12">
+                        <RadzenTextBox class="w-75" />
+                    </div>
+                }
+            </div>
+
+            <div class="row px-3">
+                <div class="col-md-12 pt-3">
+                    <RadzenText class="size">Geographic Location</RadzenText>
+                </div>
+                <div class="col-md-12">
+                    <RadzenTextBox class="w-75" />
+                    <RadzenRequiredValidator Text="Required" />
+                </div>
+            </div>
+
+        </div>
+    </div>
+</RadzenFieldset>
+@if (selectedRole != "Resident")
+{
+    <RadzenFieldset Text="" style="font-size:22px; font-weight:bold" class="mt-3">
+
+        <div class="row p-3">
+            <div class="col-md-4 pt-3">
+                <RadzenText class="size">Did the resident complete FETP?</RadzenText>
+            </div>
+            <div class="col-md-8">
+                <RadzenDropDown TValue="string" class="w-75" Data="options" @bind-Value=res.completeFETP />
+                <RadzenRequiredValidator Text="Required" />
+            </div>
+        </div>
+        <div class="row p-3">
+            <div class="col-md-4 pt-3">
+                <RadzenText class="size">If graduated, give graduation date</RadzenText>
+            </div>
+            <div class="col-md-3">
+                <RadzenDatePicker TValue="DateTime" class="w-75" DateFormat="dd/MM/yyyy" />
+            </div><div class="col-md-3">
+                <RadzenButton Variant="Radzen.Variant.Outlined" class="w-75 rz-border-base-600" Text="Post-FETP Employment" ButtonStyle="Radzen.ButtonStyle.Dark" />
+            </div>
+        </div>
+    </RadzenFieldset>
+}
+@code {
+
+    bool isDisease = false;
+    bool isAffiliation = false;
+    bool IsInstitutionType = true;
+    bool checkBoxValue = false;
+    string email = string.Empty;
+    string jobTitle = string.Empty;
+    string diseaseRole = string.Empty;
+    string profession = string.Empty;
+    string instituteAff1 = string.Empty;
+    string instituteAff = string.Empty;
+    string disease = string.Empty;
+    DateTime? startDate = DateTime.Now;
+    public RestService restService = new();
+    public List<TraineeInformation6VM> TraineeInfoList = new();
+    public int registerId;
+    public bool traineeInfoFound;
+    public TraineeInformation6VM res = new();
+    public List<string> CurrentProfessionList = new();
+    public List<codediseaseenglish> CodeDiseaseEnglish = new();
+    public List<string> Codeinstituteaff = new();
+    public List<string> OrganizationType = new();
+    public List<string> CodeDiseaseEnglishList = new();
+    string selectedRole = string.Empty;
+    public string address = string.Empty;
+    List<string> options = new()
+    {
+        "Yes", "No"
+    };
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetData();
+        CodeDiseaseEnglish = await restService.GetCodeDiseaseenglish();
+        CodeDiseaseEnglish = CodeDiseaseEnglish.DistinctBy(x => x.Disease).ToList();
+        foreach (var val in CodeDiseaseEnglish)
+        {
+            CodeDiseaseEnglishList.Add(val.Disease);
+        }
+        CurrentProfessionList = await restService.GetCodeCurrentProfession();
+        Codeinstituteaff = await restService.GetCodeInstituteAff();
+        OrganizationType = await restService.GetOrganizationType();
+    }
+
+    public async Task GetData()
+    {
+        email = await local.GetItemAsync<string>("UserName");
+        var result = await restService.GetRegisteredUser(email);
+        int roleId = result.RoleId;
+        var role = await restService.GetRoles(roleId);
+        selectedRole = role.RoleName;
+        registerId = result.RegisterID;
+        TraineeInfoList = await restService.GetAllTraineeInfo();
+        if (TraineeInfoList.Count() > 0)
+        {
+            traineeInfoFound = TraineeInfoList.Any(x => x.RegisterID == registerId);
+        }
+        if (traineeInfoFound)
+        {
+            res = TraineeInfoList.FirstOrDefault(x => x.RegisterID == registerId)!;
+        }
+        else
+        {
+            res = new();
+        }
+        res.RegisterID = registerId;
+    }
+
+    void OnChange(bool value)
+    {
+        if (value == true)
+        {
+            jobTitle = res.JobTitle!;
+            profession = res.CurrentProfession!;
+            diseaseRole = res.DiseaseRole!;
+            instituteAff1 = res.InstituteAff1!;
+            startDate = res.StartDateCurrentJob1;
+        }
+        else
+        {
+            jobTitle = "";
+            profession = "";
+            diseaseRole = "";
+            instituteAff1 = "";
+            startDate = null;
+        }
+    }
+
+    public async void GetLatLongFromAddress()
+    {
+        string url = $"https://nominatim.openstreetmap.org/search?q={Uri.EscapeDataString(res.BusinessAddress)}&format=json";
+
+        try
+        {
+            string jsonResult = await httpClient.GetStringAsync(url);
+            dynamic result = JsonConvert.DeserializeObject(jsonResult);
+            await Task.Delay(500);
+            if (result!.Count > 0)
+            {
+                res.Latitude = double.Parse(result[0].lat.ToString());
+                res.Longitude = double.Parse(result[0].lon.ToString());
+            }
+            else
+            {
+                res.Latitude = null;
+                res.Longitude = null;
+                Console.WriteLine("Geocoding failed. Address not found.");
+            }
+        }
+        catch (HttpRequestException ex)
+        {
+            Console.WriteLine($"Error while making the HTTP request: {ex.Message}");
+        }
+        StateHasChanged();
+    }
+
+    public void OnDiseaseChanged()
+    {
+        if (res.DiseaseRole == "Other, Specified")
+        {
+            isDisease = true;
+            res.DiseaseRole = disease;
+        }
+    }
+    public void OnInstitutionalLevelChange()
+    {
+        if (res.InstituteAff1 == "88- Other Specify")
+        {
+            isAffiliation = true;
+            res.InstituteAff1 = instituteAff;
+        }
+    }
+}

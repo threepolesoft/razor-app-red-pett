@@ -1,0 +1,17 @@
+﻿@page "/add_project_step_1/{E_GUID}"
+@page "/add_project_step_1"
+@layout RedPett.Web.Shared.BlankLayout
+
+@if (E_GUID != null)
+{
+    <RedPett.Components.Components.AddProjectStepOneComponent E_GUID="@E_GUID" />
+}
+else
+{
+    <RedPett.Components.Components.AddProjectStepOneComponent />
+}
+@code {
+    [Parameter]
+    public string E_GUID { get; set; }
+
+}

@@ -1,0 +1,83 @@
+﻿@using ReDpett.Modal.AppConstants;
+@using ReDpett.Modal.Login;
+@using ReDpett.Service;
+@using Microsoft.AspNetCore.Components.Forms
+@using ReDpett_API.Modal;
+@using System.Text.RegularExpressions;
+@using Xamarin.Essentials;
+@using Blazored.LocalStorage
+@inject ILocalStorageService local;
+@inject NavigationManager NavigationManager;
+@using MudBlazor
+@inject ISnackbar Snackbar
+
+<EditForm Model=@lgn OnValidSubmit=@ValidFormSubmitted>
+    <DataAnnotationsValidator />
+    <div class="log-body auth-page-wrapper">
+        <div class="sign-bg">
+            <section class="section-head">
+                <div class="container">
+                    <div class="logo text-center"><a href="/"><img src="images/logo.png" alt="#"></a></div>
+                </div>
+            </section>
+            <div class="sign-form">
+                <div class="container">
+                    <div class="sign-tlt">Enter OTP that has sent on email</div>
+                    <div class="input-field">
+                        <label>OTP</label>
+                        <InputText @bind-Value=lgn.OTPCode class="form-control" id="Email" placeholder="Email" />
+                    </div>
+                    <br />
+                    <div class="input-field form-set-repeat">
+                        <MudButton Variant="Variant.Filled" ButtonType="MudBlazor.ButtonType.Submit" Class="w-100 pa-3" style="background-color:#2a73a3;color:white;" Size="Size.Small">
+                            @if (_processing)
+                            {
+                                <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
+                                <MudText Class="ms-2">Processing</MudText>
+                            }
+                            else
+                            {
+                                <MudText>Verify OTP</MudText>
+                            }
+                        </MudButton>
+                    </div>
+                    <div class="form-group text-center  rest"> <a href="/login">Login</a> </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</EditForm>
+
+@code {
+    OTP lgn = new OTP();
+    string LastSubmitResult;
+    EmailService emailService;
+    private bool _processing = false;
+
+    void RefreshUI()
+    {
+        LastSubmitResult = "Please fill email field.";
+        StateHasChanged();
+    }
+    async Task ValidFormSubmitted()
+    {
+        if (string.IsNullOrEmpty(lgn.OTPCode))
+        {
+            LastSubmitResult = "Please fill email field.";
+
+            return;
+        }
+        _processing = true;
+       // emailService = new EmailService();
+        if (lgn.OTPCode == "123456")
+        {
+            NavigationManager.NavigateTo("/ChangePassword");
+        }
+        else
+        {
+            _processing = false;
+        }
+    }
+
+}

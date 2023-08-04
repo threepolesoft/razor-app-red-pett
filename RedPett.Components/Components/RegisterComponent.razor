@@ -1,0 +1,448 @@
+﻿@using Newtonsoft.Json;
+@using ReDpett.Common.Modal;
+@using ReDpett.Modal.AppConstants;
+@using ReDpett.Service;
+@using ReDpett_API.Modal;
+@using Microsoft.AspNetCore.Components.Forms;
+@using MudBlazor
+@inject NavigationManager NavigationManager;
+
+<!--Page HTML Start here-->
+<EditForm Model=@reg OnValidSubmit=@ValidFormSubmitted OnInvalidSubmit=@InvalidFormSubmitted autocomplete="off">
+    <DataAnnotationsValidator />
+    <div class="log-body">
+        <div class="sign-bg">
+            <section class="section-head">
+                <div class="container">
+                    <div class="logo text-center"><a href="index.html"><img src="images/logo.png" alt="#"></a></div>
+                </div>
+            </section>
+            <div class="sign-form">
+                <div class="container">
+                    <div class="sign-tlt">Create Account </div>
+                    <label>First / Given Name</label>
+                    <div class="mb-3">
+                        <InputText @bind-Value="reg.Name" class="form-control" id="FirstName" placeholder="First Name" />
+                        <ValidationMessage For="@(() => reg.Name)" style="color: #4d4d4d" />
+                    </div>
+                    <div class="mb-3">
+                        <label>Last Name / Surname</label>
+                        <InputText @bind-Value=reg.LastName class="form-control" id="LastName" placeholder="Last Name" />
+                        <ValidationMessage For="@(() => reg.LastName)" style="color: #4d4d4d" />
+                    </div>
+                    <div class="form-group ">
+                        <label>Role</label>
+                        <div class="select">
+                            <select id="sRoleId" value="@SelectedRoleID" class="form-control" @onchange="Rolechanged">
+                                @foreach (var item in Rolelist)
+                                {
+                                    <option value="@item.RoleId"> @item.RoleName </option>
+                                }
+                            </select>
+                            <ValidationMessage For="@(() => reg.RoleId)" style="color: #4d4d4d" />
+                        </div>
+                    </div>
+                    @if (!HideResident)
+                    {
+                        <div class="form-group ">
+                            <label>Non-Resident Type</label>
+                            <div class="select">
+                                <select id="sResidentId" value="@SelectedNonResidentID" class="form-control" @onchange="NonResidentTypechanged">
+
+                                    @foreach (var item in ResidentList)
+                                    {
+                                        <option value="@item.Id"> @item.ResidentName </option>
+                                    }
+                                </select>
+                                <ValidationMessage For="@(() => reg.NonResidentId)" style="color: #4d4d4d" />
+                            </div>
+                        </div>
+                    }
+                    <div class="form-group ">
+                        <label>FETP</label>
+                        <div class="select">
+                            <select id="sTier" class="form-control" @onchange="FETchanged">
+                                <option value="Select"> Select </option>
+                                @foreach (var item in Trainings)
+                                {
+                                    <option value="@item.FETP"> @item.FETP </option>
+                                }
+                            </select>
+                            <ValidationMessage For="@(() => reg.RoleId)" style="color: #4d4d4d" />
+                        </div>
+                    </div>
+                    <div class="form-group ">
+                        <label>FETP Tier</label>
+                        <div class="select">
+                            <select id="sFETPLevel" disabled @bind="@reg.FETPLevel" class="form-control">
+                                @foreach (var item in TierList)
+                                {
+                                    <option value="@item.FETPLevel"> @item.FETPLevel </option>
+                                }
+                            </select>
+                            <ValidationMessage For="@(() => reg.RoleId)" style="color: #4d4d4d" />
+                        </div>
+                    </div>
+                    <div class="form-group" style="display:none">
+                        <label>Region</label>
+                        <div class="select">
+                            <select id="sRegion" disabled @bind="@reg.Region" class="form-control">
+                                @foreach (var item in TierList)
+                                {
+                                    <option value="@item.Region"> @item.Region </option>
+                                }
+                            </select>
+                            <ValidationMessage For="@(() => reg.RoleId)" style="color: #4d4d4d" />
+                        </div>
+                    </div>
+                    <div class="form-group" style="display:none">
+                        <label>Country</label>
+                        <div class="select">
+                            <input type="text" class="form-control" list="selectcountryID" @onchange="@((args) => Countryname = args.Value.ToString())" style="display:inline-block" autocomplete="false" />
+                            @* @onchange="SearchCountry"*@
+                            <datalist autocomplete="false" disabled class="form-control" id="selectcountryID" style="display:none;" value="@SelectedCountryID">
+                                @*@onchange="SelectedCountrychanged"*@
+
+                                @foreach (var item in TierList)
+                                {
+                                    <option value="@item.Country" style="display:inline-block"> @item.Country</option>
+                                }
+                            </datalist>
+
+                            <ValidationMessage For="@(() => reg.CountryId)" style="color: #4d4d4d" />
+                        </div>
+                    </div>
+                    <div class="form-group" style="display:none">
+                        <label>FETP Program</label>
+                        <div class="select">
+                            <select id="sFETPProgramId" class="form-control" value="@SelectedFETPID" @onchange="Programchanged">
+                                @foreach (var item in FETPlist)
+                                {
+                                    <option value="@item.Id"> @item.Name </option>
+                                }
+                            </select>
+                            <ValidationMessage For="@(() => reg.FETPProgramId)" style="color: #4d4d4d" />
+                        </div>
+                    </div>
+                    <div class="form-group input-field">
+                        <label>Email</label>
+                        <InputText @bind-Value=reg.Email class="form-control" id="Email" placeholder="Email" />
+                        <ValidationMessage For="@(() => reg.Email)" style="color: #4d4d4d" />
+                    </div>
+                    <div class="form-group input-field">
+                        <InputText type="password" @bind-Value=reg.Password class="form-control" id="Password" placeholder="Password" />
+                        <ValidationMessage For="@(() => reg.Password)" style="color: #4d4d4d" />
+                    </div>
+                    <div class="form-group input-field">
+                        <InputText type="password" class="form-control" @bind-Value="reg.ConfirmPassword"></InputText>
+                        <ValidationMessage For="@(() => reg.ConfirmPassword)" style="color: #4d4d4d" />
+                    </div>
+                    <div class="form-group input-field pass-code">
+                        <label>Passcode</label>
+                        <div class="tooltip"><img src="images/tooltip.svg" alt="#"> <span class="tooltiptext">Non-Resident Passcode </span> </div>
+                        <InputText type="text" @bind-Value=reg.Passcode placeholder="@PasscodeText" onfocusout="@(!context.Validate())" class="form-control" />
+                        <ValidationMessage For="@(() => reg.Passcode)" style="color: #4d4d4d" />
+                    </div>
+                    <br />
+                    <div class="form-group input-field">
+                        <MudButton Variant="Variant.Filled" ButtonType="MudBlazor.ButtonType.Submit" Class="w-100 pa-3" style="background-color:#2a73a3;color:white;" Size="Size.Small">
+                            @if (_processing)
+                            {
+                                <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
+                                <MudText Class="ms-2">Processing</MudText>
+                            }
+                            else
+                            {
+                                <MudText>Sign Up</MudText>
+                            }
+                        </MudButton>
+                    </div>
+                    <div class="form-group text-center  rest sn"> Already have an account? <a href="/login">Sign-in</a> here </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</EditForm>
+
+<!--Page HTML Start here-->
+@code {
+    Country selectedCountry = new Country();
+
+
+
+    //ReDpett.Modal.Register reg = new ReDpett.Modal.Register();
+    ReDpett.ViewModel.RegisterViewModel reg = new ReDpett.ViewModel.RegisterViewModel();
+    RestService restService;
+    List<Roles> Roles;
+    private bool _processing = false;
+    private bool HideResident { get; set; } = true;
+    //private bool DisableRegisterbtn { get; set; } = true;
+    private string PasscodeText { get; set; } = "Passcode";
+    private string SelectedRoleID = "2";
+    private string SelectedFETPID = "1";
+    private string SelectedNonResidentID = "2";
+    private string SelectedCountryID = "1";
+    private string ResPasscode;
+    private EditContext editContext;
+
+    private void OnSubmit()
+    {
+        //NavigationManager.NavigateTo("/gen_passcode");
+    }
+    List<Roles> Rolelist = new List<Roles>();
+    List<FETPProgram> FETPlist = new List<FETPProgram>();
+    List<Country> CountryList = new List<Country>();
+    List<Country> orginalCountryList = new List<Country>();
+    List<ResidentType> ResidentList = new List<ResidentType>();
+    List<codefieldsites123university_training> Countries = new List<codefieldsites123university_training>();
+    List<codefieldsites123university_training> TierList = new List<codefieldsites123university_training>();
+    List<codefieldsites123university_training> regions = new List<codefieldsites123university_training>();
+    List<codefieldsites123university_training> Trainings = new List<codefieldsites123university_training>();
+    //Rolelist=
+    string Countryname = "";
+    // List<int> selectcountryID = CountryList.Where(x=>x.Name==name)..Firs;
+    //private List<Partner> partners;
+    string LastSubmitResult;
+    string InvalidMessage;
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            restService = new RestService();
+            Rolelist = await restService.Get();
+            FETPlist = await restService.GetFetPrograms(); //await restService.Get<List<FETPProgram>>(ReDpettConstants.FETPPrograms);
+            orginalCountryList = await restService.GetCountries(); //await restService.Get<List<Country>>(ReDpettConstants.CountriesList);//CountryList,ResidentList
+            ResidentList = await restService.GetResidentType(); //await restService.Get<List<ResidentType>>(ReDpettConstants.ResidentTypes);
+            regions = await restService.getRegions(); //await restService.Get<List<ResidentType>>(ReDpettConstants.ResidentTypes);
+            Trainings = await restService.getTrainings(); //await restService.Get<List<ResidentType>>(ReDpettConstants.ResidentTypes);
+            var country = new Country();
+            editContext = new EditContext(country);
+            CountryList = orginalCountryList;
+            //SelectedRoleID = rsutltRole.sele as List<Roles>;
+        }
+        catch (Exception ex)
+        {
+
+            throw;
+        }
+
+    }
+    async Task OnTestNavigation()
+    {
+
+        //if (SelectedRoleID == "2")
+        //{
+        //    NavigationManager.NavigateTo("/thankyou_resident");
+
+        //}
+        //else if (SelectedRoleID == "4")
+        //{
+        //    if (SelectedNonResidentID == "1")
+        //    {
+
+        //    }
+        //    else
+        //    {
+        //        NavigationManager.NavigateTo("/thankyou_admin", true);
+
+        //    }
+        //}
+
+
+    }
+
+    int RegCount = 0;
+    async Task ValidFormSubmitted()
+    {
+        _processing = true;
+        var checkBinding = reg;
+        SelectedCountryID = Countryname;
+
+        if (SelectedRoleID == "4")
+        {
+            if (SelectedNonResidentID == "0")
+            {
+                reg.NonResidentId = 2;
+            }
+            else
+            {
+                reg.NonResidentId = Convert.ToInt32(SelectedNonResidentID);
+                SelectedNonResidentID = reg.NonResidentId.ToString();
+            }
+
+        }
+        else
+        {
+            SelectedNonResidentID = string.Empty;
+            reg.NonResidentId = 0;
+        }
+
+        if (RegCount == 0)
+        {
+            RegCount++;
+
+            if (SelectedRoleID == "2")
+            {
+                ResPasscode = reg.Passcode;
+
+                reg.ResidentPasscode = ResPasscode;
+                await PerformRegistration();
+
+
+            }
+            else if (SelectedRoleID == "4")
+            {
+                if (SelectedNonResidentID == "2")
+                {
+                    reg.FETPProgramId = Convert.ToInt32(SelectedFETPID);
+                    reg.CountryId = 0; /*Convert.ToInt32(orginalCountryList.FirstOrDefault(x => x.Name == SelectedCountryID).Id);*/
+                    reg.RoleId = Convert.ToInt32(SelectedRoleID);
+
+                    var generatedfinalobject = JsonConvert.SerializeObject(reg);
+
+                    string program = FETPlist.Where(i => i.Id == Convert.ToInt32(SelectedFETPID)).FirstOrDefault().Name;
+                    ReDpettConstants.SelectedProgram = program;
+                    string country = SelectedCountryID; //CountryList.Where(i => i.Id == Convert.ToInt32(SelectedCountryID)).FirstOrDefault().Name;
+                    ReDpettConstants.SelectedCountry = country;
+                    await PerformRegistration();
+
+                    //  NavigationManager.NavigateTo($"/gen_passcode?myprogramString={Uri.EscapeDataString(generatedfinalobject)}");
+
+                }
+                else
+                {
+                    await PerformRegistration();
+
+                    if (LastSubmitResult != "Invalid Registration")
+                    {
+                        _processing = false;
+                        NavigationManager.NavigateTo("/thankyou_resident", true);
+                    }
+
+                }
+            }
+
+        }
+    }
+    public async Task PerformRegistration()
+    {
+        reg.FETPProgramId = Convert.ToInt32(SelectedFETPID);
+        reg.RoleId = Convert.ToInt32(SelectedRoleID);
+        restService = new RestService();
+        var rslt = await restService.RegisterUser(reg);
+
+        RegCount = 0;
+        if (rslt == "registered")
+        {
+            if (reg.NonResidentId == 0)
+            {
+                LastSubmitResult = "Resident Registration Successful";
+                NavigationManager.NavigateTo("/thankyou_resident");
+            }
+            else
+            {
+                LastSubmitResult = "Non-Resident Registration Successful";
+                NavigationManager.NavigateTo("/thankyou_resident");
+
+            }
+
+
+        }
+        else
+        {
+            LastSubmitResult = "Invalid Registration";
+            InvalidMessage = "Invalid";
+        }
+    }
+
+
+
+
+
+    async Task InvalidFormSubmitted()
+    {
+        LastSubmitResult = "Please fill in both email and password fields.";
+
+    }
+    @functions {
+        void Rolechanged(ChangeEventArgs e)
+        {
+            if (Convert.ToInt32(e.Value) != 2)
+            {
+                HideResident = false;// !HideResident;
+                PasscodeText = "Organization Passcode";
+
+            }
+            else
+            {
+                HideResident = true;
+                SelectedNonResidentID = "1";
+                PasscodeText = "Non-Resident Passcode";
+
+            }
+            SelectedRoleID = e.Value.ToString();
+        }
+    }
+    @functions {
+        void SearchCountry(ChangeEventArgs e)
+        {
+            CountryList = orginalCountryList;
+            Country country = new Country();
+            country.Name = e.Value.ToString();
+            CountryList = CountryList.Where(x => x.Name.Contains(country.Name)).ToList();
+
+        }
+    }
+    @functions {
+        void FETchanged(ChangeEventArgs e)
+        {
+            var FETP = e.Value.ToString();
+            reg.FETP = FETP;
+            TierList = Trainings.Where(x => x.FETP == FETP).ToList();
+            foreach (var item in TierList)
+            {
+                reg.Country = item.Country;
+                reg.Region = item.Region;
+                reg.FETPLevel = item.FETPLevel;
+                if (item.FETPLevel == "ADV-Advanced")
+                {
+                    SelectedFETPID = "3";
+                }
+                else if (item.FETPLevel == "FRO-Frontline")
+                {
+                    SelectedFETPID = "1";
+                }
+                else if (item.FETPLevel == "INT-Intermediate")
+                {
+                    SelectedFETPID = "2";
+                }
+            }
+        }
+    }
+    @functions {
+        void NonResidentTypechanged(ChangeEventArgs e)
+        {
+            SelectedNonResidentID = e.Value.ToString();
+
+        }
+
+    }
+
+    @functions {
+        void Programchanged(ChangeEventArgs e)
+        {
+            SelectedFETPID = e.Value.ToString();
+        }
+
+    }
+
+
+    @functions {
+        void SelectedCountrychanged(ChangeEventArgs e)
+        {
+            SelectedCountryID = e.Value.ToString();
+
+        }
+
+    }
+}

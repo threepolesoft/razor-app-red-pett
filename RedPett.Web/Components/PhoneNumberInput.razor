@@ -1,0 +1,19 @@
+﻿@inject JSRuntime jsRuntime
+<div>
+    <input id="phoneNumberInput" type="tel">
+</div>
+
+@code {
+    private ElementReference phoneNumberInputRef;
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            InitializePhoneNumberInput();
+        }
+    }
+   
+    private void InitializePhoneNumberInput() => jsRuntime.InvokeVoidAsync("initializePhoneNumberInput", phoneNumberInputRef);
+}
+

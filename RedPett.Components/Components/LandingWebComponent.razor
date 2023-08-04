@@ -1,0 +1,535 @@
+﻿@using MudBlazor;
+@inject NavigationManager NavigationManager;
+<header class="header-custom">
+    <div class="container">
+        <div class="nav-row">
+            <nav id="navigation1" class="navigation">
+                <div class="nav-header">
+                    <a class="nav-brand" href="index.html"><img src="images/logo.svg" alt="#"></a>
+                    <div class="nav-toggle"></div>
+                </div>
+                <div class="nav-menus-wrapper">
+                    <ul class="nav-menu align-to-right">
+                        <li><a href="#home">Download</a></li>
+                        <li><a href="#resources">Resources</a></li>
+                        <li><a href="#about">About ReDPeTT</a></li>
+                        <li><a href="#faq">FAQs</a></li>
+                    </ul>
+                </div>
+                <div class="cont-bt">
+                    <a href="login">Login</a>
+                    <a href="register" class="sign-up">Sign up</a>
+                </div>
+            </nav>
+        </div>
+    </div>
+</header>
+<!--[End Header]-->
+
+<div class="figer">
+    <div class="container">
+        <div id="download">
+            <div class="rontlin">
+                <div class="ptt-row">
+                    <div class="glb-col-5 grt">
+                      @*  <a href="https://form.redpett.org.redpett.org/ReDPeTT_FL/form/IntermediateResidents/formperma/BeT8vXt2DHLBUp11LKnokbFsqwHmOt-nAitsav7QS9w">
+                            Residents
+                        </a>
+
+                        <a href=""> Non-Residents</a>
+                        <a href="redpett-web-app/resident-activity-filter.html"> HQ Users Project Listing</a>
+*@
+
+                        <h1>Resident - Driven Project Tool App for FETP Programs</h1>
+                        <p>An application collaboratively  developed by the US CDC’s Center for Global Health and EPi Info™</p>
+
+                        <a href="#"><img src="images/app-gp.svg" alt="#"></a> <a href="#"><img src="images/app-str.svg" alt="#"></a>
+                    </div>
+                    <div class="glb-col-7">
+                        <div class="work-slide">
+                            @* <div class="ppt-ret"><img src="images/map.svg" alt="#"> </div>
+                            *@ @*  <div class="ppt-ret"><img src="images/mock-up-01.webp" alt="#"> </div>
+                            <div class="ppt-ret"><img src="images/mock-up-02.webp" alt="#"> </div>
+                            <div class="ppt-ret"><img src="images/mock-up-03.webp" alt="#"> </div>
+                            <div class="ppt-ret"><img src="images/mock-up-04.webp" alt="#"> </div>*@
+                            <MudCarousel Class="mud-width-full" Style="height:400px;" AutoCycle="@autocycle" TData="object">
+                                <MudCarouselItem Transition="transition">
+                                    <div style="height:100%;text-align:center">
+                                        <MudImage Src="images/mock-up-01.png" Style="margin-left:50px" Width="432" Height="315" Alt="Slide 1" Elevation="25" Class="rounded-lg ma-4" />
+                                    </div>
+                                </MudCarouselItem>
+                                <MudCarouselItem Transition="transition">
+                                    <div style="height:100%;text-align:center">
+                                        <MudImage Src="images/mock-up-02.png" Style="margin-left:50px" Width="432" Height="315" Alt="Slide 2" Elevation="25" Class="rounded-lg ma-4" />
+                                    </div>
+                                </MudCarouselItem>
+                                <MudCarouselItem Transition="transition">
+                                    <div style="height:100%;text-align:center">
+                                        <MudImage Src="images/mock-up-03.png" Style="margin-left:50px" Width="432" Height="315" Alt="Slide 3" Elevation="25" Class="rounded-lg ma-4" />
+                                    </div>
+                                </MudCarouselItem>
+                            </MudCarousel>
+
+                        </div>
+                    </div>
+                    <div class="regdc-sectn">
+                        <div class="amazing-chr">
+                            <h4>Summary of App Features</h4>
+                            <h2>Important features offered by the ReDPeTT App</h2>
+                        </div>
+                        <div class="strip"><img src="images/Subtract.svg" alt="#"> </div>
+                        <div class="tabs-app  wrapper">
+                            <div class="tab-wrapper">
+                                <ul class="tabs">
+                                    <li class="tab-link active" data-tab="1"><i><img src="images/first-ic01.svg" alt="#"></i> Role-Based Features</li>
+                                    <li class="tab-link" data-tab="2"><i><img src="images/first-ic02.svg" alt="#"></i> Seamless Forms</li>
+                                    <li class="tab-link" data-tab="3"><i><img src="images/first-ic03.svg" alt="#"></i> Secure Data</li>
+                                    <li class="tab-link" data-tab="4"><i><img src="images/first-ic04.svg" alt="#"></i> Offline Synchronization </li>
+                                    <li class="tab-link" data-tab="5"><i><img src="images/first-ic05.svg" alt="#"></i> No Setup</li>
+                                </ul>
+                            </div>
+                            <div class="content-wrapper">
+                                <div id="tab-1" class="tab-content active">
+                                    <div class="ptt-row">
+                                        <div class="col-app-6">
+                                            <div class="ptt-row">
+                                                <div class="apt-cl">
+                                                    <div class="prj-vrl">
+                                                        <i><img src="images/proj-tool.svg" alt="#"></i>
+                                                        <h3>Project Tool</h3>
+                                                        <p>This tool is designed by the FETP user community. User community will drive future versions.</p>
+                                                    </div>
+                                                    <div class="prj-vrl advc">
+                                                        <i><img src="images/user.svg" alt="#"></i>
+                                                        <h3>Resident Advisors</h3>
+                                                        <p>Resident advisors can now view and edit their residents data in real time.</p>
+                                                    </div>
+                                                </div>
+                                                <div class="frtl">
+                                                    <div class="prj-vrl frntl">
+                                                        <i><img src="images/frnt-line.svg" alt="#"></i>
+                                                        <h3>Front Line</h3>
+                                                        <p>Frontline residents are now part of the same ReDPeTT ecosystem.</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-app-6">
+                                            <div class="alp">
+                                                <h2>Desgined with FETP in Mind</h2>
+                                                <p>The ReDPeTT app supports all aspects of the project-entry for the Advanced, Intermediate and Frontline Program/Tiers</p>
+                                                <a href="#" class="site-btn">See More</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                @*<div id="tab-2" class="tab-content">
+                                    <div class="ptt-row">
+                                        <div class="col-app-6">
+                                            <div class="ptt-row">
+                                                <div class="apt-cl">
+                                                    <div class="prj-vrl">
+                                                        <i><img src="images/proj-tool.svg" alt="#"></i>
+                                                        <h3>Project Tool</h3>
+                                                        <p>Designed with all FETP Stakeholders in mind: Residents, Mentors/Consultants and FETP Staff / Resident Advisors.</p>
+                                                    </div>
+                                                    <div class="prj-vrl advc">
+                                                        <i><img src="images/user.svg" alt="#"></i>
+                                                        <h3>Resident Advisors</h3>
+                                                        <p>RAs are provided an at-a-glance view of project and resident activity.</p>
+                                                    </div>
+                                                </div>
+                                                <div class="frtl">
+                                                    <div class="prj-vrl frntl">
+                                                        <i><img src="images/frnt-line.svg" alt="#"></i>
+                                                        <h3>Front Line</h3>
+                                                        <p>Residents can quickly create and account, complete a project form and share their entires with Mentors and RAs.</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-app-6">
+                                            <div class="alp">
+                                                <h2>Apps that make you Happy!</h2>
+                                                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.Lore en an unknown printer took  Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and...</p>
+                                                <a href="#" class="site-btn">See More</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="tab-3" class="tab-content">
+                                    <div class="ptt-row">
+                                        <div class="col-app-6">
+                                            <div class="ptt-row">
+                                                <div class="apt-cl">
+                                                    <div class="prj-vrl">
+                                                        <i><img src="images/proj-tool.svg" alt="#"></i>
+                                                        <h3>Project Tool</h3>
+                                                        <p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour.</p>
+                                                    </div>
+                                                    <div class="prj-vrl advc">
+                                                        <i><img src="images/user.svg" alt="#"></i>
+                                                        <h3>Resident Advisors</h3>
+                                                        <p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour.</p>
+                                                    </div>
+                                                </div>
+                                                <div class="frtl">
+                                                    <div class="prj-vrl frntl">
+                                                        <i><img src="images/frnt-line.svg" alt="#"></i>
+                                                        <h3>Front Line</h3>
+                                                        <p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour.</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-app-6">
+                                            <div class="alp">
+                                                <h2>Apps that make you Happy!</h2>
+                                                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took  Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and...</p>
+                                                <a href="#" class="site-btn">See More</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="tab-4" class="tab-content">
+                                    <div class="ptt-row">
+                                        <div class="col-app-6">
+                                            <div class="ptt-row">
+                                                <div class="apt-cl">
+                                                    <div class="prj-vrl">
+                                                        <i><img src="images/proj-tool.svg" alt="#"></i>
+                                                        <h3>Project Tool</h3>
+                                                        <p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour.</p>
+                                                    </div>
+                                                    <div class="prj-vrl advc">
+                                                        <i><img src="images/user.svg" alt="#"></i>
+                                                        <h3>Resident Advisors</h3>
+                                                        <p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour.</p>
+                                                    </div>
+                                                </div>
+                                                <div class="frtl">
+                                                    <div class="prj-vrl frntl">
+                                                        <i><img src="images/frnt-line.svg" alt="#"></i>
+                                                        <h3>Front Line</h3>
+                                                        <p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour.</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-app-6">
+                                            <div class="alp">
+                                                <h2>Apps that make you Happy!</h2>
+                                                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took  Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took  Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown p unknown printer took a galley of type and...</p>
+                                                <a href="#" class="site-btn">See More</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>*@
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="resources" class="work-sect">
+                    <div class="ptt-row">
+                        <div class="col-app-6">
+                            <div class="wor-hed">
+                                <h2>How it works</h2>
+                                <p>Simply create an account and start being use.</p>
+                            </div>
+                            <div class="ablis">
+                                <div class="east-ro">
+                                    <div class="icn"><img src="images/mark01.svg" alt="#"></div>
+                                    <div class="reder">
+                                        <h4>Create Account</h4>
+                                        <p>Provide basic information to create an account</p>
+                                    </div>
+                                </div>
+                                <div class="east-ro">
+                                    <div class="icn"><img src="images/chat-ord.png" alt="#"></div>
+                                    <div class="reder">
+                                        <h4>Choose Your Access</h4>
+                                        <p>Specifiy your Role as Resident or FTEP Staff and your Program</p>
+                                    </div>
+                                </div>
+                                <div class="east-ro">
+                                    <div class="icn"><img src="images/svfg.png" alt="#"></div>
+                                    <div class="reder">
+                                        <h4>Start Use</h4>
+                                        <p>Once account registration is complete, you are ready to use the app</p>
+                                    </div>
+                                </div>
+                                <div class="app-ft"> <a href="#"><img src="images/app-gp.svg" alt="#"></a> <a href="#"><img src="images/app-str.svg" alt="#"></a> </div>
+                            </div>
+                        </div>
+                        <div class="col-app-6"> <img src="images/reap.png" alt="#"> </div>
+                    </div>
+                </div>
+                <div class="offer-cor">
+                    <div id="about" class="red-line"><img src="images/red-line.png" alt="#"></div>
+                    <div class="wor-hed">
+                        <h2>What we Offer</h2>
+                        <p> The web-based version of ReDPeTT allows the same level of project tracking as the prior version of ReDPeTT.</p>
+                    </div>
+                    <div class="ptt-row">
+                        <div class="attr-col">
+                            <div class="inter-col">
+                                <i><img src="images/atter.png" alt="#"></i>
+                                <h5>Role-Based Functionality</h5>
+                               @* <p>
+                                    Lorem Ipsum is simply dummy text of the<br>
+                                    printing and typesetting industry. Lorem<br>
+                                    Ipsum is simply dummy.
+                                </p>*@
+                            </div>
+                            <div class="inter-col mgrt">
+                                <i><img src="images/free-hd.png" alt="#"></i>
+                                <h5>User Friendly</h5>
+                                @*<p>
+                                    Lorem Ipsum is simply dummy text of the<br>
+                                    printing and typesetting industry. Lorem<br>
+                                    Ipsum is simply dummy.
+                                </p>*@
+                            </div>
+                        </div>
+                        <div class="attr-col img-rp"><img src="images/mobe-b.png" alt="#"></div>
+                        <div class="attr-col easy">
+                            <div class="inter-col peset">
+                                <i><img src="images/sattg.png" alt="#"></i>
+                                <h5>Program/Tier Specific</h5>
+                              @*  <p>
+                                    Lorem Ipsum is simply dummy text of the<br>
+                                    printing and typesetting industry. Lorem<br>
+                                    Ipsum is simply dummy.
+                                </p>*@
+                            </div>
+                            <div class="inter-col rinti">
+                                <i><img src="images/chat.png" alt="#"></i>
+                                <h5>Data Security and Integerity</h5>
+                               @* <p>
+                                    Lorem Ipsum is simply dummy text of the<br>
+                                    printing and typesetting industry. Lorem<br>
+                                    Ipsum is simply dummy.
+                                </p>*@
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="use-app">
+            <div class="container">
+                <div class="ptt-row">
+                    <div class="hea-dta">
+                        <div class="hends"><img src="images/headnd.png" alt="#"></div>
+                    </div>
+                    <div class="heand">
+                        <div class="wor-hed">
+                            <h2>Easy to use</h2>
+                            <p>The web-based version of ReDPeTT allows the same level of project tracking as the prior version of ReDPeTT..</p>
+                        </div>
+                        <div class="app-ft"> <a href="#"><img src="images/app-gp.svg" alt="#"></a> <a href="#"><img src="images/app-str.svg" alt="#"></a> </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+     @*   <div id="faq" class="target faq-app">
+            <div class="container">
+                <div class="wor-hed">
+                    <h2>Frequently asked questions</h2>
+                    <p>
+                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem <br>
+                        Ipsum has been the industry's standard dummy text ever since the
+                    </p>
+                </div>
+                <ul class="accordion-list">
+                    <li>
+                        <h3>1. How do I download the App</h3>
+                        <div class="ui-brd">
+                            <div class="refo">I help you <strong>DEFINE, REFINE & BUILD,</strong> your idea into reality for the right target audience. </div>
+                            <ul>
+                                <li>What should be my update plan is another one of those mobile application development questions and answers that have no standard answer to it.</li>
+                                <li>The frequency of app updation depends entirely on – what new technology or feature your industry/ competitor have come up with and on the issues that you are reading in your app’s reviews section.</li>
+                                <li>While there are some brands who update their app every alternate week, there are some which haven’t updated their apps for over a year and there is no concrete evidence suggesting which approach is better. So, in the end, it entirely depends on you and the industry you are working in and on those whom you are developing the app for.</li>
+                                <li>Read more on <a href="#">Why do you need to update that app of yours and how to go about it</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li>
+                        <h3>2. How do I create an account?</h3>
+                        <div class="ui-brd">
+                            <ul>
+                                <li>What should be my update plan is another one of those mobile application development questions and answers that have no standard answer to it.</li>
+                                <li>The frequency of app updation depends entirely on – what new technology or feature your industry/ competitor have come up with and on the issues that you are reading in your app’s reviews section.</li>
+                                <li>While there are some brands who update their app every alternate week, there are some which haven’t updated their apps for over a year and there is no concrete evidence suggesting which approach is better. So, in the end, it entirely depends on you and the industry you are working in and on those whom you are developing the app for.</li>
+                                <li>Read more on <a href="#">Why do you need to update that app of yours and how to go about it</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li>
+                        <h3>3. How often should the app be updated?</h3>
+                        <div class="ui-brd">
+                            <ul>
+                                <li>What should be my update plan is another one of those mobile application development questions and answers that have no standard answer to it.</li>
+                                <li>The frequency of app updation depends entirely on – what new technology or feature your industry/ competitor have come up with and on the issues that you are reading in your app’s reviews section.</li>
+                                <li>While there are some brands who update their app every alternate week, there are some which haven’t updated their apps for over a year and there is no concrete evidence suggesting which approach is better. So, in the end, it entirely depends on you and the industry you are working in and on those whom you are developing the app for.</li>
+                                <li>Read more on <a href="#">Why do you need to update that app of yours and how to go about it</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li>
+                        <h3>4. How do frequent app updates impact user acquisition, ASO, and monetization?</h3>
+                        <div class="ui-brd">
+                            <ul>
+                                <li>What should be my update plan is another one of those mobile application development questions and answers that have no standard answer to it.</li>
+                                <li>The frequency of app updation depends entirely on – what new technology or feature your industry/ competitor have come up with and on the issues that you are reading in your app’s reviews section.</li>
+                                <li>While there are some brands who update their app every alternate week, there are some which haven’t updated their apps for over a year and there is no concrete evidence suggesting which approach is better. So, in the end, it entirely depends on you and the industry you are working in and on those whom you are developing the app for.</li>
+                                <li>Read more on <a href="#">Why do you need to update that app of yours and how to go about it</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li>
+                        <h3>5. What should I look for when considering ASO tools?</h3>
+                        <div class="ui-brd">
+                            <ul>
+                                <li>What should be my update plan is another one of those mobile application development questions and answers that have no standard answer to it.</li>
+                                <li>The frequency of app updation depends entirely on – what new technology or feature your industry/ competitor have come up with and on the issues that you are reading in your app’s reviews section.</li>
+                                <li>While there are some brands who update their app every alternate week, there are some which haven’t updated their apps for over a year and there is no concrete evidence suggesting which approach is better. So, in the end, it entirely depends on you and the industry you are working in and on those whom you are developing the app for.</li>
+                                <li>Read more on <a href="#">Why do you need to update that app of yours and how to go about it</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li>
+                        <h3>6. How will I prevent it from failing in the stores?</h3>
+                        <div class="ui-brd">
+                            <ul>
+                                <li>What should be my update plan is another one of those mobile application development questions and answers that have no standard answer to it.</li>
+                                <li>The frequency of app updation depends entirely on – what new technology or feature your industry/ competitor have come up with and on the issues that you are reading in your app’s reviews section.</li>
+                                <li>While there are some brands who update their app every alternate week, there are some which haven’t updated their apps for over a year and there is no concrete evidence suggesting which approach is better. So, in the end, it entirely depends on you and the industry you are working in and on those whom you are developing the app for.</li>
+                                <li>Read more on <a href="#">Why do you need to update that app of yours and how to go about it</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li>
+                        <h3>7. How would the app help my customers?</h3>
+                        <div class="ui-brd">
+                            <ul>
+                                <li>What should be my update plan is another one of those mobile application development questions and answers that have no standard answer to it.</li>
+                                <li>The frequency of app updation depends entirely on – what new technology or feature your industry/ competitor have come up with and on the issues that you are reading in your app’s reviews section.</li>
+                                <li>While there are some brands who update their app every alternate week, there are some which haven’t updated their apps for over a year and there is no concrete evidence suggesting which approach is better. So, in the end, it entirely depends on you and the industry you are working in and on those whom you are developing the app for.</li>
+                                <li>Read more on <a href="#">Why do you need to update that app of yours and how to go about it</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>*@
+        <div id="contact" class=" faq-app get-tech">
+            <div class="container">
+                <div class="ptt-row">
+                    <div class="tech-img"><img src="images/movkup.png" alt="#"></div>
+                    <div class="tech-frm">
+                        <div class="wor-hed">
+                            <h2>Get In Touch With Us</h2>
+                            <p>We appreciate your opinion. Feel free to reach out to us or join our user community. </p>
+                        </div>
+                        <form>
+                            <div class="form-row">
+                                <div class="col">
+                                    <input type="text" class="form-control" placeholder="First name">
+                                </div>
+                                <div class="col">
+                                    <input type="text" class="form-control" placeholder="Last name">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col">
+                                    <input type="email" class="form-control" placeholder="Email">
+                                </div>
+                                <div class="col">
+                                    <input type="text" class="form-control" placeholder="Phone">
+                                </div>
+                            </div>
+                            <div class="form-row ary">
+                                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" placeholder="Message"></textarea>
+                            </div>
+                            <div class="btn-smt dew">
+                                <button type="submit">Send</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer class="site-footer">
+            <div class="container">
+                <div class="footer-top">
+                    <div class="ptt-row">
+                        <div class="foot-col foot-adrs">
+                            <img src="images/foot-logo.png" alt="#">
+                            <p></p>
+                        </div>
+                        <div class="foot-col foot-nav">
+                            <h2 class="foot-tlt">Company</h2>
+                            <ul>
+                                <li><a href="#">About Us</a></li>
+                                <li><a href="#">ReDPeTT-Frontline</a></li>
+                                <li><a href="#">Services</a></li>
+                                <li><a href="#">Contact us</a></li>
+                            </ul>
+                        </div>
+                        <div class="foot-col foot-nav">
+                            <h2 class="foot-tlt">Products</h2>
+                            <ul>
+                                <li><a href="#">About Us</a></li>
+                                <li><a href="#">ReDPeTT-Frontline</a></li>
+                                <li><a href="#">Services</a></li>
+                                <li><a href="#">Contact us</a></li>
+                            </ul>
+                        </div>
+                        <div class="foot-col foot-nav">
+                            <h2 class="foot-tlt">Resources</h2>
+                            <ul>
+                                <li><a href="#">About Us</a></li>
+                                <li><a href="#">ReDPeTT-Frontline</a></li>
+                                <li><a href="#">Services</a></li>
+                                <li><a href="#">Contact us</a></li>
+                            </ul>
+                        </div>
+                        <div class="foot-col appfd">
+                            <h2 class="foot-tlt">Resources</h2>
+                            <div class="app-ft foot-ap">
+                                <a href="#"><img src="images/app-gp.svg" alt="#"></a><br>
+                                <a href="#"><img src="images/app-str.svg" alt="#"></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="foot-copy">
+                <div class="container">
+                    <div class="ptt-row">
+                        <div class="allrsv">© 2021 RedPeTT Front-Line. All rights reserved</div>
+                        <div class="allrsv rightw"><a href="#">Terms</a> | <a href="#"> Privacy Policy</a></div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+</div>
+
+
+@code {
+    private bool arrows = true;
+    private bool bullets = true;
+    private bool enableSwipeGesture = true;
+    private bool autocycle = true;
+    private Transition transition = Transition.Slide;
+    protected override async Task OnParametersSetAsync()
+    {
+        await Task.Delay(500);
+        Thread.Sleep(4000);
+        //NavigationManager.NavigateTo("/Home");
+
+    }
+}

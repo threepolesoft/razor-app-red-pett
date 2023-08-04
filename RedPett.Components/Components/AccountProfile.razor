@@ -1,0 +1,86 @@
+﻿@using Blazored.LocalStorage
+@using Radzen.Blazor
+@using ReDpett.Common.Modal.Settings;
+@using ReDpett.Service;
+@inject ILocalStorageService local;
+@inject HttpClient _httpClient;
+@inject IJSRuntime js
+
+<div class="account">
+<div class="text-center">Upload Your Profile Picture</div>
+<div>
+    <div class="iend text-center"></div>
+    <div class="pic-holder">
+        <div class="photo-sky">
+            <img id="profilePic" class="pic" src="@source" alt="#">
+            <div class="pencsky text-center"><i class="fa fa-pencil"></i></div>
+            <input class="uploadProfileInput" type="file" name="profile_pic" id="newProfilePhoto" accept="image/*" style="visibility:hidden; position:absolute" />
+        </div>
+        <div class="profil-sky">
+            <ul>
+                <li>
+                    <label for="newProfilePhoto" class="upload-file-block">
+                        <div class="text-center sky-upde">
+                            Upload Photo
+                        </div>
+                    </label>
+                </li>              
+            </ul>
+        </div>
+
+    </div>
+</div>
+
+<div class="row px-3">
+    <div class="col-md-6 col-lg-4 p-3">
+        <RadzenText TagName="TagName.H3" Style="font-weight:bold">Role</RadzenText>
+    </div>
+    <div class="col-md-6 col-lg-7 p-3">
+        <RadzenTextBox class="w-100" TValue="string" ReadOnly="true" Value=@selectedRole />
+    </div>
+</div>
+
+<div class="row px-3">
+    <div class="col-md-6 col-lg-4 p-3">
+        <RadzenText TagName="TagName.H3" Style="font-weight:bold">Email</RadzenText>
+    </div>
+    <div class="col-md-6 col-lg-7 p-3">
+        <RadzenTextBox class="w-100" Value=@email ReadOnly="true" />
+    </div>
+</div>
+</div>
+
+@code {
+    public string email = string.Empty;
+    RestService restService = new();
+    string selectedRole = string.Empty;
+    int selectRole = 0;
+    TraineeInformation6VM info = new();
+    string source = "images/avter1.png";
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetData();
+        StateHasChanged();
+    }
+    async Task GetData()
+    {
+        email = await local.GetItemAsync<string>("UserName");
+        var res = await restService.GetProfilePictureUrl(email);
+        source = res.ToString();
+        if (source == "")
+        {
+            source = "images/avter1.png";
+        }
+        var result = await restService.GetRegisteredUser(email);
+        int roleId = result.RoleId;
+        var role = await restService.GetRoles(roleId);
+        selectedRole = role.RoleName;
+
+        if (selectedRole == "Non-Resident")
+        {
+            var residentType = await restService.GetResidentType(roleId);
+            selectedRole = residentType.ResidentName;
+        }
+    }
+}

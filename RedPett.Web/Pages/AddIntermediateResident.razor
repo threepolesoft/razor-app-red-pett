@@ -1,0 +1,17 @@
+﻿@page "/AddIntermediateResident/{E_GUID}"
+@page "/AddIntermediateResident"
+@layout RedPett.Web.Shared.BlankLayout
+
+@if (E_GUID != null)
+{
+    <RedPett.Components.Components.AddIntermediateResidentComponent E_GUID="@E_GUID" />
+}
+else
+{
+    <RedPett.Components.Components.AddIntermediateResidentComponent />
+}
+@code {
+    [Parameter]
+    public string E_GUID { get; set; }
+
+}

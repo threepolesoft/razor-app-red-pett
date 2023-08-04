@@ -1,0 +1,168 @@
+﻿@using Radzen.Blazor
+@using ReDpett.Common.Modal.Settings;
+@using ReDpett.Service;
+@using Blazored.LocalStorage;
+@inject ILocalStorageService local;
+<style>
+    .color {
+        color: red;
+    }
+</style>
+<RadzenFieldset Text="Consultant Information" style="font-size:22px; font-weight:bold">
+    <div class="row">
+        <div class="col-md-6 p-3">
+            <RadzenText>Surname <sup class="color">*</sup></RadzenText>
+        </div>
+        <div class="col-md-6 p-3">
+            <RadzenTextBox class="w-100" @bind-Value=res.Surname />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 p-3">
+            <RadzenText>Given Name <sup class="color">*</sup></RadzenText>
+        </div>
+        <div class="col-md-6 p-3">
+            <RadzenTextBox class="w-100" @bind-Value=res.GivenName />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 p-3">
+            <RadzenText>Full Name</RadzenText>
+        </div>
+        <div class="col-md-6 p-3">
+            <RadzenTextBox ReadOnly="true" class="w-100" @bind-Value=res.FullName />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 p-3">
+            <RadzenText>Is this consultant a FETP Alumni?</RadzenText>
+        </div>
+        <div class="col-md-6 p-3">
+            <RadzenDropDown TValue="string" Data=options class="w-100" @bind-Value=@isFetpAlumni Change=OnAlumniChange />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 p-3">
+            <RadzenText>Is this consultant a mentor?</RadzenText>
+        </div>
+        <div class="col-md-6 p-3">
+            <RadzenDropDown TValue="string" Data=options class="w-100" @bind-Value=@isMentor Change=@OnMentorChange />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 p-3">
+            <RadzenText>Is this consultant a field supervisor?</RadzenText>
+        </div>
+        <div class="col-md-6 p-3">
+            <RadzenDropDown TValue="string" Data=options class="w-100" @bind-Value=@isSupervisor Change=@OnSupervisorChange />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 p-3">
+            <RadzenText>Is this consultant a local level RA/Program Mgr?</RadzenText>
+        </div>
+        <div class="col-md-6 p-3">
+            <RadzenDropDown TValue="string" Data=options class="w-100" @bind-Value=@isLocalRA Change=@OnLocalRAChange />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 p-3">
+            <RadzenText>Primary profession affiliation</RadzenText>
+        </div>
+        <div class="col-md-6 p-3">
+            <RadzenTextBox class="w-100" @bind-Value=res.ProfessionalAffiliation />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 p-3">
+            <RadzenText>Primary Role/Title</RadzenText>
+        </div>
+        <div class="col-md-6 p-3">
+            <RadzenTextBox class="w-100" @bind-Value=res.PrimaryRole />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 p-3">
+            <RadzenText>Mailing/Home Address</RadzenText>
+        </div>
+        <div class="col-md-6 p-3">
+            <RadzenTextArea class="w-100" @bind-Value=res.MailingAddress />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 p-3">
+            <RadzenText>City</RadzenText>
+        </div>
+        <div class="col-md-6 p-3">
+            <RadzenTextBox class="w-100" @bind-Value=res.City />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 p-3">
+            <RadzenText>State/Province (or equivalent)</RadzenText>
+        </div>
+        <div class="col-md-6 p-3">
+            <RadzenTextBox class="w-100" @bind-Value=res.State />
+        </div>
+    </div>
+</RadzenFieldset>
+
+@code {
+    bool result = true;
+    RestService restService = new();
+    public string email = string.Empty;
+    List<TraineeInformation6VM> TraineeInfoList = new();
+    public TraineeInformation6VM res = new();
+    public bool traineeInfoFound;
+    public string isMentor = string.Empty;
+    public string isSupervisor = string.Empty;
+    public string isLocalRA = string.Empty;
+    public string isFetpAlumni = string.Empty;
+    List<string> options = new()
+    {
+        "Yes", "No"
+    };
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetData();
+    }
+
+    async Task GetData()
+    {
+        email = await local.GetItemAsync<string>("UserName");
+        var result = await restService.GetRegisteredUser(email);
+        TraineeInfoList = await restService.GetAllTraineeInfo();
+        var matchingTrainee = TraineeInfoList.FirstOrDefault(x => x.RegisterID == result.RegisterID);
+        res = matchingTrainee ?? new();
+        res.RegisterID = result.RegisterID;
+        res.Surname = result.LastName;
+        res.GivenName = result.Name;
+        res.FullName = res.GivenName + " " + res.Surname;
+        isMentor = (res.Mentor != null) ? ((bool)res.Mentor ? "Yes" : "No") : string.Empty;
+        isFetpAlumni = (res.FETPAlumni != null) ? ((bool)res.FETPAlumni ? "Yes" : "No") : string.Empty;
+        isSupervisor = (res.Supervisor != null) ? ((bool)res.Supervisor ? "Yes" : "No") : string.Empty;
+        isLocalRA = (res.LocalRA != null) ? ((bool)res.LocalRA ? "Yes" : "No") : string.Empty;
+    }
+
+    void OnMentorChange()
+    {
+        res.Mentor = (isMentor == "Yes");
+        if (res.Mentor == false)
+        {
+            res.Mentor2 = "";
+        }
+    }
+    void OnAlumniChange()
+    {
+        res.FETPAlumni = (isFetpAlumni == "Yes");
+    }
+    void OnSupervisorChange()
+    {
+        res.Supervisor = (isSupervisor == "Yes");
+    }
+    void OnLocalRAChange()
+    {
+        res.LocalRA = (isLocalRA == "Yes");
+    }
+}

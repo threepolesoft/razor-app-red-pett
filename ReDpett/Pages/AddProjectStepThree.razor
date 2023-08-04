@@ -1,0 +1,15 @@
+﻿@page "/add_project_step_3/{E_GUID}"
+@page "/add_project_step_3"
+@if (E_GUID != null)
+{
+    <RedPett.Components.Components.AddProjectStepThreeComponent E_GUID="@E_GUID" />
+}
+else
+{
+    <RedPett.Components.Components.AddProjectStepThreeComponent />
+}
+@code {
+    [Parameter]
+    public string E_GUID { get; set; }
+
+}

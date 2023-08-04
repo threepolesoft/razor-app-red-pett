@@ -1,0 +1,251 @@
+﻿@using Newtonsoft.Json;
+@using Radzen.Blazor
+@using Radzen;
+@using ReDpett.Common.Modal.Settings;
+@using ReDpett.Common.Modal;
+@using ReDpett.Service;
+@using ReDpett_API.Modal;
+@using Blazored.LocalStorage;
+@using System.Net.Http;
+@inject ILocalStorageService local;
+@inject HttpClient _httpClient;
+@inject NotificationService notification
+<style>
+    .size {
+        font-size: 14px;
+    }
+</style>
+
+<RadzenTemplateForm TItem="TraineeInformation6VM" Data="res">
+    <RadzenFieldset Text="Resident Information" style="font-size:22px; font-weight:bold" class="mb-5">
+        <div class="row px-3">
+            <div class="col-md-12 pt-3">
+                <RadzenText class="size">Date Of Birth</RadzenText>
+            </div>
+            <div class="col-md-12">
+                <RadzenDatePicker TValue="DateTime?" class="w-100" DateFormat="dd/MM/yyyy" @bind-Value="res.DateofBirth" Change=@CalculateAge></RadzenDatePicker>
+            </div>
+        </div>
+        <div class="row px-3">
+            <div class="col-md-12 pt-3">
+                <RadzenText class="size">Age</RadzenText>
+            </div>
+            <div class="col-md-12">
+                <RadzenNumeric TValue="int?" class="w-100" @bind-Value=res.Age ReadOnly="true" />
+            </div>
+        </div>
+        <div class="row px-3">
+            <div class="col-md-12 pt-3">
+                <RadzenText class="size">Gender</RadzenText>
+            </div>
+            <div class="col-md-12">
+                <RadzenDropDown class="w-100" TValue="string" Data="GenderList" @bind-Value=res.Gender Placeholder="Select Gender">
+                </RadzenDropDown>
+            </div>
+        </div>
+    </RadzenFieldset>
+    <RadzenFieldset Text="Contact Information" style="font-size:22px; font-weight:bold;">
+        <div class="row px-3">
+            <div class="col-md-12 pt-3">
+                <RadzenText class="size">Surname</RadzenText>
+            </div>
+            <div class="col-md-12">
+                <RadzenTextBox class="w-100" Name="Surname" ReadOnly="true" @bind-Value=@surname />
+            </div>
+        </div>
+        <div class="row px-3">
+            <div class="col-md-12 pt-3">
+                <RadzenText class="size">Given Name</RadzenText>
+            </div>
+            <div class="col-md-12">
+                <RadzenTextBox class="w-100" @bind-Value=@givenName ReadOnly="true" />
+            </div>
+        </div>
+        <div class="row px-3">
+            <div class="col-md-12 pt-3">
+                <RadzenText class="size">Home Phone Number</RadzenText>
+            </div>
+            <div class="col-md-12">
+                <RadzenTextBox class="w-100" @bind-Value="res.HomePhoneNumber" />
+            </div>
+        </div>
+        <div class="row px-3">
+            <div class="col-md-12 pt-3">
+                <RadzenText class="size" id="mobile_code1">Business Phone Number</RadzenText>
+            </div>
+            <div class="col-md-12">
+                <RadzenTextBox class="w-100" @bind-Value=res.BusinessPhone />
+            </div>
+        </div>
+        <div class="row px-3">
+            <div class="col-md-12 pt-3">
+                <RadzenText class="size">Mobile Number</RadzenText>
+            </div>
+            <div class="col-md-12">
+                <RadzenTextBox class="w-100" @bind-Value=res.Mobile_Phone />
+            </div>
+        </div>
+        <div class="row px-3">
+            <div class="col-md-12 pt-3">
+                <RadzenText class="size">Email</RadzenText>
+            </div>
+            <div class="col-md-12">
+                <RadzenTextBox class="w-100" @bind-Value=res.TraineeEmail />
+            </div>
+        </div>
+        <div class="row px-3">
+            <div class="col-md-12 pt-3">
+                <RadzenText class="size">Mailing/Home Address</RadzenText>
+            </div>
+            <div class="col-md-12">
+                <RadzenTextBox class="w-100" @bind-Value=res.MailingAddress />
+            </div>
+        </div>
+        <div class="d-flex w-100">
+            <div class="row px-3 w-75">
+                <div class="col-md-12 pt-3">
+                    <RadzenText class="size">City</RadzenText>
+                </div>
+                <div class="col-md-12">
+                    <RadzenTextBox class="w-100" @bind-Value=res.City @onfocusout="@GetLatLongFromAddress" />
+                    <RadzenRequiredValidator Text="Required" />
+                </div>
+            </div>
+            <div class="row px-3 w-75">
+                <div class="col-md-12 pt-3 w-75">
+                    <RadzenText class="size">State</RadzenText>
+                </div>
+                <div class="col-md-12">
+                    <RadzenTextBox class="w-100" @bind-Value=res.State @onfocusout="@GetLatLongFromAddress" />
+                </div>
+            </div>
+        </div>
+        <div class="d-flex w-100">
+            <div class="row px-3 w-75">
+                <div class="col-md-12 pt-3">
+                    <RadzenText class="size">Postal Code</RadzenText>
+                </div>
+                <div class="col-md-12">
+                    <RadzenTextBox class="w-100" @bind-Value=res.ZipCode />
+                </div>
+            </div>
+            <div class="row px-3 w-75">
+                <div class="col-md-12 pt-3 w-100">
+                    <RadzenText class="size">Country</RadzenText>
+                </div>
+                <div class="col-md-12">
+                    <RadzenDropDown Placeholder="--Select country--" TValue="string" class="w-100" @bind-Value=res.Country Data=@CountryNameList Change="@GetLatLongFromAddress" />
+                </div>
+            </div>
+            <div class="row px-3 w-75">
+                <div class="col-md-12 pt-3">
+                    <RadzenText class="size">Latitude</RadzenText>
+                </div>
+                <div class="col-md-12">
+                    <RadzenNumeric TValue="double?" class="w-100" @bind-Value=res.contactLatitude />
+                </div>
+            </div>
+            <div class="row px-3 w-75">
+                <div class="col-md-12 pt-3">
+                    <RadzenText class="size">Longitude</RadzenText>
+                </div>
+                <div class="col-md-12">
+                    <RadzenNumeric TValue="double?" class="w-100" @bind-Value=res.contactLongitude />
+                </div>
+            </div>
+        </div>
+    </RadzenFieldset>
+</RadzenTemplateForm>
+
+
+@code {
+    public RestService restService = new();
+    public List<Country> CountryList = new List<Country>();
+    public List<TraineeInformation6VM> TraineeInfoList = new();
+    public List<string> CountryNameList = new List<string>();
+    public List<string> GenderList = new List<string>();
+    public List<CodeGender> Gender = new List<CodeGender>();
+    public string email = string.Empty;
+    public string surname = string.Empty;
+    public string givenName = string.Empty;
+    public int registerId;
+    public TraineeInformation6VM res = new();
+    public bool traineeInfoFound;
+
+    protected override async Task OnInitializedAsync()
+    {
+        CountryList = await restService.GetCountries();
+        foreach (var val in CountryList)
+        {
+            CountryNameList.Add(val.Name);
+        }
+        GenderList = await restService.GetGender();
+        await GetData();
+    }
+
+    public async Task GetData()
+    {
+        email = await local.GetItemAsync<string>("UserName");
+        var result = await restService.GetRegisteredUser(email);
+        surname = result.LastName;
+        givenName = result.Name;
+        registerId = result.RegisterID;
+        TraineeInfoList = await restService.GetAllTraineeInfo();
+        if (TraineeInfoList.Count() > 0)
+        {
+            traineeInfoFound = TraineeInfoList.Any(x => x.RegisterID == registerId);
+        }
+        if (traineeInfoFound)
+        {
+            res = TraineeInfoList.FirstOrDefault(x => x.RegisterID == registerId)!;
+        }
+        else
+        {
+            res = new();
+        }
+        res.RegisterID = registerId;
+        res.Surname = surname;
+        res.GivenName = givenName;
+    }
+
+    private void CalculateAge()
+    {
+        int age = 0;
+        var dateOfBirth = Convert.ToDateTime(res.DateofBirth);
+        age = DateTime.Now.Year - dateOfBirth.Year;
+        if (DateTime.Now.DayOfYear < dateOfBirth.DayOfYear)
+            age = age - 1;
+        res.Age = age;
+    }
+    public async void GetLatLongFromAddress()
+    {
+        int index = res.Country!.IndexOf(',');
+        if (index > 0)
+        {
+            res.Country = res.Country.Substring(0, index);
+        }
+        string address = res.City + "," + res.State + "," + res.Country;
+        string url = $"https://nominatim.openstreetmap.org/search?q={Uri.EscapeDataString(address)}&format=json";
+
+        try
+        {
+            string jsonResult = await _httpClient.GetStringAsync(url);
+            dynamic result = JsonConvert.DeserializeObject(jsonResult);
+            await Task.Delay(500);
+            if (result!.Count > 0)
+            {
+                res.contactLatitude = double.Parse(result[0].lat.ToString());
+                res.contactLongitude = double.Parse(result[0].lon.ToString());
+            }
+            else
+            {
+                Console.WriteLine("Geocoding failed. Address not found.");
+            }
+        }
+        catch (HttpRequestException ex)
+        {
+            Console.WriteLine($"Error while making the HTTP request: {ex.Message}");
+        }
+        StateHasChanged();
+    }
+}
